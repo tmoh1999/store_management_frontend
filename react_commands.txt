@@ -1,0 +1,11 @@
+# 1️⃣ Create a new React project
+npm create vite@latest my-first-app
+
+# 2️⃣ Go into the project folder
+cd my-first-app
+
+# 3️⃣ Install dependencies
+npm install
+
+# 4️⃣ Run the development server
+npm run dev
