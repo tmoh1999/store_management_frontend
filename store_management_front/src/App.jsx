@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-    <h1>first app</h1>
+    <h1 className="text-4xl font-bold text-blue-500">first app</h1>
     {/*
   <div class="container py-5">
   <h1 class="text-center mb-5">Store Management</h1>
