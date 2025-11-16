@@ -20,14 +20,14 @@ export default function Login() {
   // Step 3: Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent page reload
-    console.log("Form submitted:", formData);
+    alert("Form submitted:", formData);
     // Here you can call an API or do further processing
   };
   return (
     <div className="max-w-2xl mx-auto py-10">
-    <h2>Login</h2>
-    {/*
-      <form onSubmit="{handleSubmit}">
+    
+    
+      <form onSubmit={handleSubmit}>
 
       <div className="flex flex-col items-center gap-4">
         
@@ -39,13 +39,11 @@ export default function Login() {
   <button type="submit" className="bg-blue-500 text-white p-2 rounded">Login</button>
   
 
-  <p>No account? <Link to="/register"
-          className="w-3/4 p-4 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
-        >Register</Link>
+  <p>No account? <Link to="/register">Register</Link>
 </p>
       </div>
       </form>
-      */}
+      
     </div>
   );
 } 
