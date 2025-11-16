@@ -24,24 +24,23 @@ export default function Login() {
     // Here you can call an API or do further processing
   };
   return (
-    <div className="max-w-2xl mx-auto py-10">
+    <div className="max-w-md mx-auto py-10 px-4">
     
     
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
 
-      <div className="flex flex-col items-center gap-4">
-        
+      
         <h2>Login</h2>
         
-  <input name="username" className="border p-2 rounded w-full"  required/>
-  <input type="password" className="border p-2 rounded w-full" name="password" required/>
+  <input name="username" className="border p-2 rounded-lg w-full"  required/>
+  <input type="password" className="border p-2 rounded-lg w-full" name="password" required/>
 
-  <button type="submit" className="bg-blue-500 text-white p-2 rounded">Login</button>
+  <button type="submit" className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">Login</button>
   
 
-  <p>No account? <Link to="/register">Register</Link>
+  <p>No account? <Link to="/register" className="ml-2 text-green-600 font-medium hover:underline">Register</Link>
 </p>
-      </div>
+      
       </form>
       
     </div>
