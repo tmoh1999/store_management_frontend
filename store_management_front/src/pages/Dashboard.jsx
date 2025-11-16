@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import {test} from "./api";
+import {test} from "../api";
 export default function Dashboard({ username }) {
   useEffect(() => {
    test()
