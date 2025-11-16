@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
-import { useEffect } from "react"
+import { useEffect } from "react";
+import {test} from "./api";
 export default function Dashboard({ username }) {
   useEffect(() => {
-  fetch(`${import.meta.env.VITE_API_URL}/testapi`)
-    .then(res => res.json())
+   test()
     .then(data => {
       console.log(data.message); // "test work"
       console.log(data.token);   // 1999
       alert(data.message);
-    });
+    })
+    .catch(err => console.error("API error:", err));
 }, []);
   return (
     <div className="max-w-2xl mx-auto py-10">
