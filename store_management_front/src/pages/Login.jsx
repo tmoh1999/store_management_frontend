@@ -30,8 +30,8 @@ export default function Login() {
       <div className="flex flex-col items-center gap-4">
         
         <h2>Login</h2>
-  <input name="username" className="border p-2 rounded w-full" placeholder="Username" required>
-  <input type="password" className="border p-2 rounded w-full" name="password" placeholder="Password" required>
+  <input name="username" className="border p-2 rounded w-full"  required/>
+  <input type="password" className="border p-2 rounded w-full" name="password" required/>
 
   <button type="submit" className="bg-blue-500 text-white p-2 rounded">Login</button>
   
