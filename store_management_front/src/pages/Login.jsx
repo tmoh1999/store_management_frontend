@@ -25,11 +25,14 @@ export default function Login() {
   };
   return (
     <div className="max-w-2xl mx-auto py-10">
+    <h2>Login</h2>
+    {/*
       <form onSubmit="{handleSubmit}">
 
       <div className="flex flex-col items-center gap-4">
         
         <h2>Login</h2>
+        
   <input name="username" className="border p-2 rounded w-full"  required/>
   <input type="password" className="border p-2 rounded w-full" name="password" required/>
 
@@ -42,6 +45,7 @@ export default function Login() {
 </p>
       </div>
       </form>
+      */}
     </div>
   );
 } 
