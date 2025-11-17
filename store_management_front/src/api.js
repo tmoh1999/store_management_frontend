@@ -15,7 +15,7 @@ export async function request(url, options = {}) {
   }
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(req_url, {
       headers,
       ...options,
     });
@@ -64,7 +64,7 @@ export function deleteSale(id) {
 
 // Login example
 export function login(formData) {
-  return request("/login", {
+  return request("/api/users/login", {
     method: "POST",
     body: JSON.stringify({ username:formData.username, 
      password:formData.password,}),
