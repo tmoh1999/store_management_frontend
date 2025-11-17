@@ -29,7 +29,7 @@ const [loading, setLoading] = useState(false);
 
   // Save token
   localStorage.setItem("token", result.token);
-
+  console.log(token)
   // Redirect (optional)
   // navigate("/dashboard");
 } catch (err) {
