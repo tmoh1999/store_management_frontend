@@ -1,8 +1,11 @@
-import { Link ,useNavigate} from "react-router-dom";
+import { Link ,useNavigate,useLocation} from "react-router-dom";
 import { useEffect } from "react";
 //import {test} from "../api";
-export default function Dashboard({ username }) {
+export default function Dashboard() {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const user=location.state;
+	console.log(user);
 useEffect(() => {
 	
     // Check if token exists in localStorage
@@ -15,7 +18,7 @@ useEffect(() => {
   return (
     <div className="max-w-2xl mx-auto py-10">
       <h1 className="text-center text-3xl font-bold mb-5">Store Management</h1>
-      <h2 className="text-center text-xl font-semibold mb-5">user: {username}</h2>
+      <h2 className="text-center text-xl font-semibold mb-5">user: {user?.username}</h2>
 
       <div className="flex flex-col items-center gap-4">
         

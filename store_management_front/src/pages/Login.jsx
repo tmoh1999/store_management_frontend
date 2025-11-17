@@ -33,8 +33,12 @@ const navigate = useNavigate();
   console.log(result.token)
   console.log(result.user)
   // Redirect (optional)
-  
-   navigate("/dashboard");
+  const user={
+        username:result.user.username,
+  };
+   navigate("/dashboard",{
+   state:user,
+   });
 } catch (err) {
   setError(err.message || "Login failed");
 } finally {
