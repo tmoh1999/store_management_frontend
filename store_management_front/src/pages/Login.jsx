@@ -43,15 +43,18 @@ const [loading, setLoading] = useState(false);
     <div className="max-w-md mx-auto py-10 px-4">
     
     
-      <form onSubmit={handleSubmit} className="bg-while p-6 rounded-xl shadow-lg flex flex-col items-center gap-4">
+      <form onSubmit={handleSubmit} className="bg-while p-6 rounded-xl shadow-lg w-80 flex flex-col items-center gap-4">
 <h1 className="text-2xl font-bold text-center">Login</h1>
-      
+  {/* Error Box */}
+        {error && (
+          <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
+        )}
         
         
   <input onChange={handleChange} name="username" className="border p-2 rounded-lg w-full"  required/>
   <input onChange={handleChange} type="password" className="border p-2 rounded-lg w-full"   name="password" required/>
 
-  <button type="submit" className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">Login</button>
+  <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Logging in..." : "Login"}</button>
   
 
   <p>No account? <Link to="/register" className="ml-2 text-green-600 font-medium hover:underline">Register</Link>
