@@ -19,7 +19,7 @@ const [error, setError] = useState("");
   };
 
   // Step 3: Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
     console.log(formData["username"]+"...."+formData["password"] );
     try {
