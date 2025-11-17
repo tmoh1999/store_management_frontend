@@ -1,34 +1,34 @@
 export const API_URL = import.meta.env.VITE_API_URL;
 
-// Central fetch helper
-async function request(endpoint, options = {}) {
+export async function request(url, options = {}) {
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {}),
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
   try {
-    const res = await fetch(`${API_URL}${endpoint}`, {
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch(url, {
+      headers,
       ...options,
     });
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
+    if (!response.ok) {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || "Request failed");
     }
 
-    return await res.json(); // parse JSON
+    return await response.json();
   } catch (err) {
-    console.error("API request error:", err);
-    throw err; // allow component to handle the error
+    console.error("API Error:", err);
+    throw err;
   }
 }
-
-// Example GET
-export function test() {
-  return request("/testapi");
-}
-
-// Products
-export function getProducts() {
-  return request("/products");
-}
-
 export function addProduct(product) {
   return request("/products", {
     method: "POST",
@@ -61,9 +61,9 @@ export function deleteSale(id) {
 }
 
 // Login example
-export function login(username, password) {
+export function login(formData) {
   return request("/login", {
     method: "POST",
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ formData["username"], formData["password"] }),
   });
 }
