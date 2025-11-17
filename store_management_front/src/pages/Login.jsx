@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link , useNavigate} from "react-router-dom";
 import { useEffect ,useState} from "react";
 import {login} from "../api";
 export default function Login() {
@@ -9,6 +9,7 @@ export default function Login() {
   });
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
+const navigate = useNavigate();
   // Step 2: Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,8 +31,10 @@ const [loading, setLoading] = useState(false);
   // Save token
   localStorage.setItem("token", result.token);
   console.log(result.token)
+  console.log(result.user)
   // Redirect (optional)
-  // navigate("/dashboard");
+  
+   navigate("/dashboard");
 } catch (err) {
   setError(err.message || "Login failed");
 } finally {
@@ -43,7 +46,7 @@ const [loading, setLoading] = useState(false);
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
     
     
-      <form onSubmit={handleSubmit} className="bg-while p-6 rounded-xl shadow-lg w-80 flex flex-col items-center gap-4">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg w-80 flex flex-col items-center gap-4">
 <h1 className="text-2xl font-bold text-center">Login</h1>
   {/* Error Box */}
         {error && (

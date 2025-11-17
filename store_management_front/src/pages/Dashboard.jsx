@@ -1,16 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import { useEffect } from "react";
 //import {test} from "../api";
 export default function Dashboard({ username }) {
- /* useEffect(() => {
-   test()
-    .then(data => {
-      console.log(data.message); // "test work"
-      console.log(data.token);   // 1999
-      alert(data.message);
-    })
-    .catch(err => console.error("API error:", err));
-}, []);*/
+	const navigate = useNavigate();
+useEffect(() => {
+	
+    // Check if token exists in localStorage
+    const token = localStorage.getItem("token");
+    if (!token) {
+      // If no token, redirect to login page
+      navigate("/login");
+    }
+  }, [navigate]);
   return (
     <div className="max-w-2xl mx-auto py-10">
       <h1 className="text-center text-3xl font-bold mb-5">Store Management</h1>
