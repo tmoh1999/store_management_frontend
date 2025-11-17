@@ -64,6 +64,6 @@ export function deleteSale(id) {
 export function login(formData) {
   return request("/login", {
     method: "POST",
-    body: JSON.stringify({ formData["username"], formData["password"] }),
+    body: JSON.stringify({ formData.username, formData.password }),
   });
 }
