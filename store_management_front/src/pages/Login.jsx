@@ -22,6 +22,8 @@ const [error, setError] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
     console.log(formData["username"]+"...."+formData["password"] );
+    setError("");
+    setLoading(true);
     try {
   const result = await login(formData);
 
