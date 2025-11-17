@@ -20,17 +20,18 @@ export default function Login() {
   // Step 3: Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault(); // Prevent page reload
-    alert("Form submitted:", formData);
+    console.log(formData);
+    
     // Here you can call an API or do further processing
   };
   return (
     <div className="max-w-md mx-auto py-10 px-4">
     
-    
+    <h1>Login</h1>
       <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4">
 
       
-        <h2>Login</h2>
+        
         
   <input name="username" className="border p-2 rounded-lg w-full"  required/>
   <input type="password" className="border p-2 rounded-lg w-full" name="password" required/>
