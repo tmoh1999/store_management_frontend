@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect ,useState} from "react";
-import {test,login} from "../api";
+import {login} from "../api";
 export default function Login() {
 // Step 1: Create state for form fields
   const [formData, setFormData] = useState({
@@ -8,7 +8,7 @@ export default function Login() {
     password: ""
   });
 const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
   // Step 2: Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,8 +48,8 @@ const [error, setError] = useState("");
       
         
         
-  <input name="username" className="border p-2 rounded-lg w-full" onChange={handleChange} required/>
-  <input type="password" className="border p-2 rounded-lg w-full" onChange={handleChange}  name="password" required/>
+  <input onChange={handleChange} name="username" className="border p-2 rounded-lg w-full"  required/>
+  <input onChange={handleChange} type="password" className="border p-2 rounded-lg w-full"   name="password" required/>
 
   <button type="submit" className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">Login</button>
   

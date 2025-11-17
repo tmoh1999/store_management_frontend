@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import {test} from "../api";
+//import {test} from "../api";
 export default function Dashboard({ username }) {
-  useEffect(() => {
+ /* useEffect(() => {
    test()
     .then(data => {
       console.log(data.message); // "test work"
@@ -10,7 +10,7 @@ export default function Dashboard({ username }) {
       alert(data.message);
     })
     .catch(err => console.error("API error:", err));
-}, []);
+}, []);*/
   return (
     <div className="max-w-2xl mx-auto py-10">
       <h1 className="text-center text-3xl font-bold mb-5">Store Management</h1>
