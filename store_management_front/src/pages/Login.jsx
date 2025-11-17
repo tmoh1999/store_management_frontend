@@ -29,7 +29,7 @@ const [loading, setLoading] = useState(false);
 
   // Save token
   localStorage.setItem("token", result.token);
-  console.log(token)
+  console.log(result.token)
   // Redirect (optional)
   // navigate("/dashboard");
 } catch (err) {
@@ -40,7 +40,7 @@ const [loading, setLoading] = useState(false);
     // Here you can call an API or do further processing
   };
   return (
-    <div className="max-w-md mx-auto py-10 px-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
     
     
       <form onSubmit={handleSubmit} className="bg-while p-6 rounded-xl shadow-lg w-80 flex flex-col items-center gap-4">
