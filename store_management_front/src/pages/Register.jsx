@@ -1,7 +1,7 @@
 import { Link , useNavigate} from "react-router-dom";
 import { useEffect ,useState} from "react";
-import {login} from "../api";
-export default function Login() {
+import {register} from "../api";
+export default function Register() {
 // Step 1: Create state for form fields
   const [formData, setFormData] = useState({
     username: "",
@@ -21,12 +21,13 @@ const navigate = useNavigate();
 
   // Step 3: Handle form submission
   const handleSubmit = async (e) => {
+  	
     e.preventDefault(); // Prevent page reload
     console.log(formData["username"]+"...."+formData["password"] );
     setError("");
     setLoading(true);
     try {
-  const result = await login(formData);
+  const result = await register(formData);
 
   // Save token
   localStorage.setItem("token", result.token);
@@ -61,11 +62,11 @@ const navigate = useNavigate();
   <input onChange={handleChange} value={formData.username} name="username" className="border p-2 rounded-lg w-full"  required/>
   <input onChange={handleChange} value={formData.password} type="password" className="border p-2 rounded-lg w-full"   name="password" required/>
 
-  <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Logging in..." : "Login"}</button>
+  <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Registering..." : "Register"}</button>
   
 
-  <p>No account? <Link to="/register" className="ml-2 text-green-600 font-medium hover:underline">Register</Link>
-</p>
+  
+
       
       </form>
       

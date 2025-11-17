@@ -71,3 +71,12 @@ export function login(formData) {
   }
 );
 }
+// Register example
+export function register(formData) {
+  return request("/api/users/register", {
+    method: "POST",
+    body: JSON.stringify({ username:formData.username, 
+     password:formData.password,}),
+  }
+);
+}
