@@ -23,7 +23,7 @@ useEffect(() => {
       <div className="flex flex-col items-center gap-4">
         
         <Link
-          to="/products/manageproducts"
+          to="/products"
           className="w-3/4 p-4 rounded-xl shadow-lg text-white bg-blue-600 text-center text-lg font-medium hover:bg-blue-700"
         >
           📦 Manage Products

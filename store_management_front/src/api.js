@@ -79,4 +79,11 @@ export function register(formData) {
      password:formData.password,}),
   }
 );
+
+
+
+}
+// Productq
+export function getProducts() {
+  return request("/api/products/productlist");
 }
