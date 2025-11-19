@@ -9,3 +9,6 @@ npm install
 
 # 4️⃣ Run the development server
 npm run dev
+
+#terminal copy
+rsync -av --progress /storage/emulated/0/__programes/store_management_frontend/store_management_front/src  /data/data/com.termux/files/home/store_management_frontend/store_management_front
