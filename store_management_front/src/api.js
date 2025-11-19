@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 export const API_URL = import.meta.env.VITE_API_URL;
 
 export async function request(url, options = {}) {
@@ -69,4 +70,19 @@ export function addProduct(formData) {
          product_name:formData.name, 
     }),
   });
+}
+
+// api.js
+
+
+// Option 1: plain function (without navigate)
+export function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+}
+
+// Option 2: function with navigate (requires passing navigate)
+export function logoutAndRedirect(navigate) {
+  logout();
+  navigate("/login");
 }

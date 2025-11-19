@@ -3,9 +3,13 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProductList from "./pages/Products";
+import Sales from "./pages/Sales";
+import Transactions from "./pages/Transactions";
 import AddProduct from "./pages/AddProduct";
 import Sidebar from "./SideBar.jsx"
 import ErrorBoundary from "./ErrorBoundary"
+import ProtectedRoute from "./ProtectedRoute"
+import LogOut from "./LogOut"
 import { useEffect } from "react";
 // you will create these pages
 
@@ -26,17 +30,23 @@ export default function App() {
     <div className="flex">
     <ErrorBoundary>
     <Sidebar />
-    <div>
+    <div className="ml-2">
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/products" element={<ProductList />} />
-      <Route path="/sales" element={<ProductList />} />
-      <Route path="/transactions" element={<ProductList />} />
-      <Route path="/addproduct" element={<AddProduct />} />
- 
+      
+      <Route path="/products" element={
+       <ProtectedRoute>
+       <ProductList />
+       </ProtectedRoute>
+       } />
+      
+      <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
+      <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+      <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+      <Route path="/logout" element={<LogOut />} />
     </Routes>
     </div>
     </ErrorBoundary>

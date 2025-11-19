@@ -1,10 +1,8 @@
-import { NavLink } from "react-router-dom";
-import { Package, ShoppingCart, Receipt, Menu } from "lucide-react";
+import { NavLink ,useNavigate} from "react-router-dom";
+import { Package, ShoppingCart, Receipt, Menu ,LogOut} from "lucide-react";
 import { useState } from "react";
-
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
-
   return (
     
     <div className={`h-screen bg-gray-900 text-white p-4 transition-all duration-300
@@ -57,7 +55,16 @@ export default function Sidebar() {
           <Receipt size={22} />
           {open && <span>Transactions</span>}
         </NavLink>
-
+     <NavLink
+          to="/logout"
+          className={({ isActive }) =>
+            `flex items-center gap-3 p-3 rounded-lg transition
+            ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
+          }
+        >
+          <LogOut size={22} />
+          {open && <span>LogOut</span>}
+        </NavLink>
       </div>
     </div>
   );
