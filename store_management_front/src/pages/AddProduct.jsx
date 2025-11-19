@@ -1,6 +1,6 @@
-import { Link , useNavigate} from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useEffect ,useState} from "react";
-import {login} from "../api";
+import {addProduct} from "../api";
 import ErrorBoundary from "../ErrorBoundary";
 import BarcodeScanner from "../BarcodeScanner"
 export default function AddProduct() {
@@ -9,15 +9,12 @@ export default function AddProduct() {
     name: "",
     barcode:"",
     price:0.0,
-    quantity:1,
-    
-    
   });
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 const [showScanner, setShowScanner] = useState(false);
-const [xval, setXval] = useState("");
-const navigate = useNavigate();
+const [message, setMessage] = useState("");
+
   // Step 2: Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,9 +32,12 @@ const navigate = useNavigate();
     setLoading(true);
     
     try {
-  console.log(formData);
+  const result =await addProduct(formData);
+  
+  setMessage(result.status);
+  console.log(message);
 } catch (err) {
-  setError(err.message || "Login failed");
+  setError(err.message || "addProduct failed");
 } finally {
       setLoading(false);
     }
@@ -54,6 +54,10 @@ const navigate = useNavigate();
   return (
     <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg w-4/5 flex flex-col items-center gap-4">
+      {/* Message Box */}
+        {message && (
+          <div className="bg-green-100 text-green-700 p-2 rounded">{message}</div>
+        )}
 <h1 className="text-2xl font-bold text-center">Add product</h1>
   {/* Error Box */}
         {error && (
@@ -81,10 +85,7 @@ const navigate = useNavigate();
   <input onChange={handleChange} type="number" value={formData.price} id="price" name="price" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
   </div>
   
-  <div className="mb-4">
-  <label htmlFor="quantity" className="block text-sm text-gray-700 font-semibold">Quantity:</label>
-  <input onChange={handleChange} type="number" value={formData.quantity} id="quantity" name="quantity" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
-  </div>
+  
   
   <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Adding..." : "Add"}</button>
       

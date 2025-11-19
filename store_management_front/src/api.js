@@ -31,36 +31,7 @@ export async function request(url, options = {}) {
     throw err;
   }
 }
-export function addProduct(product) {
-  return request("/products", {
-    method: "POST",
-    body: JSON.stringify(product),
-  });
-}
 
-export function deleteProduct(id) {
-  return request(`/products/${id}`, {
-    method: "DELETE",
-  });
-}
-
-// Sales
-export function getSales() {
-  return request("/sales");
-}
-
-export function addSale(sale) {
-  return request("/sales", {
-    method: "POST",
-    body: JSON.stringify(sale),
-  });
-}
-
-export function deleteSale(id) {
-  return request(`/sales/${id}`, {
-    method: "DELETE",
-  });
-}
 
 // Login example
 export function login(formData) {
@@ -86,4 +57,16 @@ export function register(formData) {
 // Productq
 export function getProducts() {
   return request("/api/products/productlist");
+}
+
+// Register example
+export function addProduct(formData) {
+  return request("/api/products/insertemptyproduct", {
+    method: "POST",
+    body: JSON.stringify({ 
+         product_price:formData.price, 
+         product_brcode:formData.barcode, 
+         product_name:formData.name, 
+    }),
+  });
 }
