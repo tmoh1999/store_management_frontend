@@ -30,7 +30,7 @@ useEffect(() => {
         </Link>
 
         <Link
-          to="/sales/managesales"
+          to="/addproduct"
           className="w-3/4 p-4 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
         >
           💰 Manage Sales
