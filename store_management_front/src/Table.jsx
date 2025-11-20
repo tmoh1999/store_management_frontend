@@ -1,10 +1,10 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 export default function Table({ data, columns ,rootpath}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
-
+  const navigate=useNavigate();
   // Search filter
   const filteredData = data.filter((row) =>
     Object.values(row)
@@ -34,8 +34,21 @@ export default function Table({ data, columns ,rootpath}) {
       setSortOrder("asc");
     }
   };
-const handleClick = (e) => {
+const handleClick = (e,row) => {
+	console.log(row)
 	const path=rootpath+"/"+e.currentTarget.id+"/"+e.currentTarget.dataset.key
+	let destpath="/products"
+	if ( rootpath.includes("/api/products")){
+		if (e.currentTarget.dataset.key=="update"){
+             destpath="/updateproduct"
+       }
+    }
+	navigate(destpath,{
+		state:{
+            path:path,
+            row:row,
+         }
+    });
     console.log(path);
   };
   return (
@@ -76,13 +89,13 @@ const handleClick = (e) => {
                 </td>
               ))}
               <td  className="p-2 border">
-                  <button onClick={handleClick} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
+                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
                 </td>
                 <td  className="p-2 border">
-                  <button onClick={handleClick} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
+                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
                 </td>
                 <td  className="p-2 border">
-                  <button onClick={handleClick} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
+                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
                 </td>
             </tr>
           ))}

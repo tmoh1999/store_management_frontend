@@ -71,7 +71,16 @@ export function addProduct(formData) {
     }),
   });
 }
-
+export function updateProduct(formData,path) {
+  return request(path, {
+    method: "POST",
+    body: JSON.stringify({ 
+         product_price:formData.price, 
+         product_brcode:formData.barcode, 
+         product_name:formData.name, 
+    }),
+  });
+}
 // api.js
 
 

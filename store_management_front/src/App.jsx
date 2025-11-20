@@ -6,6 +6,7 @@ import ProductList from "./pages/Products";
 import Sales from "./pages/Sales";
 import Transactions from "./pages/Transactions";
 import AddProduct from "./pages/AddProduct";
+import UpdateProduct from "./pages/UpdateProduct";
 import Sidebar from "./SideBar.jsx"
 import ErrorBoundary from "./ErrorBoundary"
 import ProtectedRoute from "./ProtectedRoute"
@@ -27,10 +28,10 @@ export default function App() {
     }
   }, []);
   return (
-    <div className="flex">
+    <div className="flex ">
     <ErrorBoundary>
     <Sidebar />
-    <div className="ml-2">
+    <div className="ml-2 w-full">
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
@@ -46,6 +47,7 @@ export default function App() {
       <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
       <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
       <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+      <Route path="/updateproduct" element={<ProtectedRoute><UpdateProduct /></ProtectedRoute>} />
       <Route path="/logout" element={<LogOut />} />
     </Routes>
     </div>
