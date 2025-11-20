@@ -61,7 +61,7 @@ useEffect(() => {
    <div className="p-1">
    <h1 className="text-2xl font-bold " >Products</h1>
    
-    <Table data={products.data} columns={products.columns}/>
+    <Table data={products.data} columns={products.columns}  rootpath="/api/products"/>
     
     </div>
   );

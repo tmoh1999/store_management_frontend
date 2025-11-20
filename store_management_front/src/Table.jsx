@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Table({ data, columns }) {
+export default function Table({ data, columns ,rootpath}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -34,7 +34,10 @@ export default function Table({ data, columns }) {
       setSortOrder("asc");
     }
   };
-
+const handleClick = (e) => {
+	const path=rootpath+"/"+e.currentTarget.id+"/"+e.currentTarget.dataset.key
+    console.log(path);
+  };
   return (
     <div className="p-3">
       {/* Search */}
@@ -72,6 +75,15 @@ export default function Table({ data, columns }) {
                   {row[col.accessor]}
                 </td>
               ))}
+              <td  className="p-2 border">
+                  <button onClick={handleClick} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
+                </td>
+                <td  className="p-2 border">
+                  <button onClick={handleClick} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
+                </td>
+                <td  className="p-2 border">
+                  <button onClick={handleClick} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
+                </td>
             </tr>
           ))}
         </tbody>
