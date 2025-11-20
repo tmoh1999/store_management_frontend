@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-export default function Table({ data, columns ,rootpath}) {
+import {removeProduct} from "./api"
+import ConfirmMessage from "./confirmMessage"
+export default function Table({ data, columns ,rootpath,refreshParent}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const navigate=useNavigate();
+  const [showConfirm,setShowConfirm]=useState(false);
+  const [confimed,setConfirmed]=useState(false);
+  const [deletePath,setDeletePath]=useState("");
   // Search filter
   const filteredData = data.filter((row) =>
     Object.values(row)
@@ -34,25 +39,47 @@ export default function Table({ data, columns ,rootpath}) {
       setSortOrder("asc");
     }
   };
-const handleClick = (e,row) => {
+  useEffect(() => {
+  	console.log(1999);
+      if (deletePath){
+            const result = removeProduct(deletePath);
+            console.log(result.status);
+            setDeletePath("");
+            refreshParent();
+      }
+  },[confimed]);
+const handleClick = async (e,row) => {
 	console.log(row)
 	const path=rootpath+"/"+e.currentTarget.id+"/"+e.currentTarget.dataset.key
 	let destpath="/products"
 	if ( rootpath.includes("/api/products")){
 		if (e.currentTarget.dataset.key=="update"){
              destpath="/updateproduct"
-       }
+             navigate(destpath,{
+						state:{
+				            path:path,
+				            row:row,
+				         }
+             });
+       }else  if (e.currentTarget.dataset.key=="remove"){
+             try {
+             	setShowConfirm(true);
+                 setDeletePath(path);
+              } catch (err) {
+                    console.log(err.message);
+               }
+       } else if (e.currentTarget.dataset.key=="view"){
+            setShowConfirm(true);
+                        }
     }
-	navigate(destpath,{
-		state:{
-            path:path,
-            row:row,
-         }
-    });
+	
     console.log(path);
   };
   return (
-    <div className="p-3">
+    <div className="  p-3">
+    {showConfirm &&
+     <ConfirmMessage message="Confirm Delete?" onConfirm={() => {setConfirmed(true);setShowConfirm(false);}} onClose={() => {setShowConfirm(false);}}/>
+     }
       {/* Search */}
       <input
         type="text"

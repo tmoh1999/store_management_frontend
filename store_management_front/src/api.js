@@ -83,6 +83,10 @@ export function updateProduct(formData,path) {
 }
 // api.js
 
+// Productq
+export function removeProduct(path) {
+  return request(path);
+}
 
 // Option 1: plain function (without navigate)
 export function logout() {

@@ -11,6 +11,7 @@ import Sidebar from "./SideBar.jsx"
 import ErrorBoundary from "./ErrorBoundary"
 import ProtectedRoute from "./ProtectedRoute"
 import LogOut from "./LogOut"
+import ConfirmMessage from "./confirmMessage"
 import { useEffect } from "react";
 // you will create these pages
 
@@ -31,7 +32,7 @@ export default function App() {
     <div className="flex ">
     <ErrorBoundary>
     <Sidebar />
-    <div className="ml-2 w-full">
+    <div className=" ml-2 w-full">
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
@@ -49,6 +50,7 @@ export default function App() {
       <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
       <Route path="/updateproduct" element={<ProtectedRoute><UpdateProduct /></ProtectedRoute>} />
       <Route path="/logout" element={<LogOut />} />
+      <Route path="/test" element={<ConfirmMessage message="Test Message" />} />
     </Routes>
     </div>
     </ErrorBoundary>
