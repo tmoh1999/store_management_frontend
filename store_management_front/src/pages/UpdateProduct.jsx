@@ -68,7 +68,7 @@ const [message, setMessage] = useState("");
         )}
     <div className=" mb-4">
   <label htmlFor="name" className="block text-sm text-gray-700 font-semibold">Name:</label>
-  <input onChange={handleChange} value={formData.name} id="name" name="name" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"/>
+  <input onChange={handleChange} value={formData.name} id="name" name="name" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
   </div>
   
   <div className="mb-4">
