@@ -12,3 +12,6 @@ npm run dev
 
 #terminal copy
 rsync -av --progress /storage/emulated/0/__programes/store_management_frontend/store_management_front/src  /data/data/com.termux/files/home/store_management_frontend/store_management_front
+
+#revserse
+rsync -av --progress   /data/data/com.termux/files/home/store_management_frontend/store_management_front  /storage/emulated/0/__programes/store_management_frontend/
