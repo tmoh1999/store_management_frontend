@@ -6,15 +6,6 @@ export default function Dashboard() {
 	const location = useLocation();
 	const user=location.state;
 	console.log(user);
-useEffect(() => {
-	
-    // Check if token exists in localStorage
-    const token = localStorage.getItem("token");
-    if (!token) {
-      // If no token, redirect to login page
-      navigate("/login");
-    }
-  }, [navigate]);
   return (
     <div className="max-w-2xl mx-auto py-10">
       <h1 className="text-center text-3xl font-bold mb-5">Store Management</h1>

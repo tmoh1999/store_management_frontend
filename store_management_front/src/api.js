@@ -22,8 +22,25 @@ export async function request(url, options = {}) {
     });
 
     if (!response.ok) {
-      const errorMessage = await response.text();
-      throw new Error(errorMessage || "Request failed");
+      const text = await response.text();
+      let errorMsg=text;
+      try {
+        const json = JSON.parse(text);
+        errorMsg = json.error || json.message || text;
+      } catch (e) {
+        // text was not JSON
+        console.log(e);
+      }
+      
+      // Special case: token expired
+      if (errorMsg.includes("expired")) {
+      	console.log(errorMsg);
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+
+      throw new Error(errorMsg);
+      //throw new Error(errorMessage || "Request failed");
     }
 
     return await response.json();
