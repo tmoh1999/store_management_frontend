@@ -49,7 +49,50 @@ export async function request(url, options = {}) {
     throw err;
   }
 }
+export async function downloadFile(url, filename) {
+  const token = localStorage.getItem("token");
+  const req_url = API_URL + url;
 
+  try {
+    const response = await fetch(req_url, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      // Read text to detect token expiration
+      const text = await response.text();
+
+      if (text.includes("expired")) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }
+
+      throw new Error("Download failed");
+    }
+
+    // Read as Blob (very important)
+    const blob = await response.blob();
+
+    // Create download link
+    const urlBlob = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = urlBlob;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    // Clean blob URL
+    window.URL.revokeObjectURL(urlBlob);
+
+  } catch (err) {
+    console.error("Download Error:", err);
+    throw err;
+  }
+}
 
 // Login example
 export function login(formData) {
@@ -68,9 +111,6 @@ export function register(formData) {
      password:formData.password,}),
   }
 );
-
-
-
 }
 // Productq
 export function getProducts() {

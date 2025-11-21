@@ -2,7 +2,7 @@
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import { Link ,useLocation} from "react-router-dom";
-import {login,getProducts} from "../api";
+import {login,getProducts,downloadFile} from "../api";
 // you will create these pages
 
 export default function ProductList() {
@@ -56,7 +56,15 @@ export default function ProductList() {
           className="p-2 mr-8 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
         >
         Add Product
-        </Link>
+    </Link>
+    
+   <button
+          className="p-2 mr-8 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
+          onClick={(e) => downloadFile('/api/products/export',"products.xlsx")}
+        >
+        Export to excel file
+    </button>
+    
     </div>
     <Table data={products.data} columns={products.columns}  rootpath="/api/products" 
     refreshParent={() =>{
