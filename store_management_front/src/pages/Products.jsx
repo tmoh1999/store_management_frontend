@@ -45,9 +45,19 @@ export default function ProductList() {
 
 
   return (
-   <div className="p-1">
-   <h1 className="text-2xl font-bold " >Products</h1>
+   <div className="w-auto  p-1">
    
+   
+     
+   <h1 className="text-2xl font-bold " >Products</h1>
+   <div className="flex justify-end ">
+   <Link
+          to="/addproduct"
+          className="p-2 mr-8 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
+        >
+        Add Product
+        </Link>
+    </div>
     <Table data={products.data} columns={products.columns}  rootpath="/api/products" 
     refreshParent={() =>{
     	setReload(prev => !prev);

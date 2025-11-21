@@ -76,7 +76,7 @@ const handleClick = async (e,row) => {
     console.log(path);
   };
   return (
-    <div className="  p-3">
+    <div className=" w-auto p-3">
     {showConfirm &&
      <ConfirmMessage message="Confirm Delete?" onConfirm={() => {setConfirmed(true);setShowConfirm(false);}} onClose={() => {setShowConfirm(false);}}/>
      }
@@ -90,7 +90,7 @@ const handleClick = async (e,row) => {
       />
 
       {/* Table */}
-      <table className="w-full border-collapse shadow-md">
+      <table className="border-collapse shadow-md">
         <thead>
           <tr className="bg-gray-200">
             {columns.map((col) => (

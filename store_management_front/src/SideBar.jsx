@@ -1,5 +1,5 @@
 import { NavLink ,useNavigate} from "react-router-dom";
-import { Package, ShoppingCart, Receipt, Menu ,LogOut} from "lucide-react";
+import { LayoutDashboard , Package, ShoppingCart, Receipt, Menu ,LogOut} from "lucide-react";
 import { useState } from "react";
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -22,7 +22,18 @@ export default function Sidebar() {
 
       {/* Links */}
       <div className="flex flex-col  gap-4">
-
+       <NavLink
+          to="/dashboard"
+          className={({ isActive }) =>
+            `flex items-center gap-3 p-3 rounded-lg transition
+            ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
+          }
+        >
+          <LayoutDashboard size={22} />
+          {open && <span>Dashboard</span>}
+        </NavLink>
+        
+        
         <NavLink
           to="/products"
           className={({ isActive }) =>
