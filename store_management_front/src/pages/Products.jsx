@@ -64,7 +64,12 @@ export default function ProductList() {
         >
         Export to excel file
     </button>
-    
+    <button
+          className="p-2 mr-8 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
+          onClick={(e) => downloadFile('/api/products/products.pdf/0/',"products.pdf")}
+        >
+        Export to pdf fil
+     </button>
     </div>
     <Table data={products.data} columns={products.columns}  rootpath="/api/products" 
     refreshParent={() =>{
