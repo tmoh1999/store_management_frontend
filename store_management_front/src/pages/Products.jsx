@@ -3,6 +3,7 @@ import Table from "../Table";
 import { useEffect ,useState} from "react";
 import { Link ,useLocation} from "react-router-dom";
 import {login,getProducts,downloadFile} from "../api";
+import UploadFile from "../UploadFile"
 // you will create these pages
 
 export default function ProductList() {
@@ -50,6 +51,7 @@ export default function ProductList() {
    
      
    <h1 className="text-2xl font-bold " >Products</h1>
+   
    <div className="flex justify-end ">
    <Link
           to="/addproduct"
@@ -70,6 +72,9 @@ export default function ProductList() {
         >
         Export to pdf fil
      </button>
+    </div>
+    <div className="flex justify-end ">
+    <UploadFile apiPath="/api/products/import" fileType=".xlsx"/>
     </div>
     <Table data={products.data} columns={products.columns}  rootpath="/api/products" 
     refreshParent={() =>{
