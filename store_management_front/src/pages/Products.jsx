@@ -2,7 +2,7 @@
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import { Link ,useLocation} from "react-router-dom";
-import {login,getProducts,downloadFile} from "../api";
+import {login,getProducts,downloadFile,removeProduct,saveProductRow} from "../api";
 import UploadFile from "../UploadFile"
 // you will create these pages
 
@@ -33,11 +33,11 @@ export default function ProductList() {
         setProducts(prev => ({
   ...prev,
   columns: [
-    { label: "ID", accessor: "id" },
-    { label: "Barcode", accessor: "barcode" },
-    { label: "Name", accessor: "name" },
-    { label: "Price", accessor: "price" },
-    { label: "Quantity", accessor: "quantity" },
+    { label: "ID", accessor: "id" ,edit:false },
+    { label: "Barcode", accessor: "barcode" ,edit:true },
+    { label: "Name", accessor: "name" ,edit:true },
+    { label: "Price", accessor: "price" ,edit:true },
+    { label: "Quantity", accessor: "quantity" ,edit:false },
   ],
   data: result.results
 }));
@@ -76,7 +76,7 @@ export default function ProductList() {
     <div className="flex justify-end ">
     <UploadFile apiPath="/api/products/import" fileType=".xlsx"/>
     </div>
-    <Table data={products.data} columns={products.columns}  rootpath="/api/products" 
+    <Table saveRow={saveProductRow}   removeRow={removeProduct} data={products.data} columns={products.columns}  rootpath="/api/products" 
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>

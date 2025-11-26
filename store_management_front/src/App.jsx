@@ -29,10 +29,10 @@ export default function App() {
     }
   }, []);
   return (
-    <div className=" w-auto flex ">
+    <div className="flex ">
     <ErrorBoundary>
     <Sidebar />
-    <div className=" ml-2 w-auto">
+    <div className=" ml-2">
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
