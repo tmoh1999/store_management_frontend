@@ -1,17 +1,22 @@
 import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import {removeProduct} from "./api"
+import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
-export default function Table({ data, columns ,rootpath,refreshParent}) {
+export default function Table({ data, columns ,rootpath,refreshParent,removeRow,saveRow}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
+  const [tableData, setTableData] = useState(data);
   const navigate=useNavigate();
   const [showConfirm,setShowConfirm]=useState(false);
   const [confimed,setConfirmed]=useState(false);
+  const [editingRow,setEditingRow]=useState(null);
   const [deletePath,setDeletePath]=useState("");
+  useEffect(()=>{
+  setTableData(data);
+},[data]);
   // Search filter
-  const filteredData = data.filter((row) =>
+  const filteredData = tableData.filter((row) =>
     Object.values(row)
       .join(" ")
       .toLowerCase()
@@ -39,46 +44,72 @@ export default function Table({ data, columns ,rootpath,refreshParent}) {
       setSortOrder("asc");
     }
   };
-  useEffect(() => {
-  	console.log(1999);
-      if (deletePath){
-            const result = removeProduct(deletePath);
-            console.log(result.status);
-            setDeletePath("");
-            refreshParent();
-      }
-  },[confimed]);
+  
+  const handleConfirmDelete = async () => {
+    if (!deletePath) return;
+    const result = await removeRow(deletePath);
+    console.log(result.status);
+    setDeletePath("");
+    setConfirmed(false);
+    refreshParent();
+    setShowConfirm(false);
+};
+
 const handleClick = async (e,row) => {
 	console.log(row)
 	const path=rootpath+"/"+e.currentTarget.id+"/"+e.currentTarget.dataset.key
 	let destpath="/products"
-	if ( rootpath.includes("/api/products")){
+	
 		if (e.currentTarget.dataset.key=="update"){
-             destpath="/updateproduct"
-             navigate(destpath,{
-						state:{
-				            path:path,
-				            row:row,
-				         }
-             });
+			setEditingRow(row.id);
+			if ( rootpath.includes("/api/prodcts")){
+	             destpath="/updateproduct"
+	             navigate(destpath,{
+							state:{
+					            path:path,
+					            row:row,
+					         }
+	             });
+             }
        }else  if (e.currentTarget.dataset.key=="remove"){
-             try {
+             
+             	
              	setShowConfirm(true);
+                 
                  setDeletePath(path);
+                 console.log(confimed);
+              
+       } else if (e.currentTarget.dataset.key=="view"){
+            setShowConfirm(true);
+       } else if (e.currentTarget.dataset.key=="save"){
+       	 
+            setEditingRow(null);
+            try {
+             	const result = await saveRow(row);
+                 console.log(result);
               } catch (err) {
                     console.log(err.message);
                }
-       } else if (e.currentTarget.dataset.key=="view"){
-            setShowConfirm(true);
-                        }
-    }
+       } 
+    
 	
     console.log(path);
   };
+  const handleChange = (e, row) => {
+  const { name, value } = e.target;
+
+  // update tableData immutably
+  setTableData(prev =>
+    prev.map(r =>
+      r.id === row.id ? { ...r, [name]: value } : r
+    )
+  );
+};
+  
   return (
     <div className=" w-auto p-3">
     {showConfirm &&
-     <ConfirmMessage message="Confirm Delete?" onConfirm={() => {setConfirmed(true);setShowConfirm(false);}} onClose={() => {setShowConfirm(false);}}/>
+     <ConfirmMessage message="Confirm Delete?" onConfirm={handleConfirmDelete} onClose={() => {setShowConfirm(false);}}/>
      }
       {/* Search */}
       <input
@@ -109,21 +140,34 @@ const handleClick = async (e,row) => {
 
         <tbody>
           {sortedData.map((row, i) => (
-            <tr key={i} className="odd:bg-white even:bg-gray-100">
+            <tr key={row.id} className="odd:bg-white even:bg-gray-100">
               {columns.map((col) => (
-                <td key={col.accessor} className="p-3 border">
-                  {row[col.accessor]}
-                </td>
+                <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
               ))}
-              <td  className="p-2 border">
+              {editingRow === row.id ? ( 
+              
+                
+                <td  key={`${row.id}-save`} className="p-2 border">
+                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
+                </td>
+                
+                
+                ) : (
+              <>
+              <td  key={`${row.id}-view`} className="p-2 border">
                   <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
                 </td>
-                <td  className="p-2 border">
+                
+                <td  key={`${row.id}-edit`} className="p-2 border">
                   <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
                 </td>
-                <td  className="p-2 border">
+                
+                <td key={`${row.id}-remove`} className="p-2 border">
                   <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
                 </td>
+                </>
+                )}
+                
             </tr>
           ))}
         </tbody>
