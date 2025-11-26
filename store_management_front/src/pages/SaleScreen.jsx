@@ -1,4 +1,4 @@
-import {addSaleItem,getSaleItems} from "../api"
+import {addSaleItem,getSaleItems,updateSaleItem,removeRow} from "../api"
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"
@@ -79,7 +79,7 @@ return (
 onClick={handleClick}
 >➕ Add Item</button>
 </div>
-<Table data={saleItems.data} columns={saleItems.columns}  rootpath="/api/sales" 
+<Table removeRow={removeRow} saveRow={updateSaleItem} data={saleItems.data} columns={saleItems.columns}  rootpath="/api/sales/items" 
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>

@@ -2,7 +2,7 @@
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import { Link ,useLocation} from "react-router-dom";
-import {login,getProducts,downloadFile,removeProduct,saveProductRow} from "../api";
+import {login,getProducts,downloadFile,removeRow,saveProductRow} from "../api";
 import UploadFile from "../UploadFile"
 // you will create these pages
 
@@ -76,7 +76,7 @@ export default function ProductList() {
     <div className="flex justify-end ">
     <UploadFile apiPath="/api/products/import" fileType=".xlsx"/>
     </div>
-    <Table saveRow={saveProductRow}   removeRow={removeProduct} data={products.data} columns={products.columns}  rootpath="/api/products" 
+    <Table saveRow={saveProductRow}   removeRow={removeRow} data={products.data} columns={products.columns}  rootpath="/api/products" 
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>

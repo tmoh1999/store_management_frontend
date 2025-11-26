@@ -113,6 +113,9 @@ export function register(formData) {
   }
 );
 }
+export function removeRow(path) {
+  return request(path);
+}
 // Productq
 export function getProducts() {
   return request("/api/products/productlist");
@@ -143,9 +146,7 @@ export function updateProduct(formData,path) {
 // api.js
 
 // Productq
-export function removeProduct(path) {
-  return request(path);
-}
+
 export function saveProductRow(row) {
   const  path="/api/products/"+row.id+"/update";
   return request(path, {
@@ -176,7 +177,6 @@ export function addSale() {
 }
 
 export function addSaleItem(formData,sale_id) {
-	console.log("xxwwgx"+formData.description);
   return request("/api/sales/items/add",{
   method:"POST",
   body:JSON.stringify({
@@ -197,3 +197,19 @@ export function getSaleItems(sale_id) {
          }),
   });
 }
+
+export function updateSaleItem(row) {
+	
+  const  path="/api/sales/items/update";
+  return request(path,{
+  method:"POST",
+  body:JSON.stringify({
+  	     item_id:row.id ,
+           price:row.price ,
+           description:row.description,
+           quantity:row.quantity,
+         }),
+  });
+  
+}
+
