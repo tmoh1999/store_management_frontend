@@ -2,7 +2,7 @@ import {addSaleItem,getSaleItems,updateSaleItem,removeRow} from "../api"
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"
-export default function SaleScreen({sale_id,sale_status}){
+export default function SaleScreen({sale_id,sale_status,setSaleId}){
 const [formData, setFormData] = useState({
     description: "",
     quantity: 1,
@@ -31,6 +31,19 @@ const handleClick = async () => {
        console.log(err);
    }
 };
+
+const CancelClick = async () => {
+   try {
+   	const path="/api/sales/"+sale_id+"/remove";
+       const result=await removeRow(path);
+       console.log(result.results);
+       setSaleId(0);
+       
+   }catch(err){
+       console.log(err);
+   }
+};
+
 useEffect(() => {
     getSaleItems(sale_id)
    .then(result => {
@@ -89,7 +102,7 @@ onClick={handleClick}
 >💾 Confirm</button>
 
 <button className="ml-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-red-500 hover:bg-red-600 "
-onClick={handleClick}
+onClick={CancelClick}
 >❌ Cancel</button>
 </div>
 <div className="mt-2">

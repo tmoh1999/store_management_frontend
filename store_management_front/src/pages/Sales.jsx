@@ -29,7 +29,7 @@ Start Sale
 {sale_id!==0 &&
 <>
 <h1 className="p-1 text-3xl text-center font-bold ">Sale:{sale_id}    status:{saleStatus}</h1>
-<SaleScreen sale_id={sale_id} sale_status={saleStatus} />
+<SaleScreen sale_id={sale_id} sale_status={saleStatus} setSaleId={setSaleId} />
 </>
 }
 
