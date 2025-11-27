@@ -2,7 +2,7 @@ import {addSaleItem,getSaleItems,updateSaleItem,removeRow} from "../api"
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"
-export default function SaleScreen({sale_id}){
+export default function SaleScreen({sale_id,sale_status}){
 const [formData, setFormData] = useState({
     description: "",
     quantity: 1,
@@ -51,7 +51,8 @@ useEffect(() => {
     });
 }, [reload]);
 return (
-<div >
+<div className="mt-2 flex flex-col items-center justify-center ">
+<div className="w-fit">
 
 <table className="w-auto shadow-md">
 <thead >
@@ -74,15 +75,29 @@ return (
     </tr>
 </tbody>
 </table>
-<div className="mt-4 mr-4 flex justify-end">
+
+<div className=" mt-2 flex justify-end ">
 <button className="mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-blue-500 hover:bg-blue-600 "
 onClick={handleClick}
 >➕ Add Item</button>
 </div>
+</div>
+
+<div className="mt-8">
+<button className="mr-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
+onClick={handleClick}
+>💾 Confirm</button>
+
+<button className="ml-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-red-500 hover:bg-red-600 "
+onClick={handleClick}
+>❌ Cancel</button>
+</div>
+<div className="mt-2">
 <Table removeRow={removeRow} saveRow={updateSaleItem} data={saleItems.data} columns={saleItems.columns}  rootpath="/api/sales/items" 
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>
+    </div>
 </div>
 
 )
