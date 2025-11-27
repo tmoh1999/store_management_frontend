@@ -18,6 +18,7 @@ const [openSaleScreen,setOpenSaleScreen]=useState(false)
           console.log(err);
      }
  };
+ 
   return (
 <div className="flex flex-col ">
 <h1 className="p-1 text-3xl text-center font-bold ">Sales</h1>
@@ -29,7 +30,7 @@ Start Sale
 {sale_id!==0 &&
 <>
 <h1 className="p-1 text-3xl text-center font-bold ">Sale:{sale_id}    status:{saleStatus}</h1>
-<SaleScreen sale_id={sale_id} sale_status={saleStatus} setSaleId={setSaleId} />
+<SaleScreen sale_id={sale_id} sale_status={saleStatus} setSaleId={setSaleId} setSaleStatus={setSaleStatus}/>
 </>
 }
 

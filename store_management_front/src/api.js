@@ -213,3 +213,7 @@ export function updateSaleItem(row) {
   
 }
 
+export function confirmSale(sale_id) {
+  const path="/api/sales/"+sale_id+"/confirm";
+  return request(path);
+}
