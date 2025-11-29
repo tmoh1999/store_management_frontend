@@ -16,12 +16,11 @@ export default function UploadFile({apiPath,fileType}) {
     const formData = new FormData();
     formData.append("file", file);
     console.log(apiPath);
-    const response = await request(apiPath, {
+    const result = await request(apiPath, {
       method: "POST",
       body: formData, // do NOT set Content-Type manually
     });
 
-    const result = await response.json();
     console.log(result);
   };
 

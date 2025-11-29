@@ -1,5 +1,6 @@
 import { Link ,useNavigate,useLocation} from "react-router-dom";
 import { useEffect } from "react";
+import UploadFile from "../UploadFile"
 //import {test} from "../api";
 export default function Dashboard() {
 	const navigate = useNavigate();
@@ -26,6 +27,8 @@ export default function Dashboard() {
         >
           💰 Manage Sales
         </Link>
+
+        <UploadFile apiPath="/tools/restore" fileType=".sql"/>
 
         {/* Repeat others */}
       </div>
