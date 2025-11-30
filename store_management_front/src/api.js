@@ -176,6 +176,10 @@ export function addSale() {
   return request("/api/sales/add");
 }
 
+export function getSales() {
+  return request("/api/sales/list");
+}
+
 export function addSaleItem(formData,sale_id) {
   return request("/api/sales/items/add",{
   method:"POST",

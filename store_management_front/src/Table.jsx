@@ -84,12 +84,14 @@ const handleClick = async (e,row) => {
        } else if (e.currentTarget.dataset.key=="save"){
        	 
             setEditingRow(null);
-            try {
-             	const result = await saveRow(row);
-                 console.log(result);
-              } catch (err) {
-                    console.log(err.message);
-               }
+            if (saveRow){
+              try {
+                  const result = await saveRow(row);
+                  console.log(result);
+                } catch (err) {
+                  console.log(err.message);
+                }
+            }
        } 
     
 	
