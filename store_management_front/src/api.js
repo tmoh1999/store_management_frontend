@@ -221,3 +221,18 @@ export function confirmSale(sale_id) {
   const path="/api/sales/"+sale_id+"/confirm";
   return request(path);
 }
+
+
+export function getTransactions() {
+  return request("/api/transactions/list");
+}
+
+export function saveTransactionRow(row) {
+  const  path="/api/transactions/"+row.id+"/update";
+  return request(path, {
+    method: "POST",
+    body: JSON.stringify({ 
+         note:row.note, 
+    }),
+  });
+}
