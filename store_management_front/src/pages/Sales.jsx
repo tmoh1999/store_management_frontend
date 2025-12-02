@@ -1,7 +1,7 @@
 import { Link ,useNavigate,useLocation} from "react-router-dom";
 import { useEffect ,useState} from "react";
 import {addSale,getSales,removeRow} from "../api"
-import SaleScreen from "./SaleScreen"
+import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 export default function Sales() {
 const [sale_id,setSaleId]=useState(0)
@@ -69,7 +69,7 @@ Start Sale
 {sale_id!==0 &&
 <>
 <h1 className="p-1 text-3xl text-center font-bold ">Sale:{sale_id}    status:{saleStatus}</h1>
-<SaleScreen sale_id={sale_id} sale_status={saleStatus} setSaleId={setSaleId} setSaleStatus={setSaleStatus}/>
+<TransactionScreen mode="sale" transaction_id={sale_id}  setTransactionId={setSaleId} setTransactionStatus={setSaleStatus}/>
 </>
 }
 
