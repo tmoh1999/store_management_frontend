@@ -49,9 +49,6 @@ export default function ProductList() {
    <div className="w-auto  p-1">
    
    
-     
-   <h1 className="text-2xl font-bold " >Products</h1>
-   
    <div className="flex justify-end ">
    <Link
           to="/addproduct"
@@ -76,7 +73,8 @@ export default function ProductList() {
     <div className="flex justify-end ">
     <UploadFile apiPath="/api/products/import" fileType=".xlsx"/>
     </div>
-    <Table saveRow={saveProductRow}   removeRow={removeRow} data={products.data} columns={products.columns}  rootpath="/api/products" 
+    <Table  TableName="Products" data={products.data} columns={products.columns}  rootpath="/api/products" 
+    saveRow={saveProductRow}   removeRow={removeRow}
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>

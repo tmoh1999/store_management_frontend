@@ -2,7 +2,7 @@ import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
-export default function Table({ data, columns ,rootpath,refreshParent,removeRow,saveRow}) {
+export default function Table({ data, columns ,rootpath,refreshParent,removeRow,saveRow,TableName}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -109,71 +109,77 @@ const handleClick = async (e,row) => {
 };
   
   return (
-    <div className=" w-auto p-3">
+    <div className=" flex flex-col justify-center items-center w-auto p-3">
     {showConfirm &&
      <ConfirmMessage message="Confirm Delete?" onConfirm={handleConfirmDelete} onClose={() => {setShowConfirm(false);}}/>
      }
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search..."
-        className="border p-2 rounded mb-3 w-full"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
 
-      {/* Table */}
-      <table className="border-collapse shadow-md">
-        <thead>
-          <tr className="bg-gray-200">
-            {columns.map((col) => (
-              <th
-                key={col.accessor}
-                className="p-3 cursor-pointer border"
-                onClick={() => handleSort(col.accessor)}
-              >
-                {col.label}
-                {sortColumn === col.accessor &&
-                  (sortOrder === "asc" ? " ▲" : " ▼")}
-              </th>
-            ))}
-          </tr>
-        </thead>
 
-        <tbody>
-          {sortedData.map((row, i) => (
-            <tr key={row.id} className="odd:bg-white even:bg-gray-100">
+      
+      <div className="w-fit">
+        {/*Table Name*/}
+        <h1 className="text-4xl font-bold mb-2" >{TableName}</h1>
+        {/* Search */}
+        <input
+          type="text"
+          placeholder="Search..."
+          className="border p-2 rounded mb-3 w-full"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        {/* Table */}
+        <table className="border-collapse shadow-md">
+          <thead>
+            <tr className="bg-gray-200">
               {columns.map((col) => (
-                <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
+                <th
+                  key={col.accessor}
+                  className="p-3 cursor-pointer border"
+                  onClick={() => handleSort(col.accessor)}
+                >
+                  {col.label}
+                  {sortColumn === col.accessor &&
+                    (sortOrder === "asc" ? " ▲" : " ▼")}
+                </th>
               ))}
-              {editingRow === row.id ? ( 
-              
-                
-                <td  key={`${row.id}-save`} className="p-2 border">
-                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
-                </td>
-                
-                
-                ) : (
-              <>
-              <td  key={`${row.id}-view`} className="p-2 border">
-                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
-                </td>
-                
-                <td  key={`${row.id}-edit`} className="p-2 border">
-                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
-                </td>
-                
-                <td key={`${row.id}-remove`} className="p-2 border">
-                  <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
-                </td>
-                </>
-                )}
-                
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            {sortedData.map((row, i) => (
+              <tr key={row.id} className="odd:bg-white even:bg-gray-100">
+                {columns.map((col) => (
+                  <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
+                ))}
+                {editingRow === row.id ? ( 
+                
+                  
+                  <td  key={`${row.id}-save`} className="p-2 border">
+                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
+                  </td>
+                  
+                  
+                  ) : (
+                <>
+                <td  key={`${row.id}-view`} className="p-2 border">
+                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
+                  </td>
+                  
+                  <td  key={`${row.id}-edit`} className="p-2 border">
+                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
+                  </td>
+                  
+                  <td key={`${row.id}-remove`} className="p-2 border">
+                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
+                  </td>
+                  </>
+                  )}
+                  
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

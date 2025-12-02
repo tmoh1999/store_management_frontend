@@ -53,15 +53,14 @@ useEffect(() => {
 },[sale_id]);
  
   return (
-<div className="flex flex-col ">
-<h1 className="p-1 text-3xl text-center font-bold ">Sales</h1>
+<div className="flex flex-col p-2 ">
 <button className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
 onClick={handleClick}
 >
 Start Sale
 </button>
 {sale_id==0 &&
-<Table data={sales.data} columns={sales.columns} rootpath="/api/sales" removeRow={removeRow} 
+<Table TableName="Sales" data={sales.data} columns={sales.columns} rootpath="/api/sales" removeRow={removeRow} 
   refreshParent={() => {
     setReload(prev => !prev);
   }}

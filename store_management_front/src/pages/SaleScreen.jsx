@@ -3,6 +3,7 @@ import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"
 export default function SaleScreen({sale_id,sale_status,setSaleId,setSaleStatus}){
+const tablename="Sale N°"+sale_id.toString()+" Items"
 const [formData, setFormData] = useState({
     description: "",
     quantity: 1,
@@ -119,7 +120,7 @@ onClick={CancelClick}
 >❌ Cancel</button>
 </div>
 <div className="mt-2">
-<Table removeRow={removeRow} saveRow={updateSaleItem} data={saleItems.data} columns={saleItems.columns}  rootpath="/api/sales/items" 
+<Table TableName={tablename} removeRow={removeRow} saveRow={updateSaleItem} data={saleItems.data} columns={saleItems.columns}  rootpath="/api/sales/items" 
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>

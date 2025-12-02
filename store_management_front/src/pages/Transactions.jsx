@@ -30,8 +30,7 @@ export default function Transactions() {
   } ,[reload]);
   return (
     <div className="flex flex-col ">
-      <h1 className="p-1 text-3xl text-center font-bold ">Transactions</h1>
-      <Table data={transactions.data} columns={transactions.columns} rootpath="/api/transactions"
+      <Table TableName="Transactions" data={transactions.data} columns={transactions.columns} rootpath="/api/transactions"
         removeRow={removeRow} saveRow={saveTransactionRow}
         refreshParent={() => {
           setReload(prev => !prev);
