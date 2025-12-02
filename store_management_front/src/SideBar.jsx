@@ -1,5 +1,5 @@
 import { NavLink ,useNavigate} from "react-router-dom";
-import { LayoutDashboard , Package, ShoppingCart, Receipt, Menu ,LogOut} from "lucide-react";
+import { LayoutDashboard , Package, ShoppingCart, Receipt, Menu ,LogOut,PackageOpen } from "lucide-react";
 import { useState } from "react";
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -54,6 +54,17 @@ export default function Sidebar() {
         >
           <ShoppingCart size={22} />
           {open && <span>Sales</span>}
+        </NavLink>
+
+        <NavLink
+          to="/purchases"
+          className={({ isActive }) =>
+            `flex items-center gap-3 p-3 rounded-lg transition
+            ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
+          }
+        >
+          <PackageOpen size={22} />
+          {open && <span>Purchases</span>}
         </NavLink>
 
         <NavLink

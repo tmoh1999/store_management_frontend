@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProductList from "./pages/Products";
+import Purchases from "./pages/Purchases";
 import Sales from "./pages/Sales";
 import Transactions from "./pages/Transactions";
 import AddProduct from "./pages/AddProduct";
@@ -39,12 +40,8 @@ export default function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       
-      <Route path="/products" element={
-       <ProtectedRoute>
-       <ProductList />
-       </ProtectedRoute>
-       } />
-      
+      <Route path="/products" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
+      <Route path="/purchases" element={<ProtectedRoute><Purchases /></ProtectedRoute>} />
       <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
       <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
       <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
