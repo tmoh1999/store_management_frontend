@@ -236,3 +236,52 @@ export function saveTransactionRow(row) {
     }),
   });
 }
+
+export function addPurchase() {
+  return request("/api/purchases/add");
+}
+
+export function getPurchases() {
+  return request("/api/purchases/list");
+}
+
+export function addPurchaseItem(formData,purchase_id) {
+  return request("/api/purchases/items/add",{
+  method:"POST",
+  body:JSON.stringify({
+  	       purchase_id:purchase_id ,
+           price:formData.price,
+           quantity:formData.quantity,
+         }),
+  });
+}
+
+export function getPurchaseItems(purchase_id) {
+  
+  return request("/api/purchases/items/list",{
+  method:"POST",
+  body:JSON.stringify({
+           purchase_id:purchase_id ,
+         }),
+  });
+}
+
+export function updatePurchaseItem(row) {
+	
+  const  path="/api/purchases/items/update";
+  return request(path,{
+  method:"POST",
+  body:JSON.stringify({
+  	       item_id:row.id ,
+           price:row.price ,
+           quantity:row.quantity,
+         }),
+  });
+  
+}
+
+export function confirmPurchase(purchase_id) {
+  const path="/api/purchases/"+purchase_id+"/confirm";
+  return request(path);
+}
+
