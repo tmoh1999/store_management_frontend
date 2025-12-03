@@ -32,13 +32,13 @@ const [message, setMessage] = useState("");
     setLoading(true);
     
     try {
-  const result =await addProduct(formData);
-  
-  setMessage(result.status);
-  console.log(message);
-} catch (err) {
-  setError(err.message || "addProduct failed");
-} finally {
+      const result =await addProduct(formData);
+
+      setMessage(result.status);
+      console.log(message);
+    } catch (err) {
+      setError(err.message || "addProduct failed");
+    } finally {
       setLoading(false);
     }
     // Here you can call an API or do further processing
@@ -52,42 +52,40 @@ const [message, setMessage] = useState("");
    setShowScanner(false);
   };
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg w-4/5 flex flex-col items-center gap-4">
-      {/* Message Box */}
-        {message && (
-          <div className="bg-green-100 text-green-700 p-2 rounded">{message}</div>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg w-4/5 flex flex-col items-center gap-4 w-fit">
+        {/* Message Box */}
+          {message && (
+            <div className="bg-green-100 text-green-700 p-2 rounded">{message}</div>
         )}
-<h1 className="text-2xl font-bold text-center">Add product</h1>
-  {/* Error Box */}
+
+        <h1 className="text-2xl font-bold text-center">Add Product</h1>
+        {/* Error Box */}
         {error && (
           <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
         )}
-    <div className="mb-4">
-  <label htmlFor="name" className="block text-sm text-gray-700 font-semibold">Name:</label>
-  <input onChange={handleChange} value={formData.name} id="name" name="name" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
-  </div>
+
+        <div className="mb-4">
+          <label htmlFor="name" className="block text-sm text-gray-700 font-semibold">Name:</label>
+          <input onChange={handleChange} value={formData.name} id="name" name="name" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
+        </div>
+        
+        <div className="mb-4">
+          <div className="mb-2">
+            <label htmlFor="barcode" className="text-sm text-gray-700 font-semibold">Barcode:</label>
+            <button onClick={startScanning} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
+                    Scan
+            </button>
+          </div>
+          <input onChange={handleChange} value={formData.barcode} id="barcode" name="barcode" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+        </div>
+    
+        <div className="mb-4">
+          <label htmlFor="price" className="block text-sm text-gray-700 font-semibold">Price:</label>
+          <input onChange={handleChange} type="number" value={formData.price} id="price" name="price" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+        </div>
   
-  <div className="mb-4">
-  <div className="mb-2">
-  <label htmlFor="barcode" className="text-sm text-gray-700 font-semibold">Barcode:</label>
-  <button onClick={startScanning} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
-          Scan
-   </button>
-  </div>
-  <input onChange={handleChange} value={formData.barcode} id="barcode" name="barcode" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
-  
-  </div>
-  
-  
-  <div className="mb-4">
-  <label htmlFor="price" className="block text-sm text-gray-700 font-semibold">Price:</label>
-  <input onChange={handleChange} type="number" value={formData.price} id="price" name="price" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
-  </div>
-  
-  
-  
-  <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Adding..." : "Add"}</button>
+        <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Adding..." : "Add"}</button>
       
       </form>
       <ErrorBoundary>
