@@ -296,3 +296,20 @@ export function addSupplier(formData) {
     }),
   });
 }
+
+export function getSuppliers() {
+  return request("/api/suppliers/list");
+}
+
+
+export function saveSuppliersRow(row) {
+  const  path="/api/suppliers/"+row.id+"/update";
+  return request(path, {
+    method: "POST",
+    body: JSON.stringify({ 
+         name:row.name, 
+         email:row.email, 
+         phone:row.phone, 
+    }),
+  });
+}
