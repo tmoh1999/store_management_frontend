@@ -1,5 +1,5 @@
 import { NavLink ,useNavigate} from "react-router-dom";
-import { LayoutDashboard , Package, ShoppingCart, Receipt, Menu ,LogOut,PackageOpen } from "lucide-react";
+import { LayoutDashboard , Package, ShoppingCart, Receipt, Menu ,LogOut,PackageOpen ,UserRoundPen } from "lucide-react";
 import { useState } from "react";
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -76,6 +76,16 @@ export default function Sidebar() {
         >
           <Receipt size={22} />
           {open && <span>Transactions</span>}
+        </NavLink>
+        <NavLink
+          to="/suppliers"
+          className={({ isActive }) =>
+            `flex items-center gap-3 p-3 rounded-lg transition
+            ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
+          }
+        >
+          <UserRoundPen size={22} />
+          {open && <span>Suppliers</span>}
         </NavLink>
      <NavLink
           to="/logout"

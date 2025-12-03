@@ -285,3 +285,14 @@ export function confirmPurchase(purchase_id) {
   return request(path);
 }
 
+
+export function addSupplier(formData) {
+  return request("/api/suppliers/add", {
+    method: "POST",
+    body: JSON.stringify({ 
+         name:formData.name, 
+         email:formData.email, 
+         phone:formData.phone, 
+    }),
+  });
+}
