@@ -1,11 +1,11 @@
 export default function TableCell({ Editable, val, type = "text", onChanged, name }) {
   return (
-    <td className="p-2 border">
+    <td className="p-1 border">
       {Editable ? (
         <input
           value={val}
           name={name}
-          className="text-center w-16"
+          className="text-center  bg-blue-200 shadow-lg rounded-lg"
           type={type}
           onChange={onChanged}
         />
