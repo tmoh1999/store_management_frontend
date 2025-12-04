@@ -2,7 +2,7 @@ import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
-export default function Table({ data, columns ,rootpath,refreshParent,removeRow,saveRow,TableName}) {
+export default function Table({ mode="view",data, columns ,rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -83,16 +83,20 @@ const handleClick = async (e,row) => {
             setShowConfirm(true);
        } else if (e.currentTarget.dataset.key=="save"){
        	 
-            setEditingRow(null);
-            if (saveRow){
-              try {
-                  const result = await saveRow(row);
-                  console.log(result);
-                } catch (err) {
-                  console.log(err.message);
-                }
-            }
-       } 
+          setEditingRow(null);
+          if (saveRow){
+            try {
+                const result = await saveRow(row);
+                console.log(result);
+              } catch (err) {
+                console.log(err.message);
+              }
+          }
+       } else if(e.currentTarget.dataset.key=="select"){
+        if(setSelectedRow){
+          setSelectedRow(row);
+        }
+       }
     
 	
     console.log(path);
@@ -151,29 +155,35 @@ const handleClick = async (e,row) => {
                 {columns.map((col) => (
                   <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
                 ))}
-                {editingRow === row.id ? ( 
-                
-                  
-                  <td  key={`${row.id}-save`} className="p-2 border">
-                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
-                  </td>
-                  
-                  
-                  ) : (
-                <>
-                <td  key={`${row.id}-view`} className="p-2 border">
-                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
-                  </td>
-                  
-                  <td  key={`${row.id}-edit`} className="p-2 border">
-                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
-                  </td>
-                  
-                  <td key={`${row.id}-remove`} className="p-2 border">
-                    <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
-                  </td>
-                  </>
-                  )}
+                {mode=="view" ? (
+                  editingRow === row.id ? 
+                  ( 
+                      <td  key={`${row.id}-save`} className="p-2 border">
+                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
+                      </td>     
+                  )
+                  :
+                  (
+                    <>
+                      <td  key={`${row.id}-view`} className="p-2 border">
+                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
+                      </td>
+                      
+                      <td  key={`${row.id}-edit`} className="p-2 border">
+                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
+                      </td>
+                      
+                      <td key={`${row.id}-remove`} className="p-2 border">
+                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
+                      </td>
+                    </>
+                  )
+                ):(
+                      <td  key={`${row.id}-select`} className="p-2 border">
+                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Select</button>
+                      </td>        
+                )
+                }
                   
               </tr>
             ))}
