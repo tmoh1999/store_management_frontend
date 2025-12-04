@@ -16,6 +16,7 @@ import LogOut from "./LogOut"
 import ConfirmMessage from "./confirmMessage"
 import { useEffect } from "react";
 import AddSupplier from "./pages/AddSupplier.jsx";
+import StartPurchase from "./pages/StartPurchase.jsx";
 // you will create these pages
 
 export default function App() {
@@ -44,6 +45,7 @@ export default function App() {
       
       <Route path="/products" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
       <Route path="/purchases" element={<ProtectedRoute><Purchases /></ProtectedRoute>} />
+      <Route path="/startpurchase" element={<ProtectedRoute><StartPurchase /></ProtectedRoute>} />
       <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
       <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
       <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />

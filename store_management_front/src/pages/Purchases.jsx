@@ -53,11 +53,9 @@ useEffect(() => {
  
   return (
 <div className="flex flex-col p-2 ">
-<button className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
-onClick={handleClick}
->
-Start Sale
-</button>
+<Link className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
+ Start Purchase
+</Link>
 {purchase_id==0 &&
 <Table TableName="Purchases" data={purchases.data} columns={purchases.columns} rootpath="/api/purchases" removeRow={removeRow} 
   refreshParent={() => {
