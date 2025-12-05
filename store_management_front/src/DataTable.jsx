@@ -50,6 +50,7 @@ export default function DataTable({mode,table_mode,TableName,setSelectedRow}){
           { label: "Date", accessor: "date" ,edit:false },
           { label: "total", accessor: "total" ,edit:false },
           { label: "Status", accessor: "status" ,edit:false },
+          { label: "Description", accessor: "description" ,edit:false },
       ],  
     suppliers:  [
         { label: "ID", accessor: "id" ,edit:false },
