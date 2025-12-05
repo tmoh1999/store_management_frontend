@@ -1,6 +1,5 @@
-import { Link ,useNavigate,useLocation} from "react-router-dom";
 import { useEffect ,useState} from "react";
-import {addPurchase,getPurchases,removeRow} from "../api"
+import {getPurchases,removeRow, savePurchaseRow} from "../api"
 import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 import StartPurchase from "./StartPurchase";
@@ -56,7 +55,7 @@ useEffect(() => {
         <button onClick={handleClick} className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
         Start Purchase
         </button>  
-        <Table TableName="Purchases" data={purchases.data} columns={purchases.columns} rootpath="/api/purchases" removeRow={removeRow} 
+        <Table TableName="Purchases" data={purchases.data} columns={purchases.columns} rootpath="/api/purchases" saveRow={savePurchaseRow} removeRow={removeRow} 
           refreshParent={() => {
             setReload(prev => !prev);
           }}

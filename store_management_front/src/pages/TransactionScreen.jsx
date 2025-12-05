@@ -122,7 +122,9 @@ return (
   <tr className="bg-gray-200">
                     <th className="p-3 cursor-pointer border">Name</th>
                     <th className="p-3 cursor-pointer border">Barcode</th>
+                    {mode=="sale" &&
                     <th className="p-3 cursor-pointer border">Description</th>
+                    }
                     <th className="p-3 cursor-pointer border">Price</th>
                     <th className="p-3 cursor-pointer border">Quantity</th>
   </tr>
