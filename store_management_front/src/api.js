@@ -237,8 +237,14 @@ export function saveTransactionRow(row) {
   });
 }
 
-export function addPurchase() {
-  return request("/api/purchases/add");
+export function addPurchase(formData) {
+  return request("/api/purchases/add",{
+    method:"POST",
+    body:JSON.stringify({
+      supplier_id:formData.supplier_id,
+      description: formData.description,
+    }),
+  });
 }
 
 export function getPurchases() {
