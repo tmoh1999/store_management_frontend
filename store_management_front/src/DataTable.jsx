@@ -1,7 +1,7 @@
-import { saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow } from "./api";
+import { saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow } from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
-export default function DataTable({mode,table_mode,TableName,setSelectedRow}){
+export default function DataTable({mode,table_mode="view",TableName,setSelectedRow}){
     const [reload,setReload]=useState(false);
     const [rows,setRows]=useState({
       columns: [],
@@ -10,6 +10,11 @@ export default function DataTable({mode,table_mode,TableName,setSelectedRow}){
     const rootpath="/api/"+mode;
     // 1️⃣ API MAPPING BASED ON MODE
     const api = {
+    products: {
+        get: getProducts,
+        update: saveProductRow,
+        remove: removeRow,
+    },        
     sale_items: {
         get: getSaleItems,
         update: updateSaleItem,
@@ -39,18 +44,25 @@ export default function DataTable({mode,table_mode,TableName,setSelectedRow}){
         });
     }, [reload]);
     const columns= {
+    products:[
+        { label: "ID", accessor: "id" ,edit:false },
+        { label: "Barcode", accessor: "barcode" ,edit:true },
+        { label: "Name", accessor: "name" ,edit:true },
+        { label: "Price", accessor: "price" ,edit:true },
+        { label: "Quantity", accessor: "quantity" ,edit:false },
+    ],
     sales:  [
-          { label: "ID", accessor: "id" ,edit:false },
-          { label: "Date", accessor: "date" ,edit:false },
-          { label: "total", accessor: "total" ,edit:false },
-          { label: "Status", accessor: "status" ,edit:false },
+        { label: "ID", accessor: "id" ,edit:false },
+        { label: "Date", accessor: "date" ,edit:false },
+        { label: "total", accessor: "total" ,edit:false },
+        { label: "Status", accessor: "status" ,edit:false },
       ],
     purchases:  [
-          { label: "ID", accessor: "id" ,edit:false },
-          { label: "Date", accessor: "date" ,edit:false },
-          { label: "total", accessor: "total" ,edit:false },
-          { label: "Status", accessor: "status" ,edit:false },
-          { label: "Description", accessor: "description" ,edit:false },
+        { label: "ID", accessor: "id" ,edit:false },
+        { label: "Date", accessor: "date" ,edit:false },
+        { label: "total", accessor: "total" ,edit:false },
+        { label: "Status", accessor: "status" ,edit:false },
+        { label: "Description", accessor: "description" ,edit:false },
       ],  
     suppliers:  [
         { label: "ID", accessor: "id" ,edit:false },

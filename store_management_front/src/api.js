@@ -180,15 +180,16 @@ export function getSales() {
   return request("/api/sales/list");
 }
 
-export function addSaleItem(formData,sale_id) {
+export function addSaleItem(formData,sale_id,product_id) {
   return request("/api/sales/items/add",{
   method:"POST",
   body:JSON.stringify({
-  	     sale_id:sale_id ,
-           price:formData.price ,
-           description:formData.description,
-           quantity:formData.quantity,
-         }),
+          sale_id:sale_id ,
+          product_id:product_id,
+          price:formData.price ,
+          description:formData.description,
+          quantity:formData.quantity,
+        }),
   });
 }
 
@@ -250,13 +251,22 @@ export function addPurchase(formData) {
 export function getPurchases() {
   return request("/api/purchases/list");
 }
-
-export function addPurchaseItem(formData,purchase_id) {
+export function savePurchaseRow(row) {
+  const  path="/api/purchases/"+row.id+"/update";
+  return request(path, {
+    method: "POST",
+    body: JSON.stringify({ 
+         description:row.description, 
+    }),
+  });
+}
+export function addPurchaseItem(formData,purchase_id,product_id) {
   return request("/api/purchases/items/add",{
   method:"POST",
   body:JSON.stringify({
   	       purchase_id:purchase_id ,
-           price:formData.price,
+           product_id:product_id,
+           purchase_price:formData.price,
            quantity:formData.quantity,
          }),
   });
