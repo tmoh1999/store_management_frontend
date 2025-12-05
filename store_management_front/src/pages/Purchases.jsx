@@ -3,25 +3,18 @@ import { useEffect ,useState} from "react";
 import {addPurchase,getPurchases,removeRow} from "../api"
 import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
+import StartPurchase from "./StartPurchase";
 export default function Purchases() {
 const [purchase_id,setPurchaseId]=useState(0)
 const [purchaseStatus,setPurchaseStatus]=useState("")
+const [openStartPurchase,setOpenStartPurchase]=useState(false);
 const [reload,setReload]=useState(false);
 const [purchases,setPurchases]=useState({
   columns: [],
   data: []
 });
-const handleClick= async () => {
-    try{
-        const result = await addSale()
-        console.log(result);
-        setPurchaseId(result.purchase_id);
-        setPurchaseStatus(result.sale_status);
-
-        
-    }catch(err){
-        console.log(err);
-    }
+const handleClick=  () => {
+  setOpenStartPurchase(true);
 };
 
 useEffect(()=>{
@@ -35,6 +28,7 @@ useEffect(()=>{
           { label: "Date", accessor: "date" ,edit:false },
           { label: "total", accessor: "total" ,edit:false },
           { label: "Status", accessor: "status" ,edit:false },
+          { label: "Description", accessor: "description" ,edit:true },
       ],
       data:result.results,
     }));
@@ -53,23 +47,34 @@ useEffect(() => {
  
   return (
 <div className="flex flex-col p-2 ">
-<Link className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
- Start Purchase
-</Link>
-{purchase_id==0 &&
-<Table TableName="Purchases" data={purchases.data} columns={purchases.columns} rootpath="/api/purchases" removeRow={removeRow} 
-  refreshParent={() => {
-    setReload(prev => !prev);
-  }}
-/>
-}
-{purchase_id!==0 &&
-<>
-<h1 className="p-1 text-3xl text-center font-bold ">Sale:{purchase_id}    status:{purchaseStatus}</h1>
-<TransactionScreen mode="purchase" transaction_id={purchase_id}  setTransactionId={setPurchaseId} setTransactionStatus={setPurchaseStatus}/>
-</>
-}
 
+  {openStartPurchase ? (
+    <StartPurchase setPurchaseID={setPurchaseId} setOpenStartPurchase={setOpenStartPurchase}/>
+  ):(
+      purchase_id==0 ? (
+      <>
+        <button onClick={handleClick} className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
+        Start Purchase
+        </button>  
+        <Table TableName="Purchases" data={purchases.data} columns={purchases.columns} rootpath="/api/purchases" removeRow={removeRow} 
+          refreshParent={() => {
+            setReload(prev => !prev);
+          }}
+        />
+      </>
+
+      ):(
+      <>
+        <button onClick={handleClick} className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
+        Start Purchase
+        </button>
+        <h1 className="p-1 text-3xl text-center font-bold ">Purchase:{purchase_id}    status:{purchaseStatus}</h1>
+        <TransactionScreen mode="purchase" transaction_id={purchase_id}  setTransactionId={setPurchaseId} setTransactionStatus={setPurchaseStatus}/>
+      </>
+      )
+
+  )
+  }
 </div>
 
   );
