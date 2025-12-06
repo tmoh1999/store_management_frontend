@@ -88,6 +88,7 @@ const handleClick = async (e,row) => {
             try {
                 const result = await saveRow(row);
                 console.log(result);
+                refreshParent();
               } catch (err) {
                 console.log(err.message);
               }
