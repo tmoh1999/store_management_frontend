@@ -3,10 +3,11 @@ import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"
 import DataTable from "../DataTable";
-export default function TransactionScreen({mode,transaction_id,setTransactionId,setTransactionStatus}){
+export default function TransactionScreen({mode,transaction_id,setTransactionId}){
 const tablename= mode=="sale" ? "Sale N°"+transaction_id.toString()+" Items" : "Purchase N°"+transaction_id.toString()+" Items"
 const [product,setProduct]=useState(null);
 const [openSelectMenu,setOpenSelectMenu]=useState(false);
+const [total,setTotal]=useState(0);
 const [formData, setFormData] = mode=="sale" ? 
 useState({
     product_id:null,
@@ -65,6 +66,10 @@ const columns= {
       { label: "Quantity", accessor: "quantity" ,edit:true },
     ],    
   }[mode];
+const rootPath={
+  sale:"/api/sales/items",
+  purchase:"/api/purchases/items",
+}[mode];
 const handleChange = (e) => {
 	console.log(e.target.value);
     const { name, value } = e.target;
@@ -101,7 +106,6 @@ const ConfirmClick = async () => {
    	
        const result=await api.confirm(transaction_id);
        console.log(result);
-       setTransactionStatus(result.sale_status);
        setTransactionId(0);
        
    }catch(err){
@@ -113,7 +117,7 @@ useEffect(() => {
     api.getItems(transaction_id)
    .then(result => {
         console.log(result.results);
-        
+        setTotal(result.total);
         setItems(prev => ({
   ...prev,
   columns: columns,
@@ -146,7 +150,7 @@ return (
 <>
 <div className="mt-2 flex flex-col items-center justify-center ">
 <div className="w-fit">
-
+<h1 className="p-1 text-3xl text-center font-bold ">{mode=="purchase" ? "Purchase:": "Sale:"}{transaction_id}    Total:{total}</h1>
 <table className="w-auto shadow-md">
 <thead >
   <tr className="bg-gray-200">
@@ -193,7 +197,8 @@ onClick={CancelClick}
 >❌ Cancel</button>
 </div>
 <div className="mt-2">
-<Table TableName={tablename} removeRow={api.remove} saveRow={api.updateItem} data={items.data} columns={items.columns}  rootpath="/api/sales/items" 
+<Table TableName={tablename} removeRow={api.remove} saveRow={api.updateItem} 
+data={items.data} columns={items.columns}  rootpath={rootPath}
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>
