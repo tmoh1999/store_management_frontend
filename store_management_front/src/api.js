@@ -289,7 +289,7 @@ export function updatePurchaseItem(row) {
   method:"POST",
   body:JSON.stringify({
   	       item_id:row.id ,
-           price:row.price ,
+           purchase_price:row.price ,
            quantity:row.quantity,
          }),
   });

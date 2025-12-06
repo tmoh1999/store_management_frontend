@@ -5,7 +5,6 @@ import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 export default function Sales() {
 const [sale_id,setSaleId]=useState(0)
-const [saleStatus,setSaleStatus]=useState("")
 const [openSaleScreen,setOpenSaleScreen]=useState(false)
 const [reload,setReload]=useState(false);
 const [sales,setSales]=useState({
@@ -17,7 +16,6 @@ const handleClick= async () => {
         const result = await addSale()
         console.log(result);
         setSaleId(result.sale_id);
-        setSaleStatus(result.sale_status);
         setOpenSaleScreen(true);
         
     }catch(err){
@@ -68,8 +66,7 @@ Start Sale
 }
 {sale_id!==0 &&
 <>
-<h1 className="p-1 text-3xl text-center font-bold ">Sale:{sale_id}    status:{saleStatus}</h1>
-<TransactionScreen mode="sale" transaction_id={sale_id}  setTransactionId={setSaleId} setTransactionStatus={setSaleStatus}/>
+<TransactionScreen mode="sale" transaction_id={sale_id}  setTransactionId={setSaleId}/>
 </>
 }
 

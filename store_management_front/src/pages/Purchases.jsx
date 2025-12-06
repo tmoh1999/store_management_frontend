@@ -5,7 +5,6 @@ import Table from "../Table";
 import StartPurchase from "./StartPurchase";
 export default function Purchases() {
 const [purchase_id,setPurchaseId]=useState(0)
-const [purchaseStatus,setPurchaseStatus]=useState("")
 const [openStartPurchase,setOpenStartPurchase]=useState(false);
 const [reload,setReload]=useState(false);
 const [purchases,setPurchases]=useState({
@@ -67,8 +66,8 @@ useEffect(() => {
         <button onClick={handleClick} className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
         Start Purchase
         </button>
-        <h1 className="p-1 text-3xl text-center font-bold ">Purchase:{purchase_id}    status:{purchaseStatus}</h1>
-        <TransactionScreen mode="purchase" transaction_id={purchase_id}  setTransactionId={setPurchaseId} setTransactionStatus={setPurchaseStatus}/>
+        
+        <TransactionScreen mode="purchase" transaction_id={purchase_id}  setTransactionId={setPurchaseId}/>
       </>
       )
 
