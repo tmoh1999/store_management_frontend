@@ -1,4 +1,5 @@
 1. add update/remove item in purchasesitems list(TransactionScreen)
+2. confirm purchase code
 2. add scan barcode at TransactionScreen
 3. add view buttons in Table
 4. use DataTable
