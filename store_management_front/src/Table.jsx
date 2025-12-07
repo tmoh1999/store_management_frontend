@@ -2,7 +2,7 @@ import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
-export default function Table({ mode="view",data, columns ,rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName}) {
+export default function Table({ mode="view",data, columns ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -62,15 +62,6 @@ const handleClick = async (e,row) => {
 	
 		if (e.currentTarget.dataset.key=="update"){
 			setEditingRow(row.id);
-			if ( rootpath.includes("/api/prodcts")){
-	             destpath="/updateproduct"
-	             navigate(destpath,{
-							state:{
-					            path:path,
-					            row:row,
-					         }
-	             });
-             }
        }else  if (e.currentTarget.dataset.key=="remove"){
              
              	
@@ -80,7 +71,11 @@ const handleClick = async (e,row) => {
                  console.log(confimed);
               
        } else if (e.currentTarget.dataset.key=="view"){
-            setShowConfirm(true);
+            navigate(profilePath,{
+              state:{
+                profile_id:row.id
+              }
+            });
        } else if (e.currentTarget.dataset.key=="save"){
        	 
           setEditingRow(null);
