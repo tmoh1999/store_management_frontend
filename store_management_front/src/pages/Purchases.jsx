@@ -44,16 +44,20 @@ useEffect(() => {
 },[purchase_id]);
  
   return (
-<div className="flex flex-col p-2 ">
+<div className="flex justify-center">
+
 
   {openStartPurchase ? (
     <StartPurchase setPurchaseID={setPurchaseId} setOpenStartPurchase={setOpenStartPurchase}/>
   ):(
-      purchase_id==0 ? (
+    <div className=" p-2 w-fit mt-3">
+      {purchase_id==0 ? (
       <>
-        <button onClick={handleClick} className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
-        Start Purchase
-        </button>  
+        <div className="flex justify-end">
+          <button onClick={handleClick} className="self-start p-3 mb-2 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
+          Start Purchase
+          </button> 
+        </div> 
         <Table TableName="Purchases" data={purchases.data} columns={purchases.columns} rootpath="/api/purchases" saveRow={savePurchaseRow} removeRow={removeRow} 
           refreshParent={() => {
             setReload(prev => !prev);
@@ -62,18 +66,13 @@ useEffect(() => {
       </>
 
       ):(
-      <>
-        <button onClick={handleClick} className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
-        Start Purchase
-        </button>
-        
+      <> 
         <TransactionScreen mode="purchase" transaction_id={purchase_id}  setTransactionId={setPurchaseId}/>
       </>
-      )
-
+      )}
+   </div>   
   )
   }
 </div>
-
   );
 }

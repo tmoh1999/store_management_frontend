@@ -49,7 +49,7 @@ export default function StartPurchase({setPurchaseID,setOpenStartPurchase}){
 
 
     return(
-        <div>
+        <div className="flex w-full justify-center bg-gray-100">
             {openSelectMenu ? (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
                     <div className="h-screen overflow-y-auto p-2 bg-white shadow-lg rounded-lg">
@@ -62,7 +62,7 @@ export default function StartPurchase({setPurchaseID,setOpenStartPurchase}){
                     </div>    
                 </div>
             ):(
-            <div className="flex flex-col h-screen justify-center items-center bg-gray-100">
+            <div className="flex flex-col h-screen justify-center items-center">
                 <form onSubmit={handleSubmit} className="bg-white p-5 gap-4 rounded-xl shadow-lg w-fit">
                     <div className="mb-6">
                         <div className="mb-2">
