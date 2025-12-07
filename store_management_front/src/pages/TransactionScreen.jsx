@@ -149,7 +149,7 @@ const onDetected = async (code)=> {
   //setFormData({ ...formData, barcode: code });
   setShowScanner(false);
   try{
-    const result=await searchProduct(code)
+    const result=await searchProduct("barcode",code)
     if(result.success){
       console.log(result);
       setFormData(prev => ({

@@ -74,7 +74,8 @@ export default function ProductList() {
         <div className="flex justify-end ">
         <UploadFile apiPath="/api/products/import" fileType=".xlsx"/>
         </div>
-        <Table  TableName="Products" data={products.data} columns={products.columns}  rootpath="/api/products" 
+        <Table  TableName="Products" data={products.data} columns={products.columns}  
+        profilePath="/product/profile" rootpath="/api/products" 
         saveRow={saveProductRow}   removeRow={removeRow}
         refreshParent={() =>{
           setReload(prev => !prev);

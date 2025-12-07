@@ -17,6 +17,7 @@ import ConfirmMessage from "./confirmMessage"
 import { useEffect } from "react";
 import AddSupplier from "./pages/AddSupplier.jsx";
 import StartPurchase from "./pages/StartPurchase.jsx";
+import ProductProfile from "./pages/ProductProfile.jsx";
 // you will create these pages
 
 export default function App() {
@@ -38,12 +39,13 @@ export default function App() {
     <Sidebar />
     <div className="ml-2 w-full">
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       
       <Route path="/products" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
+      <Route path="/product/profile" element={<ProtectedRoute><ProductProfile /></ProtectedRoute>} />
       <Route path="/purchases" element={<ProtectedRoute><Purchases /></ProtectedRoute>} />
       <Route path="/startpurchase" element={<ProtectedRoute><StartPurchase /></ProtectedRoute>} />
       <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
