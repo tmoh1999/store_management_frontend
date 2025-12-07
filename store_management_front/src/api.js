@@ -124,12 +124,20 @@ export function getProducts() {
 
 // Register example
 export function addProduct(formData) {
-  return request("/api/products/insertemptyproduct", {
+  return request("/api/products/add", {
     method: "POST",
     body: JSON.stringify({ 
          product_price:formData.price, 
          product_brcode:formData.barcode, 
          product_name:formData.name, 
+    }),
+  });
+}
+export function searchProduct(barcode) {
+  return request("/api/products/search", {
+    method: "POST",
+    body: JSON.stringify({ 
+         barcode:barcode, 
     }),
   });
 }
