@@ -1,12 +1,14 @@
-import {addSaleItem,getSaleItems,updateSaleItem,removeRow,confirmSale,addPurchaseItem,getPurchaseItems,updatePurchaseItem,confirmPurchase} from "../api"
+import {addSaleItem,getSaleItems,updateSaleItem,removeRow,confirmSale,addPurchaseItem,getPurchaseItems,updatePurchaseItem,confirmPurchase, searchProduct} from "../api"
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"
 import DataTable from "../DataTable";
+import BarcodeScanner from "../BarcodeScanner";
 export default function TransactionScreen({mode,transaction_id,setTransactionId}){
 const tablename= mode=="sale" ? "Sale N°"+transaction_id.toString()+" Items" : "Purchase N°"+transaction_id.toString()+" Items"
 const [product,setProduct]=useState(null);
 const [openSelectMenu,setOpenSelectMenu]=useState(false);
+const [showScanner, setShowScanner] = useState(false);
 const [total,setTotal]=useState(0);
 const [formData, setFormData] = mode=="sale" ? 
 useState({
@@ -138,6 +140,29 @@ price:row.price,
 }));
 setOpenSelectMenu(false);
 };
+
+const startScanning = () => {
+  setShowScanner(true);
+};
+const onDetected = async (code)=> {
+  console.log("code:::"+code);
+  //setFormData({ ...formData, barcode: code });
+  setShowScanner(false);
+  try{
+    const result=await searchProduct(code)
+    if(result.success){
+      console.log(result);
+      setFormData(prev => ({
+        ...prev,
+        barcode:result.product_barcode,
+        name:result.product_name,
+        product_id:result.product_id,
+      }));
+    }
+  }catch(error){
+    console.log(error.message);
+  }
+};
 return (
 <div>
 {openSelectMenu ? (
@@ -154,6 +179,7 @@ return (
 <table className="w-auto shadow-md">
 <thead >
   <tr className="bg-gray-200">
+                    <th></th>
                     <th className="p-3 cursor-pointer border">Name</th>
                     <th className="p-3 cursor-pointer border">Barcode</th>
                     {mode=="sale" &&
@@ -166,6 +192,11 @@ return (
 
 <tbody>
      <tr className="bg-gray-100">
+                    <td>            
+                      <button onClick={startScanning} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
+                      Scan
+                      </button>
+                    </td>
                     <TableCell Editable={false} val={formData.name}/>
                     <TableCell Editable={false} val={formData.barcode}/>
                     {mode=="sale" &&
@@ -207,6 +238,20 @@ data={items.data} columns={items.columns}  rootpath={rootPath}
 </>
 )
 }
+  {showScanner && (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div className="bg-white p-4 rounded-lg shadow-lg w-80">
+  <h1>Scanned Code: {formData.barcode}</h1>
+  <BarcodeScanner onDetected={onDetected} />
+      <button 
+          className="mt-3 bg-red-500 text-white p-2 rounded-lg w-full hover:bg-red-600"
+          onClick={() => setShowScanner(false)}
+        >
+          Close
+      </button>
+  </div>
+  </div>
+  )}
 </div>
 );
 }
