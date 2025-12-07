@@ -133,11 +133,12 @@ export function addProduct(formData) {
     }),
   });
 }
-export function searchProduct(barcode) {
+export function searchProduct(field,value) {
   return request("/api/products/search", {
     method: "POST",
     body: JSON.stringify({ 
-         barcode:barcode, 
+         value:value,
+         field:field
     }),
   });
 }
