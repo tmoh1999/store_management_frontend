@@ -51,25 +51,32 @@ useEffect(() => {
 },[sale_id]);
  
   return (
-<div className="flex flex-col p-2 ">
-<button className="self-start p-3 mb-3 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
-onClick={handleClick}
->
-Start Sale
-</button>
-{sale_id==0 &&
-<Table TableName="Sales" data={sales.data} columns={sales.columns} rootpath="/api/sales" removeRow={removeRow} 
-  refreshParent={() => {
-    setReload(prev => !prev);
-  }}
-/>
-}
-{sale_id!==0 &&
-<>
-<TransactionScreen mode="sale" transaction_id={sale_id}  setTransactionId={setSaleId}/>
-</>
-}
+<div className="flex justify-center p-3">    
+  <div className="flex flex-col p-2 w-fit ">
+   {sale_id==0 &&
+   <>
+   <div className="flex justify-end"> 
+    <button className="self-start p-3 mb-2 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
+    onClick={handleClick}
+    >
+    Start Sale
+    </button>
+  </div>
+  
+  <Table TableName="Sales" data={sales.data} columns={sales.columns} rootpath="/api/sales" removeRow={removeRow} 
+    refreshParent={() => {
+      setReload(prev => !prev);
+    }}
+  />
+  </>
+  }
+  {sale_id!==0 &&
+  <>
+  <TransactionScreen mode="sale" transaction_id={sale_id}  setTransactionId={setSaleId}/>
+  </>
+  }
 
+  </div>
 </div>
 
   );
