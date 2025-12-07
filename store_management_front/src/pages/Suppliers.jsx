@@ -29,20 +29,24 @@ export default function Suppliers(){
     },[reload]);
 
     return(
-        <div className=" p-6">
-            <Link
-                to="/addsupplier"
-                className="p-2 mr-8 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
-                >
-                Add Supplier
-            </Link>
+        <div className=" flex justify-center">
+            <div className=" p-2 w-fit mt-3">
+                <div className="flex justify-end">
+                <Link
+                    to="/addsupplier"
+                    className="p-2  rounded-xl shadow-lg text-white bg-green-600 text-center text-2xl font-medium hover:bg-green-700"
+                    >
+                    Add Supplier
+                </Link>
+                </div>
 
-            <Table data={suppliers.data} columns={suppliers.columns} rootpath="/api/suppliers" TableName="Suppliers"
-            removeRow={removeRow} saveRow={saveSuppliersRow}
-            refreshParent={() => {
-                setReload(prev => !prev);
-            }}
-            />
+                <Table data={suppliers.data} columns={suppliers.columns} rootpath="/api/suppliers" TableName="Suppliers"
+                removeRow={removeRow} saveRow={saveSuppliersRow}
+                refreshParent={() => {
+                    setReload(prev => !prev);
+                }}
+                />
+            </div>
         </div>
     );
 }
