@@ -20,13 +20,13 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
     sales: {
         update: null,
         remove: removeRow,
-        profilePath:"/product/profile",
+        profilePath:"/sale/profile",
         rootpath:"/api/sales"
     },               
     sale_items: {
         update: updateSaleItem,
         remove: removeRow,
-        profilePath:"/sale/profile",
+        profilePath:"/",
         rootpath:"/api/sales/items"
     },
     purchases: {
