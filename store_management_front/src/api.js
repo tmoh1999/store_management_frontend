@@ -50,8 +50,14 @@ export async function request(url, options = {}) {
     throw err;
   }
 }
-export async function downloadFile(url, filename) {
+export async function downloadFile(mode, filename,options={}) {
   const token = localStorage.getItem("token");
+  const query = buildQuery(options);   // convert to URL query string
+
+  const url = query
+    ? `${mode}?${query}`
+    : `${mode}`;
+
   const req_url = API_URL + url;
 
   try {
