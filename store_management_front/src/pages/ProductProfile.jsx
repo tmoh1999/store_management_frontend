@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { searchProduct } from "../api";
+import { apiGet, searchProduct ,test} from "../api";
 import { useEffect, useState } from "react";
+import DataTable from "../DataTable";
 
 export default function ProductProfile(){
 const {state}=useLocation();
@@ -13,7 +14,6 @@ const [productData,setProductData]=useState({
 useEffect(()=>{
     async function loadData(){
         const result= await searchProduct("product_id",state.profile_id);
-        console.log(result);
         setProductData(prev => ({
             ...prev,
             id:result.product_id,
@@ -39,9 +39,20 @@ return (
         
             
         </div>
-
-        <h1 className="text-3xl">show saleitems that has product....</h1>
-        <h1 className="text-3xl">show purchaseitems that has product....</h1>
+        {productData.id &&
+            <>
+            <DataTable
+                mode="purchase_items"
+                getOptions={{product_id:productData.id}}
+                TableName={`Purchase History , Product_id:${productData.id}`}
+            />
+            <DataTable
+                mode="sale_items"
+                getOptions={{product_id:productData.id}}
+                TableName={`Sale History , Product_id:${productData.id}`}
+            />
+            </>       
+        }
     </div>
 );
 }
