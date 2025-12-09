@@ -34,10 +34,10 @@ export default function App() {
     }
   }, []);
   return (
-    <div className="flex">
+    <div className="flex h-screen">
     <ErrorBoundary>
     <Sidebar />
-    <div className="ml-2 w-full">
+    <div className="ml-2 w-full overflow-y-auto">
     <Routes>
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
       <Route path="/login" element={<Login />} />

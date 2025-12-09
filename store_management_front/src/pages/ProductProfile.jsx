@@ -26,21 +26,19 @@ useEffect(()=>{
 
 },[state]);
 return (
-    <div className="flex h-screen flex-col bg-gray-100">
-
-        <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
-        <div className="flex justify-start mb-3">
-            <h1 className="font-semibold text-2xl">Product Data</h1>
-        </div>
-        <p className="text-lg"><span className="text-xl underline  mr-4">Name:</span>{productData.name}</p>
-        <p className="text-lg"><span className="text-xl underline mr-4">Barcode:</span>{productData.barcode}</p>
-        <p className="text-lg"><span className="text-xl underline mr-4">Quantity:</span>{productData.quantity}</p>
-        
-        
-            
+    <div className="flex flex-col bg-gray-100">
+        <div className="flex justify-center">
+            <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
+                <div className="flex justify-start mb-3">
+                    <h1 className="font-semibold text-2xl">Product Data:</h1>
+                </div>
+                <p className="text-lg"><span className="text-xl underline  mr-4">Name:</span>{productData.name}</p>
+                <p className="text-lg"><span className="text-xl underline mr-4">Barcode:</span>{productData.barcode}</p>
+                <p className="text-lg"><span className="text-xl underline mr-4">Quantity:</span>{productData.quantity}</p>
+            </div>
         </div>
         {productData.id &&
-            <>
+            <div className="flex flex-col items-start">
             <DataTable
                 mode="purchase_items"
                 getOptions={{product_id:productData.id}}
@@ -51,7 +49,7 @@ return (
                 getOptions={{product_id:productData.id}}
                 TableName={`Sale History , Product_id:${productData.id}`}
             />
-            </>       
+            </div>       
         }
     </div>
 );
