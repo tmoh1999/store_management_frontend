@@ -2,7 +2,7 @@ import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
-export default function Table({ mode="view",data, columns ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName}) {
+export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -107,7 +107,6 @@ const handleClick = async (e,row) => {
     )
   );
 };
-  
   return (
     <div className=" flex flex-col justify-center items-center w-auto p-3">
     {showConfirm &&

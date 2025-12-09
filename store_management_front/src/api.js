@@ -94,6 +94,27 @@ export async function downloadFile(url, filename) {
     throw err;
   }
 }
+function buildQuery(options) {
+  const params = new URLSearchParams();
+
+  Object.entries(options).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      params.append(key, value);
+    }
+  });
+
+  return params.toString();  // ex: "sale_id=2&product_id=5"
+}
+export function apiGet(mode, options = {}) {
+   console.log(mode);
+  const query = buildQuery(options);   // convert to URL query string
+
+  const url = query
+    ? `${mode}?${query}`
+    : `${mode}`;
+
+  return request(url);
+}
 
 // Login example
 export function login(formData) {
@@ -202,12 +223,14 @@ export function addSaleItem(formData,sale_id,product_id) {
   });
 }
 
-export function getSaleItems(sale_id) {
-  
+export function getSaleItems(sale_id,options = {}) {
+  console.log("sale_id"+sale_id)
+  console.log(options)
   return request("/api/sales/items/list",{
   method:"POST",
   body:JSON.stringify({
-           sale_id:sale_id ,
+           options:options,
+           sale_id:sale_id,
          }),
   });
 }
@@ -337,4 +360,12 @@ export function saveSuppliersRow(row) {
          phone:row.phone, 
     }),
   });
+}
+
+export function test(options = {}){
+  console.log(options)
+  if (Object.keys(options).includes("product_id")){
+    const k=null;
+    console.log(Object.keys(options).includes("product_id"),k)
+  }
 }
