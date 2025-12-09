@@ -1,4 +1,4 @@
-import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet } from "./api";
+import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow } from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
 export default function DataTable({mode,table_mode="view",TableName="table",setSelectedRow,getOptions}){
@@ -16,28 +16,43 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
         remove: removeRow,
         profilePath:"/product/profile",
         rootpath:"/api/products"
-    },        
+    },
+    sales: {
+        update: null,
+        remove: removeRow,
+        profilePath:"/product/profile",
+        rootpath:"/api/sales"
+    },               
     sale_items: {
-        get: getSaleItems,
         update: updateSaleItem,
         remove: removeRow,
-        profilePath:"/",
+        profilePath:"/sale/profile",
         rootpath:"/api/sales/items"
     },
+    purchases: {
+        update: savePurchaseRow,
+        remove: removeRow,
+        profilePath:"/purchase/profile",
+        rootpath:"/api/purchases"
+    },
     purchase_items: {
-        get: getPurchaseItems,
         update: updatePurchaseItem,
         remove: removeRow,
         profilePath:"/",
         rootpath:"/api/purchases/items"
     },
     suppliers: {
-        get: getSuppliers,
         update: saveSuppliersRow,
         remove: removeRow,
         profilePath:"/supplier/profile",
         rootpath:"/api/suppliers"
-    }
+    },
+    transactions: {
+        update: saveTransactionRow,
+        remove: removeRow,
+        profilePath:"/transaction/profile",
+        rootpath:"/api/transactions"
+    },    
     }[mode]; 
      
     useEffect(() => {
@@ -74,13 +89,20 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
         { label: "Date", accessor: "date" ,edit:false },
         { label: "total", accessor: "total" ,edit:false },
         { label: "Status", accessor: "status" ,edit:false },
-        { label: "Description", accessor: "description" ,edit:false },
+        { label: "Description", accessor: "description" ,edit:true },
       ],  
     suppliers:  [
         { label: "ID", accessor: "id" ,edit:false },
         { label: "Name", accessor: "name" ,edit:true },
         { label: "Email", accessor: "email" ,edit:true },
         { label: "Phone", accessor: "phone" ,edit:true },
+    ],
+    transactions:[
+          { label: "ID", accessor: "id" ,edit:false },
+          { label: "Date", accessor: "date" ,edit:false },
+          { label: "Amount", accessor: "amount" ,edit:false },
+          { label: "Type", accessor: "type" ,edit:false },
+          { label: "Note", accessor: "note" ,edit:true },
     ],
   sale_items:  [
       { label: "ID", accessor: "id" ,edit:false},

@@ -4,47 +4,10 @@ import { useEffect ,useState} from "react";
 import { Link ,useLocation} from "react-router-dom";
 import {login,getProducts,downloadFile,removeRow,saveProductRow} from "../api";
 import UploadFile from "../UploadFile"
+import DataTable from "../DataTable";
 // you will create these pages
 
 export default function ProductList() {
-  const [reload,setReload]=useState(false);
-  const [products,setProducts]=useState({
-    columns: [],
-    data: []
-  });
-  
-  
-	
-  
-  const columns = [
-    { label: "ID", accessor: "id" },
-    { label: "Barcode", accessor: "barcode" },
-    { label: "Name", accessor: "name" },
-    { label: "Price", accessor: "price" },
-    { label: "Quantity", accessor: "quantity" },
-  ];
-
-  
-  useEffect(() => {
-    getProducts()
-   .then(result => {
-        console.log(result.results);
-        
-        setProducts(prev => ({
-  ...prev,
-  columns: [
-    { label: "ID", accessor: "id" ,edit:false },
-    { label: "Barcode", accessor: "barcode" ,edit:true },
-    { label: "Name", accessor: "name" ,edit:true },
-    { label: "Price", accessor: "price" ,edit:true },
-    { label: "Quantity", accessor: "quantity" ,edit:false },
-  ],
-  data: result.results
-}));
-    });
-}, [reload]);
-
-
   return (
     <div className="flex justify-center p-3">
       <div className="w-fit">
@@ -66,7 +29,7 @@ export default function ProductList() {
               </button>
               <button
                     className="p-2 mr-8 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
-                    onClick={(e) => downloadFile('/api/products/products.pdf/0/',"products.pdf")}
+                    onClick={(e) => downloadFile('/api/products/products.pdf',"products.pdf")}
                   >
                   Export to pdf fil
               </button>
@@ -74,13 +37,7 @@ export default function ProductList() {
         <div className="flex justify-end ">
         <UploadFile apiPath="/api/products/import" fileType=".xlsx"/>
         </div>
-        <Table  TableName="Products" data={products.data} columns={products.columns}  
-        profilePath="/product/profile" rootpath="/api/products" 
-        saveRow={saveProductRow}   removeRow={removeRow}
-        refreshParent={() =>{
-          setReload(prev => !prev);
-        }}/>
-        
+          <DataTable mode="products" TableName="Products"/> 
         </div>
     </div>
   );

@@ -2,31 +2,8 @@ import { useEffect, useState } from "react";
 import {Link} from "react-router-dom"
 import Table from "../Table";
 import { getSuppliers, removeRow, saveSuppliersRow } from "../api";
+import DataTable from "../DataTable";
 export default function Suppliers(){
-    const [suppliers,setSuppliers]=useState({
-        columns:[],
-        data:[]
-    });
-    const [reload,setReload]=useState(false);
-
-    const   columns= [
-        { label: "ID", accessor: "id" ,edit:false },
-        { label: "Name", accessor: "name" ,edit:true },
-        { label: "Email", accessor: "email" ,edit:true },
-        { label: "Phone", accessor: "phone" ,edit:true },
-    ]
-
-    useEffect(() =>{
-        getSuppliers()
-        .then(result => {
-            console.log(result.results);
-            setSuppliers(prev => ({
-                ...prev,
-                columns:columns,
-                data:result.results,
-            }));
-        });
-    },[reload]);
 
     return(
         <div className=" flex justify-center">
@@ -39,12 +16,8 @@ export default function Suppliers(){
                     Add Supplier
                 </Link>
                 </div>
-
-                <Table data={suppliers.data} columns={suppliers.columns} rootpath="/api/suppliers" TableName="Suppliers"
-                removeRow={removeRow} saveRow={saveSuppliersRow}
-                refreshParent={() => {
-                    setReload(prev => !prev);
-                }}
+                <DataTable
+                    mode="suppliers" TableName="Suppliers"
                 />
             </div>
         </div>

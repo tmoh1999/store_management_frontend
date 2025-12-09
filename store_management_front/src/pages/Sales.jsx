@@ -3,14 +3,11 @@ import { useEffect ,useState} from "react";
 import {addSale,getSales,removeRow} from "../api"
 import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
+import DataTable from "../DataTable";
 export default function Sales() {
 const [sale_id,setSaleId]=useState(0)
 const [openSaleScreen,setOpenSaleScreen]=useState(false)
 const [reload,setReload]=useState(false);
-const [sales,setSales]=useState({
-  columns: [],
-  data: []
-});
 const handleClick= async () => {
     try{
         const result = await addSale()
@@ -23,23 +20,7 @@ const handleClick= async () => {
     }
 };
 
-useEffect(()=>{
-  getSales()
-  .then(result => {
-    console.log(result.results);
-    setSales(prev => ({
-      ...prev,
-      columns:[
-          { label: "ID", accessor: "id" ,edit:false },
-          { label: "Date", accessor: "date" ,edit:false },
-          { label: "total", accessor: "total" ,edit:false },
-          { label: "Status", accessor: "status" ,edit:false },
-      ],
-      data:result.results,
-    }));
-  });
 
-},[reload])
 
 useEffect(() => {
   console.log(sale_id);
@@ -63,11 +44,9 @@ useEffect(() => {
     </button>
   </div>
   
-  <Table TableName="Sales" data={sales.data} columns={sales.columns} rootpath="/api/sales" removeRow={removeRow} 
-    refreshParent={() => {
-      setReload(prev => !prev);
-    }}
-  />
+  <DataTable
+    mode="sales" TableName="Sales"
+  />  
   </>
   }
   {sale_id!==0 &&

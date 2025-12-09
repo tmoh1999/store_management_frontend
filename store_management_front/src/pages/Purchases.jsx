@@ -3,44 +3,21 @@ import {getPurchases,removeRow, savePurchaseRow} from "../api"
 import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 import StartPurchase from "./StartPurchase";
+import DataTable from "../DataTable";
 export default function Purchases() {
 const [purchase_id,setPurchaseId]=useState(0)
 const [openStartPurchase,setOpenStartPurchase]=useState(false);
 const [reload,setReload]=useState(false);
-const [purchases,setPurchases]=useState({
-  columns: [],
-  data: []
-});
 const handleClick=  () => {
   setOpenStartPurchase(true);
 };
 
-useEffect(()=>{
-  getPurchases()
-  .then(result => {
-    console.log(result.results);
-    setPurchases(prev => ({
-      ...prev,
-      columns:[
-          { label: "ID", accessor: "id" ,edit:false },
-          { label: "Date", accessor: "date" ,edit:false },
-          { label: "total", accessor: "total" ,edit:false },
-          { label: "Status", accessor: "status" ,edit:false },
-          { label: "Description", accessor: "description" ,edit:true },
-      ],
-      data:result.results,
-    }));
-  });
 
-},[reload])
 
 useEffect(() => {
-  console.log(purchase_id);
   if (purchase_id==0){
     setReload(prev => !prev);
   }
-
-
 },[purchase_id]);
  
   return (
@@ -58,11 +35,11 @@ useEffect(() => {
           Start Purchase
           </button> 
         </div> 
-        <Table TableName="Purchases" data={purchases.data} columns={purchases.columns} rootpath="/api/purchases" saveRow={savePurchaseRow} removeRow={removeRow} 
-          refreshParent={() => {
-            setReload(prev => !prev);
-          }}
-        />
+        <DataTable
+            mode="purchases"
+            getOptions={{}}
+            TableName={`Purchases`}
+        />  
       </>
 
       ):(
