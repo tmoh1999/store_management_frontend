@@ -53,19 +53,19 @@ const api = {
 }[mode];
 const columns= {
   sale:  [
-      { label: "ID", accessor: "id" ,edit:false},
-      { label: "Barcode", accessor: "barcode" ,edit:false },
-      { label: "Name", accessor: "name" ,edit:false },
-      { label: "Unit Price", accessor: "price" ,edit:true },
-      { label: "Quantity", accessor: "quantity" ,edit:true },
-      { label: "Description", accessor: "description" ,edit:true },
+      { label: "ID", accessor: "id",db_name:"item_id" ,edit:false},
+      { label: "Barcode", accessor: "barcode",db_name:"barcode" ,edit:false },
+      { label: "Name", accessor: "name",db_name:"name" ,edit:false },
+      { label: "Unit Price", accessor: "price",db_name:"unit_price" ,edit:true },
+      { label: "Quantity", accessor: "quantity",db_name:"quantity_float" ,edit:true },
+      { label: "Description", accessor: "description",db_name:"description" ,edit:true },
     ],
   purchase:  [
-      { label: "ID", accessor: "id" ,edit:false},
-      { label: "Barcode", accessor: "barcode" ,edit:false },
-      { label: "Name", accessor: "name" ,edit:false },
-      { label: "Purchase Price", accessor: "price" ,edit:true },
-      { label: "Quantity", accessor: "quantity" ,edit:true },
+      { label: "ID", accessor: "id",db_name:"purchase_item_id" ,edit:false},
+      { label: "Barcode", accessor: "barcode",db_name:"barcode" ,edit:false },
+      { label: "Name", accessor: "name",db_name:"name" ,edit:false },
+      { label: "Purchase Price", accessor: "price",db_name:"purchase_price" ,edit:true },
+      { label: "Quantity", accessor: "quantity",db_name:"quantity_float" ,edit:true },
     ],    
   }[mode];
 const rootPath={
