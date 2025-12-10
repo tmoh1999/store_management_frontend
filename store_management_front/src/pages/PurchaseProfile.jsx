@@ -28,7 +28,7 @@ useEffect(()=>{
 
 },[state]);
 return (
-    <div className="flex flex-col bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-100">
         <div className="flex justify-center">
             <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
