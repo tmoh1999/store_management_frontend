@@ -18,6 +18,9 @@ import { useEffect } from "react";
 import AddSupplier from "./pages/AddSupplier.jsx";
 import StartPurchase from "./pages/StartPurchase.jsx";
 import ProductProfile from "./pages/ProductProfile.jsx";
+import SaleProfile from "./pages/SaleProfile.jsx";
+import PurchaseProfile from "./pages/PurchaseProfile.jsx";
+import SupplierProfile from "./pages/SupplierProfile.jsx";
 // you will create these pages
 
 export default function App() {
@@ -41,20 +44,31 @@ export default function App() {
     <Routes>
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
       <Route path="/login" element={<Login />} />
+      <Route path="/logout" element={<LogOut />} />
       <Route path="/register" element={<Register />} />
+
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       
       <Route path="/products" element={<ProtectedRoute><ProductList /></ProtectedRoute>} />
       <Route path="/product/profile" element={<ProtectedRoute><ProductProfile /></ProtectedRoute>} />
-      <Route path="/purchases" element={<ProtectedRoute><Purchases /></ProtectedRoute>} />
-      <Route path="/startpurchase" element={<ProtectedRoute><StartPurchase /></ProtectedRoute>} />
-      <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
-      <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
       <Route path="/addproduct" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
       <Route path="/updateproduct" element={<ProtectedRoute><UpdateProduct /></ProtectedRoute>} />
+
+      <Route path="/purchases" element={<ProtectedRoute><Purchases /></ProtectedRoute>} />
+      <Route path="/purchase/profile" element={<ProtectedRoute><PurchaseProfile /></ProtectedRoute>} />
+      <Route path="/startpurchase" element={<ProtectedRoute><StartPurchase /></ProtectedRoute>} />
+
+      <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
+      <Route path="/sale/profile" element={<ProtectedRoute><SaleProfile /></ProtectedRoute>} />
+
+      <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+
       <Route path="/suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
+
       <Route path="/addsupplier" element={<ProtectedRoute><AddSupplier /></ProtectedRoute>} />
-      <Route path="/logout" element={<LogOut />} />
+      <Route path="/supplier/profile" element={<ProtectedRoute><SupplierProfile /></ProtectedRoute>} />
+
+      
       <Route path="/test" element={<ConfirmMessage message="Test Message" />} />
     </Routes>
     </div>

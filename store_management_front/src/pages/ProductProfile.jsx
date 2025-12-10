@@ -13,7 +13,7 @@ const [productData,setProductData]=useState({
 });
 useEffect(()=>{
     async function loadData(){
-        const result= await searchProduct("product_id",state.profile_id);
+        const result= await apiGet("/api/products/search",{"product_id":state.profile_id});
         setProductData(prev => ({
             ...prev,
             id:result.product_id,
