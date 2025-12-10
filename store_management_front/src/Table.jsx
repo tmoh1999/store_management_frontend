@@ -2,6 +2,7 @@ import { useState ,useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
+import { downloadFile } from "./api";
 export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
@@ -27,8 +28,9 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortColumn) return 0;
 
-    const valA = a[sortColumn];
-    const valB = b[sortColumn];
+    const valA = typeof(a[sortColumn])==="string"? a[sortColumn].toLowerCase() : a[sortColumn];
+    const valB = typeof(b[sortColumn])==="string"? b[sortColumn].toLowerCase() : b[sortColumn];
+
 
     if (valA < valB) return sortOrder === "asc" ? -1 : 1;
     if (valA > valB) return sortOrder === "asc" ? 1 : -1;
@@ -107,6 +109,10 @@ const handleClick = async (e,row) => {
     )
   );
 };
+function getSort(sortColumn){
+  const col = columns.find(c => c.accessor === sortColumn);
+  return col ? col.db_name : "";
+}
   return (
     <div className=" flex flex-col justify-center items-center w-auto p-3">
     {showConfirm &&
@@ -116,9 +122,27 @@ const handleClick = async (e,row) => {
 
       
       <div className="w-fit">
-        {/*Table Name*/}
-        <h1 className="text-4xl font-bold mb-2" >{TableName}</h1>
-        {/* Search */}
+        <div className="flex">
+            <div className="flex justify-start mb-2">
+              {/*Table Name*/}
+              <h1 className="text-4xl font-bold " >{TableName}</h1>
+              {/* Search */}
+            </div>
+            <div className="flex w-full justify-end mb-2 ml-5">
+              <button
+                      className="p-2 mr-5 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
+                      onClick={(e) => downloadFile(`${rootpath}/export/excel`,"report.xlsx",{search:search,sort_column:sortColumn,sort_direction:sortOrder})}
+                    >
+                    Export Excel
+                </button>
+                <button
+                      className="p-2 mr-2 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
+                      onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{search:search,sort_column:getSort(sortColumn),sort_direction:sortOrder})}
+                    >
+                    Export Pdf
+                </button>          
+            </div>
+        </div>
         <input
           type="text"
           placeholder="Search..."
