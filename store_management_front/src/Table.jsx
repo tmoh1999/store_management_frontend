@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
 import { downloadFile } from "./api";
-export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName}) {
+export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName,options={}}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -30,7 +30,6 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
 
     const valA = typeof(a[sortColumn])==="string"? a[sortColumn].toLowerCase() : a[sortColumn];
     const valB = typeof(b[sortColumn])==="string"? b[sortColumn].toLowerCase() : b[sortColumn];
-
 
     if (valA < valB) return sortOrder === "asc" ? -1 : 1;
     if (valA > valB) return sortOrder === "asc" ? 1 : -1;
@@ -131,13 +130,13 @@ function getSort(sortColumn){
             <div className="flex w-full justify-end mb-2 ml-5">
               <button
                       className="p-2 mr-5 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
-                      onClick={(e) => downloadFile(`${rootpath}/export/excel`,"report.xlsx",{search:search,sort_column:sortColumn,sort_direction:sortOrder})}
+                      onClick={(e) => downloadFile(`${rootpath}/export/excel`,"report.xlsx",{...options,search:search,sort_column:sortColumn,sort_direction:sortOrder})}
                     >
                     Export Excel
                 </button>
                 <button
                       className="p-2 mr-2 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
-                      onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{search:search,sort_column:getSort(sortColumn),sort_direction:sortOrder})}
+                      onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{...options,search:search,sort_column:getSort(sortColumn),sort_direction:sortOrder})}
                     >
                     Export Pdf
                 </button>          

@@ -131,6 +131,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
             removeRow={api.remove}
             saveRow={api.update}
             profilePath={api.profilePath}
+            options={getOptions}
             refreshParent={() => {
                 setReload(prev => !prev);
             }}
