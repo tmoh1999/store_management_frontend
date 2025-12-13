@@ -7,7 +7,10 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
       columns: [],
       data: []
     });
-    
+    const [dateRange,setDateRange]=useState({
+      start_date: new Date().toISOString().slice(0, 10),
+      end_date: new Date().toISOString().slice(0, 10)
+    });    
     // 1️⃣ API MAPPING BASED ON MODE
     const api = {
     products: {
@@ -15,52 +18,68 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
         update: saveProductRow,
         remove: removeRow,
         profilePath:"/product/profile",
-        rootpath:"/api/products"
+        rootpath:"/api/products",
+        showDates:false,
     },
     sales: {
         update: null,
         remove: removeRow,
         profilePath:"/sale/profile",
-        rootpath:"/api/sales"
+        rootpath:"/api/sales",
+        showDates:true,
     },               
     sale_items: {
         update: updateSaleItem,
         remove: removeRow,
         profilePath:"/",
-        rootpath:"/api/sales/items"
+        rootpath:"/api/sales/items",
+        showDates:false,
     },
     purchases: {
         update: savePurchaseRow,
         remove: removeRow,
         profilePath:"/purchase/profile",
-        rootpath:"/api/purchases"
+        rootpath:"/api/purchases",
+        showDates:true,
     },
     purchase_items: {
         update: updatePurchaseItem,
         remove: removeRow,
         profilePath:"/",
-        rootpath:"/api/purchases/items"
+        rootpath:"/api/purchases/items",
+        showDates:false,
     },
     suppliers: {
         update: saveSuppliersRow,
         remove: removeRow,
         profilePath:"/supplier/profile",
-        rootpath:"/api/suppliers"
+        rootpath:"/api/suppliers",
+        showDates:false,
     },
     transactions: {
         update: saveTransactionRow,
         remove: removeRow,
         profilePath:"/transaction/profile",
-        rootpath:"/api/transactions"
+        rootpath:"/api/transactions",
+        showDates:true,
     },    
     }[mode]; 
-     
+    
     useEffect(() => {
-        
-        apiGet(api.rootpath,getOptions)
+    const op=
+        api.showDates?     
+        {
+            ...getOptions,
+            start_date:dateRange.start_date,
+            end_date:dateRange.end_date
+        }
+        :
+        getOptions
+    ;
+        apiGet(api.rootpath,op)
     .then(result => {
              
-            console.log(result.results)
+            //console.log(result.results)
 
             
             setRows(prev => ({
@@ -120,7 +139,37 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
       { label: "Quantity", accessor: "quantity",db_name:"quantity_float" ,edit:false },
     ],        
     }[mode];
+    const handleChange= (e)=>{
+        const x=e.target;
+        setDateRange(prev =>({
+            ...prev,
+            [x.name]:x.value
+        }));
+    };
+    
+    useEffect(()=>{
+        setReload(prev=>!prev);
+    },[dateRange]);
+ 
     return (
+        <>
+        {api.showDates &&
+        <div className="flex justify-center mb-3 mt-7">
+            <div>
+                <label htmlFor="start_date" className="text-2xl font-medium mr-3">Start:</label>
+                <input type="date" id="start_date" name="start_date" 
+                className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
+                value={dateRange.start_date} onChange={handleChange}/>
+            </div>
+            <div className="ml-8">
+                 <label htmlFor="end_date" className="text-2xl font-medium mr-3">End:</label>
+                <input type="date" id="end_date" name="end_date"
+                className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium"
+                value={dateRange.end_date} onChange={handleChange}/>
+            </div>
+
+        </div>
+        }
         <Table
             mode={table_mode}
             TableName={TableName}
@@ -131,11 +180,21 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
             removeRow={api.remove}
             saveRow={api.update}
             profilePath={api.profilePath}
-            options={getOptions}
+            options={
+                api.showDates?     
+                {
+                    ...getOptions,
+                    start_date:dateRange.start_date,
+                    end_date:dateRange.end_date
+                }
+                :
+                getOptions
+            }
             refreshParent={() => {
                 setReload(prev => !prev);
             }}
 
-        />    
+        />
+        </>    
     );
 }
