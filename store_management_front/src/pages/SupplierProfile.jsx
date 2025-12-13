@@ -5,6 +5,7 @@ import DataTable from "../DataTable";
 
 export default function SupplierProfile(){
 const {state}=useLocation();
+const [reload,setReload]=useState(false);
 const [supplierData,setSupplierData]=useState({
     "id":null,
     "name":"",
@@ -24,7 +25,7 @@ useEffect(()=>{
     }
     loadData();
 
-},[state]);
+},[state,reload]);
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
         <div className="flex justify-center">
@@ -43,6 +44,9 @@ return (
                 mode="purchases"
                 getOptions={{supplier_id:supplierData.id}}
                 TableName={`Purchases , supplier_id:${supplierData.id}`}
+                refreshParent2={() => {
+                    setReload(prev => !prev);
+                }}                      
             />
             </div>       
         }

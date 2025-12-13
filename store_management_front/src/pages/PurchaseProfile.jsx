@@ -5,6 +5,7 @@ import DataTable from "../DataTable";
 
 export default function PurchaseProfile(){
 const {state}=useLocation();
+const [reload,setReload]=useState(false);
 const [purchaseData,setPurchaseData]=useState({
     "id":null,
     "date":"",
@@ -26,7 +27,7 @@ useEffect(()=>{
     }
     loadData();
 
-},[state]);
+},[state,reload]);
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
         <div className="flex justify-center">
@@ -46,6 +47,10 @@ return (
                 mode="purchase_items"
                 getOptions={{purchase_id:purchaseData.id}}
                 TableName={`Purchase Items , Purchase_id:${purchaseData.id}`}
+                refreshParent2={() => {
+                    setReload(prev => !prev);
+                }}                
+
             />
             </div>       
         }

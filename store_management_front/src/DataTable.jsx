@@ -1,7 +1,7 @@
 import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow } from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
-export default function DataTable({mode,table_mode="view",TableName="table",setSelectedRow,getOptions}){
+export default function DataTable({mode,table_mode="view",TableName="table",setSelectedRow,getOptions,refreshParent2=()=>{}}){
     const [reload,setReload]=useState(false);
     const [rows,setRows]=useState({
       columns: [],
@@ -88,6 +88,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
     data: result.results
     }));
         });
+    refreshParent2();    
     }, [reload]);
     const columns= {
     products:[
