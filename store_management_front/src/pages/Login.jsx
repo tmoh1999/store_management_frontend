@@ -1,5 +1,5 @@
 import { Link , useNavigate} from "react-router-dom";
-import { useEffect ,useState} from "react";
+import React,{ useEffect ,useState} from "react";
 import {login} from "../api";
 export default function Login() {
 // Step 1: Create state for form fields
@@ -57,9 +57,10 @@ const navigate = useNavigate();
           <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
         )}
         
-        
-  <input onChange={handleChange} value={formData.username} name="username" className="border p-2 rounded-lg w-full"  required/>
-  <input onChange={handleChange} value={formData.password} type="password" className="border p-2 rounded-lg w-full"   name="password" required/>
+  <label htmlFor="username">Username</label>      
+  <input onChange={handleChange} value={formData.username} id="username" name="username" className="border p-2 rounded-lg w-full"  required/>
+<label htmlFor="password">Password</label>
+  <input onChange={handleChange} value={formData.password} id="password" type="password" className="border p-2 rounded-lg w-full"   name="password" required/>
 
   <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Logging in..." : "Login"}</button>
   
