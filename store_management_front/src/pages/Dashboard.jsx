@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { apiGet } from "../api";
-
+import SalesChart from "../components/SalesChart";
 export default function Dashboard() {
   const location = useLocation();
   const username = localStorage.getItem("username");
@@ -68,15 +68,16 @@ export default function Dashboard() {
           <p className="text-2xl font-bold">{stats.transactions}</p>
         </div>
       </div>
-
-      {/* Navigation */}
+      {/* Sales Chart */}
+      <SalesChart />
+      {/* Navigation
       <div className="flex flex-col items-center gap-4">
         <Link to="/products" className="btn">📦 Products</Link>
         <Link to="/sales" className="btn">💰 Sales</Link>
         <Link to="/purchases" className="btn">🛒 Purchases</Link>
         <Link to="/transactions" className="btn">📊 Transactions</Link>
         <Link to="/suppliers" className="btn">🏢 Suppliers</Link>
-      </div>
+      </div> */}
     </div>
   );
 }
