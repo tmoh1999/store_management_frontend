@@ -30,15 +30,12 @@ const navigate = useNavigate();
 
   // Save token
   localStorage.setItem("token", result.token);
-  console.log(result.token)
-  console.log(result.user)
+  localStorage.setItem("username", result.user.username);
   // Redirect (optional)
   const user={
         username:result.user.username,
   };
-   navigate("/dashboard",{
-   state:user,
-   });
+   navigate("/dashboard");
 } catch (err) {
   setError(err.message || "Login failed");
 } finally {
