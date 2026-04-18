@@ -1,4 +1,4 @@
-import {addSaleItem,getSaleItems,updateSaleItem,removeRow,confirmSale,addPurchaseItem,getPurchaseItems,updatePurchaseItem,confirmPurchase, searchProduct} from "../api"
+import {apiGet,addSaleItem,getSaleItems,updateSaleItem,removeRow,confirmSale,addPurchaseItem,getPurchaseItems,updatePurchaseItem,confirmPurchase, searchProduct} from "../api"
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"
@@ -116,7 +116,9 @@ const ConfirmClick = async () => {
 };
 
 useEffect(() => {
-    api.getItems(transaction_id)
+    const options = mode=="sale"?{sale_id: transaction_id}:{purchase_id: transaction_id};
+    const path= mode=="sale" ? "/api/sales/items" : "/api/purchases/items";
+    apiGet(path,options)
    .then(result => {
         console.log(result.results);
         setTotal(result.total);
