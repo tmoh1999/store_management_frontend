@@ -94,43 +94,50 @@ export default function SalesChart() {
   if (!chartData) return <p>Loading chart...</p>;
 
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-xl">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">📈 Sales Overview</h2>
+    <div className="flex justify-center bg-white p-6 rounded-2xl shadow-xl">
+      <div className="flex gap-16 justify-between">
+        <div className="flex flex-col w-fit h-80 justify-center items-center rounded-2xl shadow-xl p-8">
+          <div className="flex w-full justify-between items-center mb-4 gap-6">
+            <h2 className="text-xl font-bold">📈 Sales Overview</h2>
 
-        {/* Month Picker */}
-        <input
-          type="month"
-          value={month}
-          onChange={(e) => setMonth(e.target.value)}
-          className="border p-2 rounded-lg"
-        />
-      </div>
-
-      <div className="flex  h-80 justify-center items-center">
-        <Line
-            data={chartData}
-            options={{
-                responsive: true,
-                plugins: {
-                    legend: { display: false },
-                },
-                scales: {
-                    x: {
-                        
-                        grid: {
-                            display: false, // cleaner look
-                        },
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            color: "rgba(0,0,0,0.05)", // soft grid
-                        },
-                    },
-                },
-            }}
-        />
+            {/* Month Picker */}
+            <input
+              type="month"
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="border p-2 rounded-lg"
+            />
+          </div>
+          <Line
+              data={chartData}
+              options={{
+                  responsive: true,
+                  plugins: {
+                      legend: { display: false },
+                  },
+                  scales: {
+                      x: {
+                          
+                          grid: {
+                              display: false, // cleaner look
+                          },
+                      },
+                      y: {
+                          beginAtZero: true,
+                          grid: {
+                              color: "rgba(0,0,0,0.05)", // soft grid
+                          },
+                      },
+                  },
+              }}
+          />
+        </div>
+        <div className="flex flex-col w-fit h-80 justify-center items-center rounded-2xl shadow-xl p-8">
+            <h2 className="text-xl font-bold"> Top 5 Saled Products </h2>
+        </div>
+        <div className="flex flex-col w-fit h-80 justify-center items-center rounded-2xl shadow-xl p-8">
+            <h2 className="text-xl font-bold"> Low stock Products </h2>
+        </div>        
       </div>
     </div>
   );

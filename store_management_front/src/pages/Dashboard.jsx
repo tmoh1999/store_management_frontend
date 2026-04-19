@@ -42,30 +42,25 @@ export default function Dashboard() {
         Store Dashboard
       </h1>
 
-      <h2 className="text-center text-lg mb-6">
+      <h2 className="text-start font-semibold text-3xl underline px-8 mb-6">
         User: {username}
       </h2>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-blue-500 text-white p-4 rounded-xl text-center">
-          <h3 className="text-xl">Products</h3>
+      <div className="flex justify-center gap-8 mb-8 ">
+        <div className="bg-blue-500 text-white p-4 rounded-xl text-center w-1/6">
+          <h3 className="text-xl">Total Revenue</h3>
           <p className="text-2xl font-bold">{stats.products}</p>
         </div>
 
-        <div className="bg-green-500 text-white p-4 rounded-xl text-center">
-          <h3 className="text-xl">Sales</h3>
+        <div className="bg-green-500 text-white p-4 rounded-xl text-center w-1/6">
+          <h3 className="text-xl">Total Purchases</h3>
           <p className="text-2xl font-bold">{stats.sales}</p>
         </div>
 
-        <div className="bg-yellow-500 text-white p-4 rounded-xl text-center">
-          <h3 className="text-xl">Purchases</h3>
+        <div className="bg-yellow-500 text-white p-4 rounded-xl text-center w-1/6">
+          <h3 className="text-xl">Expenses</h3>
           <p className="text-2xl font-bold">{stats.purchases}</p>
-        </div>
-
-        <div className="bg-purple-500 text-white p-4 rounded-xl text-center">
-          <h3 className="text-xl">Transactions</h3>
-          <p className="text-2xl font-bold">{stats.transactions}</p>
         </div>
       </div>
       {/* Sales Chart */}
