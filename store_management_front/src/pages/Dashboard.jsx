@@ -7,10 +7,10 @@ export default function Dashboard() {
   const location = useLocation();
   const username = localStorage.getItem("username");
   const [stats, setStats] = useState({
-    products: 0,
+    low_stock_products: [],
     top_saled_products: [],
-    purchases: 0,
-    transactions: 0,
+    total_purchases: 0,
+    total_revenue: 0,
   });
 const formatDate = (date) => {
   const year = date.getFullYear();
@@ -37,15 +37,15 @@ const [dateRange, setDateRange] = useState(getMonthRange());
         const [products, sales, purchases, transactions] = await Promise.all([
           apiGet("/api/products"),
           apiGet("/api/sales/stats",{start_date:dateRange.start_date,end_date:dateRange.end_date}),
-          apiGet("/api/purchases"),
+          apiGet("/api/purchases/stats",{start_date:dateRange.start_date,end_date:dateRange.end_date}),
           apiGet("/api/transactions"),
         ]);
 
         setStats({
-          products: 0,
+          low_stock_products: purchases.low_stock_products,
           top_saled_products: sales.top_saled_products,
-          purchases: 0,
-          transactions: 0,
+          total_purchases: purchases.total_purchases,
+          total_revenue: sales.total_revenue,
         });
       } catch (err) {
         console.log(err);
@@ -88,17 +88,17 @@ const [dateRange, setDateRange] = useState(getMonthRange());
       <div className="flex justify-center gap-8 mb-8 ">
         <div className="bg-blue-500 text-white p-4 rounded-xl text-center w-1/6">
           <h3 className="text-xl">Total Revenue</h3>
-          <p className="text-2xl font-bold">{stats.products}</p>
+          <p className="text-2xl font-bold">{stats.total_revenue}</p>
         </div>
 
         <div className="bg-green-500 text-white p-4 rounded-xl text-center w-1/6">
           <h3 className="text-xl">Total Purchases</h3>
-          <p className="text-2xl font-bold">{stats.sales}</p>
+          <p className="text-2xl font-bold">{stats.total_purchases}</p>
         </div>
 
         <div className="bg-yellow-500 text-white p-4 rounded-xl text-center w-1/6">
           <h3 className="text-xl">Expenses</h3>
-          <p className="text-2xl font-bold">{stats.purchases}</p>
+          <p className="text-2xl font-bold">{stats.total_purchases}</p>
         </div>
       </div>
       <div className="flex justify-center bg-white p-6 rounded-2xl shadow-xl">
@@ -125,9 +125,25 @@ const [dateRange, setDateRange] = useState(getMonthRange());
                 </tbody>
               </table>
           </div>
-          <div className="flex flex-col w-fit h-80 justify-center items-center rounded-2xl shadow-xl p-8">
+          <div className="flex flex-col w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
               <h2 className="text-xl font-bold"> Low stock Products </h2>
-          </div> 
+              <table className="w-full mt-4 ">
+                <thead>
+                  <tr className="bg-gray-200">
+                    <th className="text-left px-4 py-2">Product Name</th>
+                    <th className="text-left px-4 py-2">Remaining Stock</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.low_stock_products.map((t) => (
+                    <tr key={t.id} className="border-b">
+                      <td className="text-left px-4 py-2">{t.name}</td>
+                      <td className="text-center px-4 py-2">{t.quantity_float}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+          </div>
         </div> 
       </div>       
     </div>
