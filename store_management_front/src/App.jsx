@@ -8,6 +8,7 @@ import Purchases from "./pages/Purchases";
 import Sales from "./pages/Sales";
 import Transactions from "./pages/Transactions";
 import AddProduct from "./pages/AddProduct";
+import AddTransaction from "./pages/AddTransaction";
 import UpdateProduct from "./pages/UpdateProduct";
 import Sidebar from "./SideBar.jsx"
 import ErrorBoundary from "./ErrorBoundary"
@@ -62,6 +63,7 @@ export default function App() {
       <Route path="/sale/profile" element={<ProtectedRoute><SaleProfile /></ProtectedRoute>} />
 
       <Route path="/transactions" element={<ProtectedRoute><Transactions /></ProtectedRoute>} />
+    <Route path="/addtransaction" element={<ProtectedRoute><AddTransaction /></ProtectedRoute>} />
 
       <Route path="/suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
 

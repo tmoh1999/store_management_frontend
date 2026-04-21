@@ -265,7 +265,17 @@ export function confirmSale(sale_id) {
 export function getTransactions() {
   return request("/api/transactions/list");
 }
-
+export function addTransaction(formData) {
+  return request("/api/transactions/add", {
+    method: "POST",
+    body: JSON.stringify({ 
+         type:formData.type,
+         note:formData.note,
+         date:formData.date,
+         amount:formData.amount,
+    }),
+  });
+}
 export function saveTransactionRow(row) {
   const  path="/api/transactions/"+row.id+"/update";
   return request(path, {
