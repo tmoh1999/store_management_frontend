@@ -265,11 +265,15 @@ export function confirmSale(sale_id) {
 export function getTransactions() {
   return request("/api/transactions/list");
 }
+export function getEnumData(){
+  return request("/api/transactions/enumdata");
+}
 export function addTransaction(formData) {
   return request("/api/transactions/add", {
     method: "POST",
     body: JSON.stringify({ 
          type:formData.type,
+         category:formData.category,
          note:formData.note,
          date:formData.date,
          amount:formData.amount,

@@ -1,16 +1,20 @@
 import { Link } from "react-router-dom";
 import { useEffect ,useState} from "react";
 import ErrorBoundary from "../ErrorBoundary";
-import {addTransaction} from "../api";
+import {addTransaction,getEnumData} from "../api";
 export default function AddTransaction() {
 // Step 1: Create state for form fields
   const [formData, setFormData] = useState({
     type: "",
     note:"",
+    category:"",
     date:new Date().toISOString().slice(0, 10),
     amount:0.0,
   });
-
+const [enumdata,setEnumData]=useState({
+  transaction_types:[],
+  transaction_categories:[],
+});
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 const [message, setMessage] = useState("");
@@ -46,6 +50,16 @@ const handleChange = (e) => {
   useEffect(()=>{
     console.log(formData);
   },[formData]);
+  useEffect(()=>{
+    getEnumData().then((data)=>{
+      console.log(data.transaction_types);
+      console.log(data.transaction_categories);
+      setEnumData({
+        transaction_types:data.transaction_types,
+        transaction_categories:data.transaction_categories,
+      });
+    })
+  },[]);
 
 
   return (
@@ -78,19 +92,35 @@ const handleChange = (e) => {
                 value={formData.note} onChange={handleChange}/>
             </div>
         </div>       
-        <div className="w-full">
-            
+        <div className="w-full">   
             <label htmlFor="type" className="block text-xl  text-gray-700 font-medium">Type:</label>
             <div className="flex justify-center mt-1">
                 <select id="type" name="type" 
                 className="bg-gray-200 w-full text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
                 value={formData.type} onChange={handleChange}>
                     <option value="">Select Type</option>
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
+                    {enumdata.transaction_types.map((type)=>(
+                      <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+                    ))}
                 </select>
             </div>                
         </div>
+        <div className="w-full">   
+            <label htmlFor="category" className="block text-xl  text-gray-700 font-medium">Category:</label>
+            <div className="flex justify-center mt-1">
+                <select id="category" name="category" 
+                className="bg-gray-200 w-full text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
+                value={formData.category} onChange={handleChange}>
+                    <option value="">Select Category</option>
+                    {enumdata.transaction_categories.map((category)=>(
+                      <option key={category.id} value={category.id} disabled={category.type !== formData.type}>
+                        {category.name},{category.type},{formData.type}
+                      </option>
+                    ))}
+                </select>
+            </div>                
+        </div>
+
         <div className="w-full">
             <label htmlFor="amount" className="block text-xl  text-gray-700 font-medium">Amount:</label>
             <div className="flex justify-center mt-1 ">
