@@ -11,6 +11,7 @@ export default function Dashboard() {
     top_saled_products: [],
     total_purchases: 0,
     total_revenue: 0,
+    total_expenses: 0,
   });
 const formatDate = (date) => {
   const year = date.getFullYear();
@@ -38,7 +39,7 @@ const [dateRange, setDateRange] = useState(getMonthRange());
           apiGet("/api/products"),
           apiGet("/api/sales/stats",{start_date:dateRange.start_date,end_date:dateRange.end_date}),
           apiGet("/api/purchases/stats",{start_date:dateRange.start_date,end_date:dateRange.end_date}),
-          apiGet("/api/transactions"),
+          apiGet("/api/transactions/stats",{start_date:dateRange.start_date,end_date:dateRange.end_date}),
         ]);
 
         setStats({
@@ -46,6 +47,7 @@ const [dateRange, setDateRange] = useState(getMonthRange());
           top_saled_products: sales.top_saled_products,
           total_purchases: purchases.total_purchases,
           total_revenue: sales.total_revenue,
+          total_expenses: transactions.total_expenses,
         });
       } catch (err) {
         console.log(err);
@@ -98,7 +100,7 @@ const [dateRange, setDateRange] = useState(getMonthRange());
 
         <div className="bg-yellow-500 text-white p-4 rounded-xl text-center w-1/6">
           <h3 className="text-xl">Expenses</h3>
-          <p className="text-2xl font-bold">{stats.total_purchases}</p>
+          <p className="text-2xl font-bold">{stats.total_expenses}</p>
         </div>
       </div>
       <div className="flex justify-center bg-white p-6 rounded-2xl shadow-xl">
