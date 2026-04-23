@@ -122,6 +122,8 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
           { label: "Date", accessor: "date",db_name:"date" ,edit:false },
           { label: "Amount", accessor: "amount",db_name:"amount" ,edit:false },
           { label: "Type", accessor: "type",db_name:"type" ,edit:false },
+          { label: "Source", accessor: "source",db_name:"source" ,edit:false },
+          {label: "Category", accessor: "category",db_name:"category" ,edit:false },
           { label: "Note", accessor: "note",db_name:"note" ,edit:true },
     ],
   sale_items:  [

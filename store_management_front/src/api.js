@@ -277,6 +277,7 @@ export function addTransaction(formData) {
          note:formData.note,
          date:formData.date,
          amount:formData.amount,
+         category_id:formData.category_id,
     }),
   });
 }

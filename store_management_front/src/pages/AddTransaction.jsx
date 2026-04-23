@@ -2,31 +2,32 @@ import { Link } from "react-router-dom";
 import { useEffect ,useState} from "react";
 import ErrorBoundary from "../ErrorBoundary";
 import {addTransaction,getEnumData} from "../api";
+import CategoryDropdown from "../components/CategoryDropDown";
 export default function AddTransaction() {
 // Step 1: Create state for form fields
   const [formData, setFormData] = useState({
     type: "",
     note:"",
     category:"",
+    category_id:null,
     date:new Date().toISOString().slice(0, 10),
     amount:0.0,
   });
-const [enumdata,setEnumData]=useState({
-  transaction_types:[],
-  transaction_categories:[],
-});
-const [error, setError] = useState("");
-const [loading, setLoading] = useState(false);
-const [message, setMessage] = useState("");
+  const [TypeOptions,setTypeOptions]=useState([]);
+  const [CategoryOptions,setCategoryOptions]=useState([]);
+  const [selectedCategory,setSelectedCategory]=useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-// Step 2: Handle input changes
-const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-        ...prev,
-        [name]: value
-    }));
-};
+  // Step 2: Handle input changes
+  const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prev) => ({
+          ...prev,
+          [name]: value
+      }));
+  };
 
   // Step 3: Handle form submission
   const handleSubmit = async (e) => {
@@ -48,16 +49,32 @@ const handleChange = (e) => {
     // Here you can call an API or do further processing
   }
   useEffect(()=>{
+    let cid= null;
+    if (selectedCategory){
+      console.log(Object.keys(selectedCategory));
+      if (Object.keys(selectedCategory).includes("id")){
+        cid=selectedCategory.id;
+      }else{
+        console.log("selectedCategory does not have id");
+      }
+    }
+    setFormData((prev)=>({
+      ...prev,
+      category:selectedCategory ? selectedCategory.value : "",
+      category_id:cid,
+    }));
+  },[selectedCategory]);
+
+
+  useEffect(()=>{
     console.log(formData);
   },[formData]);
   useEffect(()=>{
     getEnumData().then((data)=>{
       console.log(data.transaction_types);
       console.log(data.transaction_categories);
-      setEnumData({
-        transaction_types:data.transaction_types,
-        transaction_categories:data.transaction_categories,
-      });
+      setTypeOptions(data.transaction_types);
+      setCategoryOptions(data.transaction_categories);
     })
   },[]);
 
@@ -97,10 +114,10 @@ const handleChange = (e) => {
             <div className="flex justify-center mt-1">
                 <select id="type" name="type" 
                 className="bg-gray-200 w-full text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
-                value={formData.type} onChange={handleChange}>
+                value={formData.type} onChange={handleChange} required>
                     <option value="">Select Type</option>
-                    {enumdata.transaction_types.map((type)=>(
-                      <option key={type} value={type}>{type.charAt(0).toUpperCase() + type.slice(1)}</option>
+                    {TypeOptions.map((type)=>(
+                      <option key={type.value} value={type.value}>{type.value.charAt(0).toUpperCase() + type.value.slice(1)}</option>
                     ))}
                 </select>
             </div>                
@@ -108,17 +125,9 @@ const handleChange = (e) => {
         <div className="w-full">   
             <label htmlFor="category" className="block text-xl  text-gray-700 font-medium">Category:</label>
             <div className="flex justify-center mt-1">
-                <select id="category" name="category" 
-                className="bg-gray-200 w-full text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
-                value={formData.category} onChange={handleChange}>
-                    <option value="">Select Category</option>
-                    {enumdata.transaction_categories.map((category)=>(
-                      <option key={category.id} value={category.id} disabled={category.type !== formData.type}>
-                        {category.name},{category.type},{formData.type}
-                      </option>
-                    ))}
-                </select>
-            </div>                
+                <CategoryDropdown options={CategoryOptions} setOptions={setCategoryOptions}
+                selected={selectedCategory} setSelected={setSelectedCategory}/>
+            </div>
         </div>
 
         <div className="w-full">
@@ -126,9 +135,10 @@ const handleChange = (e) => {
             <div className="flex justify-center mt-1 ">
                 <input type="number" id="amount" name="amount" 
                 className="bg-gray-200   text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
-                value={formData.amount} onChange={handleChange} step="0.01"/>
+                value={formData.amount} onChange={handleChange} step="0.01" required/>
             </div>
         </div>
+
         <button type="submit" disabled={loading} className="bg-blue-600 text-white p-2 font-medium text-xl rounded-xl w-2/4 hover:bg-blue-700">{loading ? "Adding..." : "Add"}</button>
       
       </form>
