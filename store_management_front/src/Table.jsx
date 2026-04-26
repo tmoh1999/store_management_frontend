@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
 import { downloadFile } from "./api";
-export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName,options={}}) {
+import Pagination from "./components/Pagination";
+export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName,options={},setPage,pages=1,page=1}) {
   const [search, setSearch] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
@@ -112,6 +113,16 @@ function getSort(sortColumn){
   const col = columns.find(c => c.accessor === sortColumn);
   return col ? col.db_name : "";
 }
+const getPages = () => {
+  const range = [];
+  const start = Math.max(1, page - 2);
+  const end = Math.min(pages, page + 2);
+
+  for (let i = start; i <= end; i++) {
+    range.push(i);
+  }
+  return range;
+};
   return (
     <div className=" flex flex-col justify-center items-center w-auto p-3">
     {showConfirm &&
@@ -207,6 +218,7 @@ function getSort(sortColumn){
             ))}
           </tbody>
         </table>
+        <Pagination page={page} setPage={setPage} pages={pages}/>
       </div>
     </div>
   );

@@ -11,6 +11,8 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
       start_date: new Date().toISOString().slice(0, 10),
       end_date: new Date().toISOString().slice(0, 10)
     });    
+    const [page,setPage]=useState(1);
+    const [totalPages,setTotalPages]=useState(1);
     // 1️⃣ API MAPPING BASED ON MODE
     const api = {
     products: {
@@ -71,15 +73,16 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
         {
             ...getOptions,
             start_date:dateRange.start_date,
-            end_date:dateRange.end_date
+            end_date:dateRange.end_date,
+            page:page
         }
         :
-        getOptions
+        {...getOptions,page:page}
     ;
         apiGet(api.rootpath,op)
     .then(result => {
              
-            //console.log(result.results)
+            console.log(result.total_pages);
 
             
             setRows(prev => ({
@@ -87,9 +90,10 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
     columns: columns,
     data: result.results
     }));
+    setTotalPages(result.total_pages);
         });
     refreshParent2();    
-    }, [reload]);
+    }, [reload,page]);
     const columns= {
     products:[
         { label: "ID", accessor: "id",db_name:"product_id" ,edit:false },
@@ -183,6 +187,9 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
             removeRow={api.remove}
             saveRow={api.update}
             profilePath={api.profilePath}
+            setPage={setPage}
+            page={page}
+            pages={totalPages}
             options={
                 api.showDates?     
                 {

@@ -34,6 +34,8 @@ const [items,setItems]=useState({
   columns: [],
   data: []
 });
+const [page,setPage]=useState(1);
+const [totalPages,setTotalPages]=useState(1);
 // 1️⃣ API MAPPING BASED ON MODE
 const api = {
   sale: {
@@ -116,11 +118,12 @@ const ConfirmClick = async () => {
 };
 
 useEffect(() => {
-    const options = mode=="sale"?{sale_id: transaction_id}:{purchase_id: transaction_id};
+    const options = mode=="sale"?{sale_id: transaction_id, page: page}:{purchase_id: transaction_id, page: page};
     const path= mode=="sale" ? "/api/sales/items" : "/api/purchases/items";
     apiGet(path,options)
    .then(result => {
-        console.log(result.results);
+        console.log(result.total_pages);
+        setTotalPages(result.total_pages);
         setTotal(result.total);
         setItems(prev => ({
   ...prev,
@@ -128,7 +131,7 @@ useEffect(() => {
   data: result.results
 }));
     });
-}, [reload]);
+}, [reload, page]);
 const changeProduct=(row)=>{
 console.log("ssss");
 console.log(row);
@@ -231,7 +234,8 @@ onClick={CancelClick}
 </div>
 <div className="mt-2">
 <Table TableName={tablename} removeRow={api.remove} saveRow={api.updateItem} 
-data={items.data} columns={items.columns}  rootpath={rootPath}
+data={items.data} columns={items.columns}  rootpath={rootPath} 
+page={page} setPage={setPage} pages={totalPages}
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>
