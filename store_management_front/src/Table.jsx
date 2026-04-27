@@ -135,7 +135,7 @@ const getPages = () => {
                 </button>
                 <button
                       className="p-2 mr-2 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
-                      onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{...options,search:search,sort_column:getColumnDBName(sortColumn),sort_direction:sortOrder})}
+                      onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{...options,search:search,sort_column:sortColumn,sort_direction:sortOrder})}
                     >
                     Export Pdf
                 </button>          
