@@ -156,7 +156,7 @@ const getPages = () => {
                 <th
                   key={col.accessor}
                   className="p-3 cursor-pointer border"
-                  onClick={() => handleSort(col.db_name)}
+                  onClick={() => handleSort(col.accessor)}
                 >
                   {col.label}
                   {sortColumn === col.accessor &&
