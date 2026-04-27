@@ -1,7 +1,8 @@
 import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow } from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
-export default function DataTable({mode,table_mode="view",TableName="table",setSelectedRow,getOptions,refreshParent2=()=>{}}){
+export default function DataTable({mode,table_mode="view",TableName="table",
+    setSelectedRow,getOptions,refreshParent2=()=>{}}){
     const [reload,setReload]=useState(false);
     const [rows,setRows]=useState({
       columns: [],
@@ -13,6 +14,9 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
     });    
     const [page,setPage]=useState(1);
     const [totalPages,setTotalPages]=useState(1);
+    const [search, setSearch] = useState("");
+    const [sortColumn, setSortColumn] = useState("__default__");
+    const [sortOrder, setSortOrder] = useState("asc");    
     // 1️⃣ API MAPPING BASED ON MODE
     const api = {
     products: {
@@ -68,16 +72,17 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
     }[mode]; 
     
     useEffect(() => {
+    console.log("sortColumn:",sortColumn,"sortOrder:",sortOrder);
     const op=
         api.showDates?     
         {
             ...getOptions,
             start_date:dateRange.start_date,
             end_date:dateRange.end_date,
-            page:page
+            page:page,sort_column:sortColumn,sort_order:sortOrder,search:search
         }
         :
-        {...getOptions,page:page}
+        {...getOptions,page:page,sort_column:sortColumn,sort_order:sortOrder,search:search}
     ;
         apiGet(api.rootpath,op)
     .then(result => {
@@ -93,7 +98,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
     setTotalPages(result.total_pages);
         });
     refreshParent2();    
-    }, [reload,page]);
+    }, [reload,page,sortColumn,sortOrder]);
     const columns= {
     products:[
         { label: "ID", accessor: "id",db_name:"product_id" ,edit:false },
@@ -190,6 +195,9 @@ export default function DataTable({mode,table_mode="view",TableName="table",setS
             setPage={setPage}
             page={page}
             pages={totalPages}
+            search={search} setSearch={setSearch}
+            sortColumn={sortColumn} setSortColumn={setSortColumn}
+            sortOrder={sortOrder} setSortOrder={setSortOrder}
             options={
                 api.showDates?     
                 {

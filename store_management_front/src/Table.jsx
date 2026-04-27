@@ -4,10 +4,14 @@ import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
 import { downloadFile } from "./api";
 import Pagination from "./components/Pagination";
-export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",rootpath,refreshParent,setSelectedRow,removeRow,saveRow,TableName,options={},setPage,pages=1,page=1}) {
-  const [search, setSearch] = useState("");
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortOrder, setSortOrder] = useState("asc");
+export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",
+  rootpath,refreshParent,
+  setSelectedRow,removeRow,saveRow,
+  TableName,options={},setPage,pages=1,page=1,
+  search, setSearch,
+  sortColumn, setSortColumn,
+  sortOrder, setSortOrder
+  }) {
   const [tableData, setTableData] = useState(data);
   const navigate=useNavigate();
   const [showConfirm,setShowConfirm]=useState(false);
@@ -24,18 +28,6 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
       .toLowerCase()
       .includes(search.toLowerCase())
   );
-
-  // Sort function
-  const sortedData = [...filteredData].sort((a, b) => {
-    if (!sortColumn) return 0;
-
-    const valA = typeof(a[sortColumn])==="string"? a[sortColumn].toLowerCase() : a[sortColumn];
-    const valB = typeof(b[sortColumn])==="string"? b[sortColumn].toLowerCase() : b[sortColumn];
-
-    if (valA < valB) return sortOrder === "asc" ? -1 : 1;
-    if (valA > valB) return sortOrder === "asc" ? 1 : -1;
-    return 0;
-  });
 
   // Sort handler
   const handleSort = (col) => {
@@ -109,10 +101,6 @@ const handleClick = async (e,row) => {
     )
   );
 };
-function getSort(sortColumn){
-  const col = columns.find(c => c.accessor === sortColumn);
-  return col ? col.db_name : "";
-}
 const getPages = () => {
   const range = [];
   const start = Math.max(1, page - 2);
@@ -147,7 +135,7 @@ const getPages = () => {
                 </button>
                 <button
                       className="p-2 mr-2 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
-                      onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{...options,search:search,sort_column:getSort(sortColumn),sort_direction:sortOrder})}
+                      onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{...options,search:search,sort_column:getColumnDBName(sortColumn),sort_direction:sortOrder})}
                     >
                     Export Pdf
                 </button>          
@@ -168,7 +156,7 @@ const getPages = () => {
                 <th
                   key={col.accessor}
                   className="p-3 cursor-pointer border"
-                  onClick={() => handleSort(col.accessor)}
+                  onClick={() => handleSort(col.db_name)}
                 >
                   {col.label}
                   {sortColumn === col.accessor &&
@@ -179,7 +167,7 @@ const getPages = () => {
           </thead>
 
           <tbody>
-            {sortedData.map((row, i) => (
+            {filteredData.map((row, i) => (
               <tr key={row.id} className="odd:bg-white even:bg-gray-100">
                 {columns.map((col) => (
                   <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>

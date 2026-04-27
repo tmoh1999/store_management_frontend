@@ -36,6 +36,9 @@ const [items,setItems]=useState({
 });
 const [page,setPage]=useState(1);
 const [totalPages,setTotalPages]=useState(1);
+const [search, setSearch] = useState("");
+const [sortColumn, setSortColumn] = useState("__default__");
+const [sortOrder, setSortOrder] = useState("asc");    
 // 1️⃣ API MAPPING BASED ON MODE
 const api = {
   sale: {
@@ -118,7 +121,11 @@ const ConfirmClick = async () => {
 };
 
 useEffect(() => {
-    const options = mode=="sale"?{sale_id: transaction_id, page: page}:{purchase_id: transaction_id, page: page};
+    const options = mode=="sale"
+    ?
+    {sale_id: transaction_id, page: page,sort_column:sortColumn,sort_order:sortOrder,search:search}
+    :
+    {purchase_id: transaction_id, page: page,sort_column:sortColumn,sort_order:sortOrder,search:search};
     const path= mode=="sale" ? "/api/sales/items" : "/api/purchases/items";
     apiGet(path,options)
    .then(result => {
@@ -236,6 +243,9 @@ onClick={CancelClick}
 <Table TableName={tablename} removeRow={api.remove} saveRow={api.updateItem} 
 data={items.data} columns={items.columns}  rootpath={rootPath} 
 page={page} setPage={setPage} pages={totalPages}
+search={search} setSearch={setSearch}
+sortColumn={sortColumn} setSortColumn={setSortColumn}
+sortOrder={sortOrder} setSortOrder={setSortOrder}
     refreshParent={() =>{
     	setReload(prev => !prev);
     }}/>
