@@ -79,10 +79,10 @@ export default function DataTable({mode,table_mode="view",TableName="table",
             ...getOptions,
             start_date:dateRange.start_date,
             end_date:dateRange.end_date,
-            page:page,sort_column:sortColumn,sort_order:sortOrder,search:search
+            page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search
         }
         :
-        {...getOptions,page:page,sort_column:sortColumn,sort_order:sortOrder,search:search}
+        {...getOptions,page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search}
     ;
         apiGet(api.rootpath,op)
     .then(result => {

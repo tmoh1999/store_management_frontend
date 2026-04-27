@@ -123,9 +123,9 @@ const ConfirmClick = async () => {
 useEffect(() => {
     const options = mode=="sale"
     ?
-    {sale_id: transaction_id, page: page,sort_column:sortColumn,sort_order:sortOrder,search:search}
+    {sale_id: transaction_id, page: page,sort_column:sortColumn,sort_direction:sortOrder,search:search}
     :
-    {purchase_id: transaction_id, page: page,sort_column:sortColumn,sort_order:sortOrder,search:search};
+    {purchase_id: transaction_id, page: page,sort_column:sortColumn,sort_direction:sortOrder,search:search};
     const path= mode=="sale" ? "/api/sales/items" : "/api/purchases/items";
     apiGet(path,options)
    .then(result => {
