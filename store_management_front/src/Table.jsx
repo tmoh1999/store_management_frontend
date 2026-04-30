@@ -4,6 +4,7 @@ import TableCell from "./TableCell"
 import ConfirmMessage from "./confirmMessage"
 import { downloadFile } from "./api";
 import Pagination from "./components/Pagination";
+import NoDataFound from "./components/NoDataFound";
 export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",
   rootpath,refreshParent,
   setSelectedRow,removeRow,saveRow,
@@ -113,12 +114,9 @@ const getPages = () => {
 };
   return (
     <div className=" flex flex-col justify-center items-center w-auto p-3">
-    {showConfirm &&
-     <ConfirmMessage message="Confirm Delete?" onConfirm={handleConfirmDelete} onClose={() => {setShowConfirm(false);}}/>
-     }
-
-
-      
+      {showConfirm &&
+      <ConfirmMessage message="Confirm Delete?" onConfirm={handleConfirmDelete} onClose={() => {setShowConfirm(false);}}/>
+      }
       <div className="w-fit">
         <div className="flex">
             <div className="flex justify-start mb-2">
@@ -148,66 +146,73 @@ const getPages = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {/* Table */}
-        <table className="border-collapse shadow-md">
-          <thead>
-            <tr className="bg-gray-200">
-              {columns.map((col) => (
-                <th
-                  key={col.accessor}
-                  className="p-3 cursor-pointer border"
-                  onClick={() => handleSort(col.accessor)}
-                >
-                  {col.label}
-                  {sortColumn === col.accessor &&
-                    (sortOrder === "asc" ? " ▲" : " ▼")}
-                </th>
-              ))}
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredData.map((row, i) => (
-              <tr key={row.id} className="odd:bg-white even:bg-gray-100">
+        {filteredData.length === 0 ? (
+          <NoDataFound message="No records found." />
+        ) : (
+          <>
+          {/* Table */}
+          <table className="border-collapse shadow-md">
+            <thead>
+              <tr className="bg-gray-200">
                 {columns.map((col) => (
-                  <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
+                  <th
+                    key={col.accessor}
+                    className="p-3 cursor-pointer border"
+                    onClick={() => handleSort(col.accessor)}
+                  >
+                    {col.label}
+                    {sortColumn === col.accessor &&
+                      (sortOrder === "asc" ? " ▲" : " ▼")}
+                  </th>
                 ))}
-                {mode=="view" ? (
-                  editingRow === row.id ? 
-                  ( 
-                      <td  key={`${row.id}-save`} className="p-2 border">
-                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
-                      </td>     
-                  )
-                  :
-                  (
-                    <>
-                      <td  key={`${row.id}-view`} className="p-2 border">
-                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
-                      </td>
-                      
-                      <td  key={`${row.id}-edit`} className="p-2 border">
-                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
-                      </td>
-                      
-                      <td key={`${row.id}-remove`} className="p-2 border">
-                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
-                      </td>
-                    </>
-                  )
-                ):(
-                      <td  key={`${row.id}-select`} className="p-2 border">
-                        <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Select</button>
-                      </td>        
-                )
-                }
-                  
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination page={page} setPage={setPage} pages={pages}/>
+            </thead>
+
+            <tbody>
+              {filteredData.map((row, i) => (
+                <tr key={row.id} className="odd:bg-white even:bg-gray-100">
+                  {columns.map((col) => (
+                    <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
+                  ))}
+                  {mode=="view" ? (
+                    editingRow === row.id ? 
+                    ( 
+                        <td  key={`${row.id}-save`} className="p-2 border">
+                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
+                        </td>     
+                    )
+                    :
+                    (
+                      <>
+                        <td  key={`${row.id}-view`} className="p-2 border">
+                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
+                        </td>
+                        
+                        <td  key={`${row.id}-edit`} className="p-2 border">
+                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
+                        </td>
+                        
+                        <td key={`${row.id}-remove`} className="p-2 border">
+                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
+                        </td>
+                      </>
+                    )
+                  ):(
+                        <td  key={`${row.id}-select`} className="p-2 border">
+                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Select</button>
+                        </td>        
+                  )
+                  }
+                    
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination page={page} setPage={setPage} pages={pages}/>
+          </>
+        )}
       </div>
+
     </div>
   );
 }
