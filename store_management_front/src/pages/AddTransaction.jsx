@@ -6,7 +6,7 @@ import CategoryDropdown from "../components/CategoryDropDown";
 export default function AddTransaction() {
 // Step 1: Create state for form fields
   const [formData, setFormData] = useState({
-    type: "",
+    type: null,
     note:"",
     category:"",
     category_id:null,
@@ -15,19 +15,35 @@ export default function AddTransaction() {
   });
   const [TypeOptions,setTypeOptions]=useState([]);
   const [CategoryOptions,setCategoryOptions]=useState([]);
+  const [filteredCategories,setFilteredCategories]=useState([]);
   const [selectedCategory,setSelectedCategory]=useState(null);
+  const [typeChangedFromCategory, setTypeChangedFromCategory] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
   // Step 2: Handle input changes
-  const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({
-          ...prev,
-          [name]: value
-      }));
-  };
+const handleChange = (e) => {
+  const { name, value } = e.target;
+
+  if (name === "type") {
+    setSelectedCategory(null);
+
+    setFormData(prev => ({
+      ...prev,
+      type: value,
+      category: "",
+      category_id: null
+    }));
+
+    return;
+  }
+
+  setFormData(prev => ({
+    ...prev,
+    [name]: value
+  }));
+};
 
   // Step 3: Handle form submission
   const handleSubmit = async (e) => {
@@ -40,7 +56,7 @@ export default function AddTransaction() {
       const result =await addTransaction(formData);
 
       setMessage(result.status);
-      console.log(message);
+      console.log(result.message);
     } catch (err) {
       setError(err.message || "addTransaction failed");
     } finally {
@@ -49,36 +65,46 @@ export default function AddTransaction() {
     // Here you can call an API or do further processing
   }
   useEffect(()=>{
-    let cid= null;
-    if (selectedCategory){
-      console.log(Object.keys(selectedCategory));
-      if (Object.keys(selectedCategory).includes("id")){
-        cid=selectedCategory.id;
-      }else{
-        console.log("selectedCategory does not have id");
-      }
-    }
-    setFormData((prev)=>({
-      ...prev,
-      category:selectedCategory ? selectedCategory.value : "",
-      category_id:cid,
-    }));
-  },[selectedCategory]);
-
-
-  useEffect(()=>{
     console.log(formData);
   },[formData]);
+
   useEffect(()=>{
     getEnumData().then((data)=>{
       console.log(data.transaction_types);
       console.log(data.transaction_categories);
       setTypeOptions(data.transaction_types);
       setCategoryOptions(data.transaction_categories);
+      setFilteredCategories(data.transaction_categories);
     })
   },[]);
+  
+  
+  useEffect(() => {
+    if (!selectedCategory) return;
+
+    setFormData(prev => ({
+      ...prev,
+      category: selectedCategory.value,
+      category_id: selectedCategory.id || null,
+
+      // 🔥 only infer type if it's empty
+      type: prev.type || selectedCategory.type
+    }));
+  }, [selectedCategory]);
 
 
+
+
+  useEffect(() => {
+    if (!formData.type) {
+      setFilteredCategories(CategoryOptions); // show all
+      return;
+    }
+
+    setFilteredCategories(
+      CategoryOptions.filter(cat => cat.type === formData.type)
+    );
+  }, [formData.type, CategoryOptions]);
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg  flex flex-col justify-center items-center gap-5">
@@ -125,7 +151,7 @@ export default function AddTransaction() {
         <div className="w-full">   
             <label htmlFor="category" className="block text-xl  text-gray-700 font-medium">Category:</label>
             <div className="flex justify-center mt-1">
-                <CategoryDropdown options={CategoryOptions} setOptions={setCategoryOptions}
+                <CategoryDropdown options={filteredCategories} setOptions={setFilteredCategories}
                 selected={selectedCategory} setSelected={setSelectedCategory}/>
             </div>
         </div>
