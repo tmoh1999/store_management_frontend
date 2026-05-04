@@ -1,4 +1,4 @@
-import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow } from "./api";
+import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow ,addProduct,addSupplier} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
 export default function DataTable({mode,table_mode="view",TableName="table",
@@ -21,6 +21,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
     const api = {
     products: {
         get: getProducts,
+        add: addProduct,
         update: saveProductRow,
         remove: removeRow,
         profilePath:"/product/profile",
@@ -29,12 +30,14 @@ export default function DataTable({mode,table_mode="view",TableName="table",
     },
     sales: {
         update: null,
+        add: null,
         remove: removeRow,
         profilePath:"/sale/profile",
         rootpath:"/api/sales",
         showDates:true,
     },               
     sale_items: {
+        add: null,
         update: updateSaleItem,
         remove: removeRow,
         profilePath:"/",
@@ -42,6 +45,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         showDates:false,
     },
     purchases: {
+        add:null,
         update: savePurchaseRow,
         remove: removeRow,
         profilePath:"/purchase/profile",
@@ -49,6 +53,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         showDates:true,
     },
     purchase_items: {
+        add:null,
         update: updatePurchaseItem,
         remove: removeRow,
         profilePath:"/",
@@ -56,6 +61,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         showDates:false,
     },
     suppliers: {
+        add: addSupplier,
         update: saveSuppliersRow,
         remove: removeRow,
         profilePath:"/supplier/profile",
@@ -63,6 +69,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         showDates:false,
     },
     transactions: {
+        add:null,
         update: saveTransactionRow,
         remove: removeRow,
         profilePath:"/transaction/profile",
@@ -189,6 +196,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
             columns={rows.columns}
             rootpath={api.rootpath}
             setSelectedRow={setSelectedRow}
+            addRow={api.add}
             removeRow={api.remove}
             saveRow={api.update}
             profilePath={api.profilePath}

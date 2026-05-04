@@ -7,7 +7,7 @@ import Pagination from "./components/Pagination";
 import NoDataFound from "./components/NoDataFound";
 export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",
   rootpath,refreshParent,
-  setSelectedRow,removeRow,saveRow,
+  setSelectedRow,removeRow,saveRow,addRow,
   TableName,options={},setPage,pages=1,page=1,
   search, setSearch,
   sortColumn, setSortColumn,
@@ -74,7 +74,18 @@ const handleClick = async (e,row) => {
        } else if (e.currentTarget.dataset.key=="save"){
        	 
           setEditingRow(null);
-          if (saveRow){
+          if(!row.id) {
+            console.log("no id in saveRow");
+            if(addRow){
+              try {
+                const result = await addRow(row);
+                console.log(result);
+                refreshParent();
+              } catch (err) {
+                console.log(err.message);
+              }
+            }
+          }else if (saveRow){
             try {
                 const result = await saveRow(row);
                 console.log(result);
@@ -111,6 +122,16 @@ const getPages = () => {
     range.push(i);
   }
   return range;
+};
+const addEmptyRow = () => {
+  if (addRow) {
+    const emptyRow = { id: `new-${Date.now()}` };
+    columns.forEach(col => {
+      emptyRow[col.accessor] = "";
+    });
+    setTableData(prev => [...prev,emptyRow]);
+    setEditingRow(emptyRow.id);
+  }
 };
   return (
     <div className=" flex flex-col justify-center items-center w-auto p-3">
@@ -208,6 +229,11 @@ const getPages = () => {
               ))}
             </tbody>
           </table>
+          {addRow && (
+            <div  className="p-1 border">
+              <button  onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
+            </div>
+          )}        
           <Pagination page={page} setPage={setPage} pages={pages}/>
           </>
         )}
