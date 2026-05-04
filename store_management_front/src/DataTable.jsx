@@ -1,4 +1,4 @@
-import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow ,addProduct,addSupplier} from "./api";
+import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
 export default function DataTable({mode,table_mode="view",TableName="table",
@@ -75,7 +75,15 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         profilePath:"/transaction/profile",
         rootpath:"/api/transactions",
         showDates:true,
-    },    
+    }, 
+    customers: {
+        add: addCustomer,
+        update: saveCustomersRow,
+        remove: removeRow,
+        profilePath:"/product/profile",
+        rootpath:"/api/customers",
+        showDates:false,
+    },   
     }[mode]; 
     
     useEffect(() => {
@@ -157,7 +165,13 @@ export default function DataTable({mode,table_mode="view",TableName="table",
       { label: "Name", accessor: "name",edit:false },
       { label: "Purchase Price", accessor: "price",edit:false },
       { label: "Quantity", accessor: "quantity",edit:false },
-    ],        
+    ],  
+    customers:  [
+        { label: "ID", accessor: "id",edit:false },
+        { label: "Name", accessor: "name",edit:true },
+        { label: "Email", accessor: "email",edit:true },
+        { label: "Phone", accessor: "phone",edit:true },
+    ],          
     }[mode];
     const handleChange= (e)=>{
         const x=e.target;

@@ -386,6 +386,30 @@ export function saveSuppliersRow(row) {
   });
 }
 
+export function addCustomer(formData) {
+  return request("/api/customers/add", {
+    method: "POST",
+    body: JSON.stringify({ 
+         name:formData.name, 
+         email:formData.email, 
+         phone:formData.phone, 
+    }),
+  });
+}
+
+
+export function saveCustomersRow(row) {
+  const  path="/api/customers/"+row.id+"/update";
+  return request(path, {
+    method: "POST",
+    body: JSON.stringify({ 
+         name:row.name, 
+         email:row.email, 
+         phone:row.phone, 
+    }),
+  });
+}
+
 export function test(options = {}){
   console.log(options)
   if (Object.keys(options).includes("product_id")){

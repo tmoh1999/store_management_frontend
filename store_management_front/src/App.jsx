@@ -22,6 +22,8 @@ import ProductProfile from "./pages/ProductProfile.jsx";
 import SaleProfile from "./pages/SaleProfile.jsx";
 import PurchaseProfile from "./pages/PurchaseProfile.jsx";
 import SupplierProfile from "./pages/SupplierProfile.jsx";
+import AddCustomer from "./pages/AddCustomer.jsx";
+import Customers from "./pages/Customers.jsx";
 // you will create these pages
 
 export default function App() {
@@ -69,6 +71,9 @@ export default function App() {
 
       <Route path="/addsupplier" element={<ProtectedRoute><AddSupplier /></ProtectedRoute>} />
       <Route path="/supplier/profile" element={<ProtectedRoute><SupplierProfile /></ProtectedRoute>} />
+
+      <Route path="/customers" element={<ProtectedRoute><Customers /></ProtectedRoute>} />
+      <Route path="/addcustomer" element={<ProtectedRoute><AddCustomer /></ProtectedRoute>} />
 
       
       <Route path="/test" element={<ConfirmMessage message="Test Message" />} />
