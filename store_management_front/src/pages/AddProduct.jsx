@@ -9,6 +9,7 @@ export default function AddProduct() {
     name: "",
     barcode:"",
     price:0.0,
+    min_stock_level:10.0,
   });
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
@@ -84,7 +85,10 @@ const [message, setMessage] = useState("");
           <label htmlFor="price" className="block text-sm text-gray-700 font-semibold">Price:</label>
           <input onChange={handleChange} type="number" value={formData.price} id="price" name="price" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
         </div>
-  
+        <div className="mb-4">
+          <label htmlFor="min_stock_level" className="block text-sm text-gray-700 font-semibold">Min Stock Level:</label>
+          <input onChange={handleChange} type="number" value={formData.min_stock_level} id="min_stock_level" name="min_stock_level" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+        </div>
         <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Adding..." : "Add"}</button>
       
       </form>
