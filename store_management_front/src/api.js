@@ -176,7 +176,8 @@ export function updateProduct(formData,path) {
     body: JSON.stringify({ 
          product_price:formData.price, 
          product_brcode:formData.barcode, 
-         product_name:formData.name, 
+         product_name:formData.name,
+         product_min_stock_level:formData.min_stock_level,
     }),
   });
 }
@@ -192,6 +193,7 @@ export function saveProductRow(row) {
          product_price:row.price, 
          product_brcode:row.barcode, 
          product_name:row.name, 
+         product_min_stock_level:row.min_stock_level,
     }),
   });
 }
