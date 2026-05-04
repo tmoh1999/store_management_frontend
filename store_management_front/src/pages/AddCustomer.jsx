@@ -40,7 +40,7 @@ export default function AddCustomer(){
     }    
     return(
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg w-4/5 flex flex-col items-center gap-4 w-fit">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg  flex flex-col items-center gap-4 w-fit">
         {/* Message Box */}
           {message && (
             <div className="bg-green-100 text-green-700 p-2 rounded">{message}</div>
