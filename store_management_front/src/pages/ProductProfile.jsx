@@ -10,7 +10,8 @@ const [productData,setProductData]=useState({
     "id":null,
     "name":"",
     "barcode":"",
-    "quantity":0.0
+    "quantity":0.0,
+    "min_stock_level":10.0,
 });
 useEffect(()=>{
     async function loadData(){
@@ -20,7 +21,8 @@ useEffect(()=>{
             id:result.product_id,
             name:result.product_name,
             barcode:result.product_barcode,
-            quantity:result.product_quantity
+            quantity:result.product_quantity,
+            min_stock_level:result.product_min_stock_level
         }));
     }
     loadData();
@@ -36,6 +38,7 @@ return (
                 <p className="text-lg"><span className="text-xl underline  mr-4">Name:</span>{productData.name}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Barcode:</span>{productData.barcode}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Quantity:</span>{productData.quantity}</p>
+                <p className="text-lg"><span className="text-xl underline mr-4">Min Stock:</span>{productData.min_stock_level}</p>
             </div>
         </div>
         {productData.id &&
