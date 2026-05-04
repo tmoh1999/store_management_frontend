@@ -113,6 +113,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         { label: "Name", accessor: "name",edit:true },
         { label: "Price", accessor: "price",edit:true },
         { label: "Quantity", accessor: "quantity",edit:false },
+        {label: "Min Stock", accessor: "min_stock_level",edit:true },
     ],
     sales:  [
         { label: "ID", accessor: "id",edit:false },

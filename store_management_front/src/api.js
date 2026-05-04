@@ -156,7 +156,8 @@ export function addProduct(formData) {
     body: JSON.stringify({ 
          product_price:formData.price, 
          product_brcode:formData.barcode, 
-         product_name:formData.name, 
+         product_name:formData.name,
+         product_min_stock_level:formData.min_stock_level, 
     }),
   });
 }
