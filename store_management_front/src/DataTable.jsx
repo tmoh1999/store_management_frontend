@@ -16,7 +16,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
     const [totalPages,setTotalPages]=useState(1);
     const [search, setSearch] = useState("");
     const [sortColumn, setSortColumn] = useState("__default__");
-    const [sortOrder, setSortOrder] = useState("asc");    
+    const [sortOrder, setSortOrder] = useState("desc");    
     // 1️⃣ API MAPPING BASED ON MODE
     const api = {
     products: {
