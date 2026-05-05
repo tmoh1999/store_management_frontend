@@ -10,17 +10,20 @@ const [saleData,setSaleData]=useState({
     "id":null,
     "date":"",
     "total":"",
-    "status":""
+    "status":"",
+    "customer":""
 });
 useEffect(()=>{
     async function loadData(){
         const result= await apiGet("/api/sales/search",{"sale_id":state.profile_id});
+        console.log(result)
         setSaleData(prev => ({
             ...prev,
             id:result.sale_id,
             date:result.sale_date,
             total:result.total_amount,
-            status:result.status
+            status:result.status,
+            customer:result.customer
         }));
     }
     loadData();
@@ -36,6 +39,7 @@ return (
                 <p className="text-lg"><span className="text-xl underline  mr-4">Date:</span>{saleData.date}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Total:</span>{saleData.total}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Status:</span>{saleData.status}</p>
+                <p className="text-lg"><span className="text-xl underline mr-4">Customer:</span>{saleData.customer}</p>
             </div>
         </div>
         {saleData.id &&
