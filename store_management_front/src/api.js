@@ -215,6 +215,18 @@ export function addSale() {
   return request("/api/sales/add");
 }
 
+export function updateSale(sale_id,customer_id) {
+	
+  const  path="/api/sales/"+sale_id+"/update";
+  return request(path,{
+  method:"POST",
+  body:JSON.stringify({
+  	      customer_id:customer_id ,
+         }),
+  });
+  
+}
+
 export function getSales() {
   return request("/api/sales/list");
 }
