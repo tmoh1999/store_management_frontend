@@ -10,6 +10,8 @@ const [saleData,setSaleData]=useState({
     "id":null,
     "date":"",
     "total":"",
+    "total_discount":"",
+    "final_amount":"",
     "status":"",
     "customer":""
 });
@@ -22,6 +24,8 @@ useEffect(()=>{
             id:result.sale_id,
             date:result.sale_date,
             total:result.total_amount,
+            total_discount:result.total_discount,
+            final_amount:result.final_amount,
             status:result.status,
             customer:result.customer
         }));
@@ -38,6 +42,8 @@ return (
                 </div>
                 <p className="text-lg"><span className="text-xl underline  mr-4">Date:</span>{saleData.date}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Total:</span>{saleData.total}</p>
+                <p className="text-lg"><span className="text-xl underline mr-4">Discounts:</span>{saleData.total_discount}</p>
+                <p className="text-lg"><span className="text-xl underline mr-4">Final Amount:</span>{saleData.final_amount}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Status:</span>{saleData.status}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Customer:</span>{saleData.customer}</p>
             </div>
