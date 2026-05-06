@@ -18,6 +18,7 @@ useState({
     description: "",
     quantity: 1,
     price:0.0,
+    discount:0.0,
   })
   :
 useState({
@@ -62,6 +63,8 @@ const columns= {
       { label: "Barcode", accessor: "barcode",edit:false },
       { label: "Name", accessor: "name",edit:false },
       { label: "Unit Price", accessor: "price",edit:true },
+      { label: "Discount", accessor: "discount",edit:true },
+      { label: "Final Price", accessor: "final_price",edit:false },
       { label: "Quantity", accessor: "quantity",edit:true },
       { label: "Description", accessor: "description",edit:true },
     ],
@@ -140,17 +143,17 @@ useEffect(() => {
     });
 }, [reload, page]);
 const changeProduct=(row)=>{
-console.log("ssss");
-console.log(row);
-console.log("ssss");
-setFormData(prev => ({
-...prev,
-product_id:row.id,
-name:row.name,
-barcode:row.barcode,
-price:row.price,
-}));
-setOpenSelectMenu(false);
+  console.log("ssss");
+  console.log(row);
+  console.log("ssss");
+  setFormData(prev => ({
+    ...prev,
+    product_id:row.id,
+    name:row.name,
+    barcode:row.barcode,
+    price:row.price,
+  }));
+  setOpenSelectMenu(false);
 };
 
 const startScanning = () => {
@@ -158,7 +161,7 @@ const startScanning = () => {
 };
 const onDetected = async (code)=> {
   console.log("code:::"+code);
-  //setFormData({ ...formData, barcode: code });
+  
   setShowScanner(false);
   try{
     const result=await searchProduct("barcode",code)
@@ -198,6 +201,7 @@ return (
                       <th className="p-3 cursor-pointer border">Description</th>
                     }  
                     <th className="p-3 cursor-pointer border">Price</th>
+                    <th className="p-3 cursor-pointer border">Discount</th>
                     <th className="p-3 cursor-pointer border">Quantity</th>
   </tr>
 </thead>
@@ -215,6 +219,7 @@ return (
                       <TableCell Editable={true} val={formData.description} type="text" name="description" onChanged={handleChange}/>
                     }    
                     <TableCell Editable={true} val={formData.price} type="number" name="price" onChanged={handleChange}/>
+                    <TableCell Editable={true} val={formData.discount} type="number" name="discount" onChanged={handleChange}/>
                     <TableCell Editable={true} val={formData.quantity} type="number" name="quantity" onChanged={handleChange}/>
     </tr>
 </tbody>
