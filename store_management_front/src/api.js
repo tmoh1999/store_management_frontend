@@ -239,6 +239,7 @@ export function addSaleItem(formData,sale_id,product_id) {
           product_id:product_id,
           price:formData.price ,
           discount:formData.discount ,
+          discount_type:formData.discount_type,
           description:formData.description,
           quantity:formData.quantity,
         }),
@@ -267,6 +268,7 @@ export function updateSaleItem(row) {
            price:row.price ,
            description:row.description,
            discount:row.discount ,
+           discount:row.discount_type ,
            quantity:row.quantity,
          }),
   });

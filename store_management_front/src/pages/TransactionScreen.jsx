@@ -19,6 +19,7 @@ useState({
     quantity: 1,
     price:0.0,
     discount:0.0,
+    discount_type:"percentage",
   })
   :
 useState({
@@ -64,6 +65,7 @@ const columns= {
       { label: "Name", accessor: "name",edit:false },
       { label: "Unit Price", accessor: "price",edit:true },
       { label: "Discount", accessor: "discount",edit:true },
+      { label: "Discount Type", accessor: "discount_type",edit:true },
       { label: "Final Price", accessor: "final_price",edit:false },
       { label: "Quantity", accessor: "quantity",edit:true },
       { label: "Description", accessor: "description",edit:true },
@@ -197,12 +199,22 @@ return (
                     <th></th>
                     <th className="p-3 cursor-pointer border">Name</th>
                     <th className="p-3 cursor-pointer border">Barcode</th>
-                    {mode=="sale" &&
-                      <th className="p-3 cursor-pointer border">Description</th>
-                    }  
                     <th className="p-3 cursor-pointer border">Price</th>
-                    <th className="p-3 cursor-pointer border">Discount</th>
                     <th className="p-3 cursor-pointer border">Quantity</th>
+                    {mode=="sale" &&
+                      (
+                        <>
+
+                          <th className="p-3 cursor-pointer border">Discount</th>
+                          <th className="p-3 cursor-pointer border">Discount Type</th>                    
+                          <th className="p-3 cursor-pointer border">Description</th>
+                        
+                        </>
+                      )
+                    }  
+                    
+
+                    
   </tr>
 </thead>
 
@@ -215,12 +227,20 @@ return (
                     </td>
                     <TableCell Editable={false} val={formData.name}/>
                     <TableCell Editable={false} val={formData.barcode}/>
-                    {mode=="sale" &&
-                      <TableCell Editable={true} val={formData.description} type="text" name="description" onChanged={handleChange}/>
-                    }    
                     <TableCell Editable={true} val={formData.price} type="number" name="price" onChanged={handleChange}/>
-                    <TableCell Editable={true} val={formData.discount} type="number" name="discount" onChanged={handleChange}/>
                     <TableCell Editable={true} val={formData.quantity} type="number" name="quantity" onChanged={handleChange}/>
+                    {mode=="sale" &&
+                      (
+                        <>
+                        <TableCell Editable={true} val={formData.discount} type="number" name="discount" onChanged={handleChange}/>
+                        <TableCell Editable={true} val={formData.discount_type} type="text" name="discount_type" onChanged={handleChange}/>
+                        <TableCell Editable={true} val={formData.description} type="text" name="description" onChanged={handleChange}/>
+                        </>
+                      )
+                    }    
+                    
+                    
+                    
     </tr>
 </tbody>
 </table>
