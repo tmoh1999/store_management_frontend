@@ -233,7 +233,15 @@ return (
                       (
                         <>
                         <TableCell Editable={true} val={formData.discount} type="number" name="discount" onChanged={handleChange}/>
-                        <TableCell Editable={true} val={formData.discount_type} type="text" name="discount_type" onChanged={handleChange}/>
+                        <td className="p-1 border">
+                          <select id="type" name="discount_type" 
+                          className="bg-blue-200  w-full text-xl  rounded-lg shadow-lg text-center" 
+                          value={formData.discount_type} onChange={handleChange}>
+                              <option value="percentage">Percentage</option>
+                              <option value="per_item">Per_Item</option>
+                              <option value="fixed">Fixed</option>
+                          </select> 
+                        </td>                       
                         <TableCell Editable={true} val={formData.description} type="text" name="description" onChanged={handleChange}/>
                         </>
                       )
