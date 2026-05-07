@@ -268,7 +268,7 @@ export function updateSaleItem(row) {
            price:row.price ,
            description:row.description,
            discount:row.discount ,
-           discount:row.discount_type ,
+           discount_type:row.discount_type ,
            quantity:row.quantity,
          }),
   });
