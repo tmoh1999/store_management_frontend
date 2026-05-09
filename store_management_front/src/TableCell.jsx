@@ -10,7 +10,7 @@ export default function TableCell({ Editable, val, type = "text", onChanged, nam
           onChange={onChanged}
         />
       ) : (
-        val
+        <p className="text-center">{val}</p>
       )}
     </td>
   );
