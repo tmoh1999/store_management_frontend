@@ -25,7 +25,8 @@ useState({
 useState({
     product_id:null,
     barcode:"",
-    name:"",  
+    name:"", 
+    latest_purchase_price:"??", 
     quantity: 1,
     price:0.0,
   })
@@ -157,6 +158,19 @@ const changeProduct=(row)=>{
   }));
   setOpenSelectMenu(false);
 };
+useEffect (()=>{
+  if (mode=="purchase"){
+    apiGet("/api/products/latest_purchase_price",{product_id:formData.product_id})
+    .then(result => {
+      console.log(result);
+      setFormData(prev =>({
+        ...prev,
+        latest_purchase_price:(result.success && result.purchase_price>0)? String(result.purchase_price) : "??",
+      }));
+
+    })
+  }
+},[formData.product_id]);
 
 const startScanning = () => {
   setShowScanner(true);
@@ -199,6 +213,15 @@ return (
                     <th></th>
                     <th className="p-3 cursor-pointer border">Name</th>
                     <th className="p-3 cursor-pointer border">Barcode</th>
+                    {mode=="purchase" &&
+                      (
+                        <>
+
+                          <th className="p-3 cursor-pointer border">Latest Purchase</th>
+                        
+                        </>
+                      )
+                    }  
                     <th className="p-3 cursor-pointer border">Price</th>
                     <th className="p-3 cursor-pointer border">Quantity</th>
                     {mode=="sale" &&
@@ -227,6 +250,13 @@ return (
                     </td>
                     <TableCell Editable={false} val={formData.name}/>
                     <TableCell Editable={false} val={formData.barcode}/>
+                    {
+                      mode=="purchase" && (
+                        <>
+                          <TableCell Editable={false} val={formData.latest_purchase_price}/>
+                        </>
+                      )
+                    }
                     <TableCell Editable={true} val={formData.price} type="number" name="price" onChanged={handleChange}/>
                     <TableCell Editable={true} val={formData.quantity} type="number" name="quantity" onChanged={handleChange}/>
                     {mode=="sale" &&
