@@ -134,6 +134,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
     sales:  [
         { label: "ID", accessor: "id",edit:false },
         { label: "Date", accessor: "date",edit:false },
+        { label: "Receipt N°", accessor: "receipt_number",edit:false },
         { label: "Total", accessor: "total",edit:false },
         { label: "Discounts", accessor: "total_discount",edit:false },
         { label: "Final Amount", accessor: "final_amount",edit:false },

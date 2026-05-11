@@ -26,10 +26,7 @@ export default function AddRefund(){
       setLoading(true);
 
       try {
-        console.log("formData");
-          console.log(formData);
           const result =await addRefund(formData);
-          
           result.success ? setMessage(result.message): setError(result.message) ;
           console.log(result.message);
       } catch (err) {
