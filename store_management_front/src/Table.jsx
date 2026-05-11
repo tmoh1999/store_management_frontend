@@ -41,7 +41,7 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   };
   
   const handleConfirmDelete = async () => {
-    if (!deletePath || !removeRow) return;
+    if (!deletePath) return;
     const result = await removeRow(deletePath);
     console.log(result.status);
     setDeletePath("");
@@ -59,12 +59,11 @@ const handleClick = async (e,row) => {
 			setEditingRow(row.id);
        }else  if (e.currentTarget.dataset.key=="remove"){
              
-             	
-             	setShowConfirm(true);
-                 
+             	if(removeRow){
+             	   setShowConfirm(true);
                  setDeletePath(path);
                  console.log(confimed);
-              
+              }
        } else if (e.currentTarget.dataset.key=="view"){
             navigate(profilePath,{
               state:{
