@@ -85,7 +85,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         showDates:false,
     },   
     refunds: {
-        add: addRefund,
+        add: null,
         update: updateRefund,
         remove: removeRow,
         profilePath:"/",
