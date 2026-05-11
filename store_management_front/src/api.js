@@ -426,6 +426,57 @@ export function saveCustomersRow(row) {
   });
 }
 
+//REFUNDS
+
+export function addRefund(formData) {
+  return request("/api/refunds/add", {
+    method: "POST",
+    body: JSON.stringify({ 
+         receipt_number:formData.receipt_number,
+         reason:formData.reason,
+    }),
+  });
+}
+export function updateRefund(row) {
+  const  path="/api/refunds/"+row.id+"/update";  
+  return request(path, {
+    method: "POST",
+    body: JSON.stringify({ 
+         reason:row.reason,
+    }),
+  });
+}
+
+export function confirmRefund(refund_id) {
+  const path="/api/refunds/"+refund_id+"/confirm";
+  return request(path);
+}
+
+//REFUND ITEMS
+export function addRefundItem(formData) {
+  return request("/api/refunds/items/add", {
+    method: "POST",
+    body: JSON.stringify({ 
+         refund_id:formData.refund_id,
+         sale_item_id:formData.sale_item_id,
+         amount:formData.amount,
+         quantity:formData.quantity,         
+    }),
+  });
+}
+
+
+export function updateRefundItem(formData) {
+  return request("/api/refunds/items/update", {
+    method: "POST",
+    body: JSON.stringify({ 
+         refund_item_id:formData.refund_item_id,
+         amount:formData.amount,
+         quantity:formData.quantity,         
+    }),
+  });
+}
+
 export function test(options = {}){
   console.log(options)
   if (Object.keys(options).includes("product_id")){
