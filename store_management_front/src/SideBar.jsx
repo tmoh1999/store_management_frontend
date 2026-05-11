@@ -1,5 +1,6 @@
 import { NavLink ,useNavigate} from "react-router-dom";
-import { LayoutDashboard , Package, ShoppingCart, Receipt, Menu ,LogOut,PackageOpen ,UserRoundPen,ContactRound } from "lucide-react";
+import { LayoutDashboard , Package, ShoppingCart, Receipt, Menu ,LogOut,
+  PackageOpen ,UserRoundPen,ContactRound,RotateCcw } from "lucide-react";
 import { useState } from "react";
 export default function Sidebar() {
   const [open, setOpen] = useState(true);
@@ -9,7 +10,7 @@ export default function Sidebar() {
       ${open ? "w-64 fixed left-0 top-0 z-50" : "w-20 relative"}`}>
       
       {/* Top */}
-      <div className="flex items-center justify-between mb-10">
+      <div className="flex items-center justify-between mb-6">
       {open &&
         <h1 className={`text-2xl font-bold`}>
           My App
@@ -21,11 +22,11 @@ export default function Sidebar() {
       </div>
 
       {/* Links */}
-      <div className="flex flex-col  gap-4">
+      <div className="flex flex-col  gap-3">
        <NavLink
           to="/dashboard"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
@@ -37,7 +38,7 @@ export default function Sidebar() {
         <NavLink
           to="/products"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
@@ -48,7 +49,7 @@ export default function Sidebar() {
         <NavLink
           to="/sales"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
@@ -59,7 +60,7 @@ export default function Sidebar() {
         <NavLink
           to="/purchases"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
@@ -69,17 +70,17 @@ export default function Sidebar() {
         <NavLink
           to="/refunds"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
-          <Receipt size={22} />
+          <RotateCcw size={22} />
           {open && <span>Refunds</span>}
         </NavLink>
         <NavLink
           to="/transactions"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
@@ -90,7 +91,7 @@ export default function Sidebar() {
         <NavLink
           to="/suppliers"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
@@ -100,7 +101,7 @@ export default function Sidebar() {
         <NavLink
           to="/customers"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
@@ -111,7 +112,7 @@ export default function Sidebar() {
      <NavLink
           to="/logout"
           className={({ isActive }) =>
-            `flex items-center gap-3 p-3 rounded-lg transition
+            `flex items-center gap-2 p-3 rounded-lg transition
             ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
           }
         >
