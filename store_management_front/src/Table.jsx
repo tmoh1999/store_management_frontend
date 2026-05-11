@@ -41,7 +41,7 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   };
   
   const handleConfirmDelete = async () => {
-    if (!deletePath) return;
+    if (!deletePath || !removeRow) return;
     const result = await removeRow(deletePath);
     console.log(result.status);
     setDeletePath("");
