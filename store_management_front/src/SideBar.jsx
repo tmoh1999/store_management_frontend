@@ -66,7 +66,16 @@ export default function Sidebar() {
           <PackageOpen size={22} />
           {open && <span>Purchases</span>}
         </NavLink>
-
+        <NavLink
+          to="/refunds"
+          className={({ isActive }) =>
+            `flex items-center gap-3 p-3 rounded-lg transition
+            ${isActive ? "bg-gray-700" : "hover:bg-gray-800"}`
+          }
+        >
+          <Receipt size={22} />
+          {open && <span>Refunds</span>}
+        </NavLink>
         <NavLink
           to="/transactions"
           className={({ isActive }) =>
@@ -77,6 +86,7 @@ export default function Sidebar() {
           <Receipt size={22} />
           {open && <span>Transactions</span>}
         </NavLink>
+
         <NavLink
           to="/suppliers"
           className={({ isActive }) =>
