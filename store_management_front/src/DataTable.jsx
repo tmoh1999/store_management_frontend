@@ -1,4 +1,4 @@
-import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund} from "./api";
+import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund, updateRefundItem} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
 export default function DataTable({mode,table_mode="view",TableName="table",
@@ -91,7 +91,15 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         profilePath:"/",
         rootpath:"/api/refunds",
         showDates:true,
-    },       
+    },  
+    refund_items: {
+        add:null,
+        update: updateRefundItem,
+        remove: removeRow,
+        profilePath:"/",
+        rootpath:"/api/refunds/items",
+        showDates:false,
+    },         
     }[mode]; 
     
     useEffect(() => {
@@ -193,7 +201,12 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         { label: "Amount", accessor: "amount",edit:true },
         { label: "Status", accessor: "status",edit:true },
         { label: "Reason", accessor: "reason",edit:true },
-    ],           
+    ],
+    refund_items:  [
+        { label: "ID", accessor: "id",edit:false},
+        { label: "Amount", accessor: "amount",edit:true },
+        { label: "Quantity", accessor: "quantity",edit:true },
+    ],               
     }[mode];
     const handleChange= (e)=>{
         const x=e.target;

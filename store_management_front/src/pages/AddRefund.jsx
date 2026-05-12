@@ -1,5 +1,6 @@
-import { useState } from "react";
-import {addRefund} from "../api"
+import { useState} from "react";
+import {addRefund} from "../api";
+import { useNavigate } from "react-router-dom";
 export default function AddRefund(){
     const [formData,setFormData]=useState({
         receipt_number:"",
@@ -8,7 +9,7 @@ export default function AddRefund(){
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
-
+    const navigate=useNavigate();
 
     const handleChange=(e) => {
         const { name, value } = e.target;
@@ -29,6 +30,14 @@ export default function AddRefund(){
           const result =await addRefund(formData);
           result.success ? setMessage(result.message): setError(result.message) ;
           console.log(result.message);
+          if (result.success){
+            navigate("/refundscreen",{
+              state:{
+                refund_id:result.id,
+                sale_id:result.sale_id,
+              }
+            });
+        }
       } catch (err) {
           setError(err.message || "addRefund failed");
       } finally {

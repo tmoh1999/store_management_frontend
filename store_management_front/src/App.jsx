@@ -27,6 +27,7 @@ import Customers from "./pages/Customers.jsx";
 import CustomerProfile from "./pages/CostumerProfile.jsx";
 import Refunds from "./pages/Refunds.jsx";
 import AddRefund from "./pages/AddRefund.jsx";
+import RefundScreen from "./pages/RefundScreen.jsx";
 // you will create these pages
 
 export default function App() {
@@ -81,6 +82,7 @@ export default function App() {
 
       <Route path="/refunds" element={<ProtectedRoute><Refunds /></ProtectedRoute>} />
       <Route path="/addrefund" element={<ProtectedRoute><AddRefund /></ProtectedRoute>} />
+      <Route path="/refundscreen" element={<ProtectedRoute><RefundScreen /></ProtectedRoute>} />
 
 
       <Route path="/test" element={<ConfirmMessage message="Test Message" />} />

@@ -6,6 +6,7 @@ import { downloadFile } from "./api";
 import Pagination from "./components/Pagination";
 import NoDataFound from "./components/NoDataFound";
 export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",
+  SelectName="Select",
   rootpath,refreshParent,
   setSelectedRow,removeRow,saveRow,addRow,
   TableName,options={},setPage,pages=1,page=1,
@@ -219,7 +220,7 @@ const addEmptyRow = () => {
                     )
                   ):(
                         <td  key={`${row.id}-select`} className="p-2 border">
-                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Select</button>
+                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">{SelectName}</button>
                         </td>        
                   )
                   }

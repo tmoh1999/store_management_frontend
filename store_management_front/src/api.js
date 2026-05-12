@@ -459,8 +459,8 @@ export function addRefundItem(formData) {
     body: JSON.stringify({ 
          refund_id:formData.refund_id,
          sale_item_id:formData.sale_item_id,
-         amount:formData.amount,
-         quantity:formData.quantity,         
+         amount:formData.refund_amount,
+         quantity:formData.refund_quantity,         
     }),
   });
 }
@@ -470,7 +470,7 @@ export function updateRefundItem(formData) {
   return request("/api/refunds/items/update", {
     method: "POST",
     body: JSON.stringify({ 
-         refund_item_id:formData.refund_item_id,
+         refund_item_id:formData.id,
          amount:formData.amount,
          quantity:formData.quantity,         
     }),
