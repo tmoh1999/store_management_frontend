@@ -1,8 +1,7 @@
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import { apiGet} from "../api";
 import { useEffect, useState } from "react";
 import DataTable from "../DataTable";
-
 export default function SaleProfile(){
 const {state}=useLocation();
 const [reload,setReload]=useState(false);
@@ -15,6 +14,7 @@ const [saleData,setSaleData]=useState({
     "status":"",
     "customer":""
 });
+const navigate=useNavigate();
 useEffect(()=>{
     async function loadData(){
         const result= await apiGet("/api/sales/search",{"sale_id":state.id});
@@ -33,12 +33,31 @@ useEffect(()=>{
     loadData();
 
 },[state,reload]);
+
+const handleClick=()=>{
+    if (saleData.status=="incomplete"){
+            navigate("/sales",{
+              state:{
+                id:saleData.id,
+              }
+            });
+
+    }
+}
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
         <div className="flex justify-center">
             <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
                     <h1 className="font-semibold text-2xl">Sale Data:</h1>
+                    {saleData?.status=="incomplete" && (
+                        <button className="ml-3 p-1 mb-2 text-xl bg-green-600 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
+                            onClick={handleClick}
+                            >
+                            Continue Sale
+                        </button>                    
+                        )
+                    }
                 </div>
                 <p className="text-lg"><span className="text-xl underline  mr-4">Date:</span>{saleData.date}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Total:</span>{saleData.total}</p>

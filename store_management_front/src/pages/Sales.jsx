@@ -5,6 +5,7 @@ import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 import DataTable from "../DataTable";
 export default function Sales() {
+const {state}=useLocation();
 const [sale_id,setSaleId]=useState(0)
 const [customerSelected,setCustomerSelected]=useState(null);
 const [openCustomerSelectMenu,setOpenCustomerSelectMenu]=useState(false);
@@ -32,6 +33,12 @@ useEffect(() => {
 
 
 },[sale_id]);
+
+useEffect(() => {
+  if(state?.id){
+    setSaleId(state.id);
+  }
+},[state]);
  
 useEffect(()=>{
   if(customerSelected?.id){
