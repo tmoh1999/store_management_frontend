@@ -15,7 +15,7 @@ const [purchaseData,setPurchaseData]=useState({
 });
 useEffect(()=>{
     async function loadData(){
-        const result= await apiGet("/api/purchases/search",{"purchase_id":state.profile_id});
+        const result= await apiGet("/api/purchases/search",{"purchase_id":state.id});
         setPurchaseData(prev => ({
             ...prev,
             id:result.purchase_id,

@@ -17,7 +17,7 @@ const [saleData,setSaleData]=useState({
 });
 useEffect(()=>{
     async function loadData(){
-        const result= await apiGet("/api/sales/search",{"sale_id":state.profile_id});
+        const result= await apiGet("/api/sales/search",{"sale_id":state.id});
         console.log(result)
         setSaleData(prev => ({
             ...prev,

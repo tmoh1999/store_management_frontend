@@ -5,7 +5,7 @@ import ConfirmMessage from "./confirmMessage"
 import { downloadFile } from "./api";
 import Pagination from "./components/Pagination";
 import NoDataFound from "./components/NoDataFound";
-export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",
+export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",profileKeys=[],
   SelectName="Select",
   rootpath,refreshParent,
   setSelectedRow,removeRow,saveRow,addRow,
@@ -66,11 +66,15 @@ const handleClick = async (e,row) => {
                  console.log(confimed);
               }
        } else if (e.currentTarget.dataset.key=="view"){
+          let state={}
+          for(let col of profileKeys){
+            state[col]=row[col];
+          }
+          if(profilePath){           
             navigate(profilePath,{
-              state:{
-                profile_id:row.id
-              }
+              state:state
             });
+         }
        } else if (e.currentTarget.dataset.key=="save"){
        	 
           setEditingRow(null);

@@ -14,7 +14,7 @@ const [supplierData,setSupplierData]=useState({
 });
 useEffect(()=>{
     async function loadData(){
-        const result= await apiGet("/api/suppliers/search",{"supplier_id":state.profile_id});
+        const result= await apiGet("/api/suppliers/search",{"supplier_id":state.id});
         setSupplierData(prev => ({
             ...prev,
             id:result.supplier_id,
