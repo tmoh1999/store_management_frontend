@@ -1,9 +1,10 @@
-import {addRefundItem, apiGet} from "../api"
+import {addRefundItem, apiGet,confirmRefund,removeRow} from "../api"
 import Table from "../Table";
 import { useEffect ,useState} from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation ,useNavigate } from "react-router-dom";
 import DataTable from "../DataTable";
 export default function RefundScreen(){
+const navigate=useNavigate();
 const {state}=useLocation();
 const [tabledata,setTableData]=useState({
     columns:[
@@ -74,7 +75,14 @@ useEffect(()=>{
       console.log(result.message);
 
       result.success? setMessage(result.message) : setError(result.message)
-      setOpenRefundEdit(false);  
+      if(result?.success){
+        setMessage(result.message);
+        setError("");
+        setOpenRefundEdit(false);  
+      }else{
+        setError(result.message);
+        setMessage("");
+      }
     } catch (err) {
       setError(err.message || "addRefundItem failed");
     } finally {
@@ -103,6 +111,38 @@ const handleChange=(e) => {
         [name]:value
     }));
 };
+
+const CancelClick = async () => {
+   try {
+       if (formData?.refund_id){
+        const path="/api/refunds/"+formData.refund_id+"/remove";
+        const result=await removeRow(path);
+        if(result?.success){
+            // redirect to /refunds
+            navigate("/refunds");
+        }
+       }
+       
+   }catch(err){
+       console.log(err);
+   }
+};
+
+const ConfirmClick = async () => {
+   try {
+       if (formData?.refund_id){
+        const result=await confirmRefund(formData.refund_id); 
+        if(result?.success){
+            // redirect to /refunds
+            navigate("/refunds");
+        }        
+       }
+       
+   }catch(err){
+       console.log(err);
+   }
+};
+
 return (
 <div>
     {!openRefundEdit? (
@@ -120,7 +160,15 @@ return (
                 refreshParent={() =>{
                     setReload(prev => !prev);
                 }}/>
+            <div className=" flex justify-center mt-8">
+                <button className="mr-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
+                onClick={ConfirmClick}
+                >💾 Confirm</button>
 
+                <button className="ml-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-red-500 hover:bg-red-600 "
+                onClick={CancelClick}
+                >❌ Cancel</button>
+            </div>
             {formData.refund_id && 
                 (    
                     <DataTable
