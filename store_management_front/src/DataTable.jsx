@@ -197,6 +197,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
       { label: "Name", accessor: "name",edit:false },
       { label: "Purchase Price", accessor: "price",edit:false },
       { label: "Quantity", accessor: "quantity",edit:false },
+      { label: "Remain Quantity", accessor: "remain_quantity",edit:false },
     ],  
     customers:  [
         { label: "ID", accessor: "id",edit:false },
