@@ -4,7 +4,9 @@ import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 import StartPurchase from "./StartPurchase";
 import DataTable from "../DataTable";
+import {useLocation} from "react-router-dom";
 export default function Purchases() {
+  const {state}=useLocation();
 const [purchase_id,setPurchaseId]=useState(0)
 const [openStartPurchase,setOpenStartPurchase]=useState(false);
 const [reload,setReload]=useState(false);
@@ -12,6 +14,11 @@ const handleClick=  () => {
   setOpenStartPurchase(true);
 };
 
+useEffect(() => {
+  if(state?.id){
+    setPurchaseId(state.id);
+  }
+},[state]);
 
 
 useEffect(() => {

@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom";
+import { useLocation ,useNavigate} from "react-router-dom";
 import { apiGet} from "../api";
 import { useEffect, useState } from "react";
 import DataTable from "../DataTable";
@@ -13,6 +13,7 @@ const [purchaseData,setPurchaseData]=useState({
     "status":"",
     "description":""
 });
+const navigate=useNavigate();
 useEffect(()=>{
     async function loadData(){
         const result= await apiGet("/api/purchases/search",{"purchase_id":state.id});
@@ -28,12 +29,31 @@ useEffect(()=>{
     loadData();
 
 },[state,reload]);
+
+const handleClick=()=>{
+    if (purchaseData.status=="draft"){
+            navigate("/purchases",{
+              state:{
+                id:purchaseData.id,
+              }
+            });
+
+    }
+}
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
         <div className="flex justify-center">
             <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
                     <h1 className="font-semibold text-2xl">Description Data:</h1>
+                    {purchaseData?.status=="draft" && (
+                        <button className="ml-3 p-1 mb-2 text-xl bg-green-600 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
+                            onClick={handleClick}
+                            >
+                            Continue Purchase
+                        </button>                    
+                        )
+                    }
                 </div>
                 <p className="text-lg"><span className="text-xl underline  mr-4">Date:</span>{purchaseData.date}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Total:</span>{purchaseData.total}</p>
