@@ -128,7 +128,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         apiGet(api.rootpath,op)
     .then(result => {
              
-            console.log(result.total_pages);
+            console.log(result);
 
             
             setRows(prev => ({

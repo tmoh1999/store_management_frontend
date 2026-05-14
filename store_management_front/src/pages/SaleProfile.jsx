@@ -35,7 +35,7 @@ useEffect(()=>{
 },[state,reload]);
 
 const handleClick=()=>{
-    if (saleData.status=="incomplete"){
+    if (saleData.status=="draft"){
             navigate("/sales",{
               state:{
                 id:saleData.id,
@@ -50,7 +50,7 @@ return (
             <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
                     <h1 className="font-semibold text-2xl">Sale Data:</h1>
-                    {saleData?.status=="incomplete" && (
+                    {saleData?.status=="draft" && (
                         <button className="ml-3 p-1 mb-2 text-xl bg-green-600 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
                             onClick={handleClick}
                             >
