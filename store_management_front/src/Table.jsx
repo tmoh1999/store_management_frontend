@@ -21,6 +21,7 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   const [deletePath,setDeletePath]=useState("");
   const [pendingEdits, setPendingEdits] = useState({});
   const [newRows, setNewRows] = useState([]);  
+  const [error, setError] = useState("");
   const getRowValue = (row, accessor) => {
       return pendingEdits[row.id]?.[accessor] ?? row[accessor];
   };
@@ -37,12 +38,19 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   
   const handleConfirmDelete = async () => {
     if (!deletePath) return;
-    const result = await removeRow(deletePath);
-    console.log(result.status);
-    setDeletePath("");
-    setConfirmed(false);
-    refreshParent();
-    setShowConfirm(false);
+      try{    
+        const result = await removeRow(deletePath);
+        console.log(result.status);
+        setDeletePath("");
+        setConfirmed(false);
+        refreshParent();
+        setShowConfirm(false);
+      }catch(err){
+        setError(err.message);
+        setShowConfirm(false);
+        setDeletePath("");
+        setConfirmed(false);
+      }
 };
 const handleChange = (e, row) => {
     const { name, value } = e.target;
@@ -91,7 +99,7 @@ const handleClick = async (e,row) => {
                 setNewRows(prev => prev.filter(r => r.id !== row.id));
                 refreshParent();
               } catch (err) {
-                console.log(err.message);
+                setError(err.message);
               }
             }
           }else if (saveRow){
@@ -99,7 +107,7 @@ const handleClick = async (e,row) => {
                 const result = await saveRow(editedRow);
                 refreshParent();
               } catch (err) {
-                console.log(err.message);
+                setError(err.message);
               }
           }
        } else if(e.currentTarget.dataset.key=="select"){
@@ -126,6 +134,12 @@ const addEmptyRow = () => {
       }
       <div className="w-fit min-w-full">
         <div className="flex flex-col">
+            {error && (
+                <div className="bg-red-100 text-red-700 p-2 rounded mb-3">
+                    {error}
+                    <button onClick={() => setError("")} className="ml-3 font-bold">✕</button>
+                </div>
+            )}
             <div className="flex w-full justify-end mb-2 ml-5">
               <button
                       className="p-2 mr-5 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
