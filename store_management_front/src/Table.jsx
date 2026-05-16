@@ -7,7 +7,7 @@ import Pagination from "./components/Pagination";
 import NoDataFound from "./components/NoDataFound";
 export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",profileKeys=[],
   SelectName="Select",
-  rootpath,refreshParent,
+  rootpath,refreshParent,loading=false,
   setSelectedRow,removeRow,saveRow,addRow,
   TableName,options={},setPage,pages=1,page=1,
   search, setSearch,
@@ -165,7 +165,10 @@ const addEmptyRow = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {data.length === 0 ? (
+
+        {loading ? (
+          <div className="text-center p-6 text-gray-700 font-bold">Loading...</div> 
+        ): data.length === 0 ? (
           <NoDataFound message="No records found." />
         ) : (
           <>

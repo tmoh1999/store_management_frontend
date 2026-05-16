@@ -5,6 +5,7 @@ import { useState,useEffect } from "react";
 export default function DataTable({mode,table_mode="view",TableName="table",
     setSelectedRow,getOptions,refreshParent2=()=>{}}){
     const [reload,setReload]=useState(false);
+    const [loading, setLoading] = useState(false);
     const [rows,setRows]=useState({
       columns: [],
       data: []
@@ -192,29 +193,33 @@ export default function DataTable({mode,table_mode="view",TableName="table",
     }[mode];
   
     useEffect(() => {
-    console.log("sortColumn:",sortColumn,"sortOrder:",sortOrder);
-    const op=
-        api.showDates?     
-        {
-            ...getOptions,
-            start_date:dateRange.start_date,
-            end_date:dateRange.end_date,
-            page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search
-        }
-        :
-        {...getOptions,page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search}
-    ;
-        apiGet(api.rootpath,op)
-    .then(result => {
-             
-            console.log(result);    
-            setRows(prev => ({
-                ...prev,
-                columns: columns,
-                data: result.results
-            }));
-            setTotalPages(result.total_pages);
-            refreshParent2();  
+        setLoading(true);
+        console.log("sortColumn:",sortColumn,"sortOrder:",sortOrder);
+        const op=
+            api.showDates?     
+            {
+                ...getOptions,
+                start_date:dateRange.start_date,
+                end_date:dateRange.end_date,
+                page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search
+            }
+            :
+            {...getOptions,page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search}
+        ;
+            apiGet(api.rootpath,op)
+        .then(result => {
+                
+                console.log(result);    
+                setRows(prev => ({
+                    ...prev,
+                    columns: columns,
+                    data: result.results
+                }));
+                setTotalPages(result.total_pages);
+                refreshParent2();  
+            })
+        .finally(() => {
+            setLoading(false);
         });
       
     }, [reload,page,sortColumn,sortOrder]);
@@ -296,6 +301,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
             refreshParent={() => {
                 setReload(prev => !prev);
             }}
+            loading={loading}
 
         />
         </>    
