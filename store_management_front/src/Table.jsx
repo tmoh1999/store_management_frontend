@@ -120,7 +120,7 @@ const handleClick = async (e,row) => {
     console.log(path);
   };
 const addEmptyRow = () => {
-    if (addRow) {
+    if (addRow && !editingRow) {
         const emptyRow = { id: `new-${Date.now()}` };
         columns.forEach(col => { emptyRow[col.accessor] = ""; });
         setNewRows(prev => [...prev, emptyRow]);
