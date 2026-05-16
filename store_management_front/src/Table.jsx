@@ -143,12 +143,7 @@ const addEmptyRow = () => {
       <ConfirmMessage message="Confirm Delete?" onConfirm={handleConfirmDelete} onClose={() => {setShowConfirm(false);}}/>
       }
       <div className="w-fit">
-        <div className="flex">
-            <div className="flex justify-start mb-2">
-              {/*Table Name*/}
-              <h1 className="text-4xl font-bold " >{TableName}</h1>
-              {/* Search */}
-            </div>
+        <div className="flex flex-col">
             <div className="flex w-full justify-end mb-2 ml-5">
               <button
                       className="p-2 mr-5 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
@@ -163,7 +158,12 @@ const addEmptyRow = () => {
                     Export Pdf
                 </button>          
             </div>
+            <div className="flex justify-start mb-2">
+              {/*Table Name*/}
+              <h1 className="text-4xl font-bold " >{TableName}</h1>
+            </div>            
         </div>
+        {/* Search */}
         <input
           type="text"
           placeholder="Search..."
