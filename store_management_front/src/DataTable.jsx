@@ -229,7 +229,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
             }else{
                 setReload(prev=>!prev);
             }
-        }, 400);
+        }, 200);
 
         return () => clearTimeout(timeout);
     }, [search]);    
