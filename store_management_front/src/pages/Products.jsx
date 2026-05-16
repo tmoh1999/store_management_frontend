@@ -2,7 +2,7 @@
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import { Link ,useLocation} from "react-router-dom";
-import {login,getProducts,downloadFile,removeRow,saveProductRow} from "../api";
+import {login,downloadFile,removeRow,saveProductRow} from "../api";
 import UploadFile from "../UploadFile"
 import DataTable from "../DataTable";
 // you will create these pages

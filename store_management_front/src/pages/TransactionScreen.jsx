@@ -1,4 +1,4 @@
-import {apiGet,addSaleItem,getSaleItems,updateSaleItem,removeRow,confirmSale,addPurchaseItem,getPurchaseItems,updatePurchaseItem,confirmPurchase, searchProduct} from "../api"
+import {apiGet,addSaleItem,updateSaleItem,removeRow,confirmSale,addPurchaseItem,updatePurchaseItem,confirmPurchase, searchProduct} from "../api"
 import Table from "../Table";
 import { useEffect ,useState} from "react";
 import TableCell from "../TableCell"

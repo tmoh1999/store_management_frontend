@@ -1,6 +1,6 @@
 import { Link ,useNavigate,useLocation} from "react-router-dom";
 import { useEffect ,useState} from "react";
-import {addSale,getSales,removeRow,updateSale} from "../api"
+import {addSale,removeRow,updateSale} from "../api"
 import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 import DataTable from "../DataTable";

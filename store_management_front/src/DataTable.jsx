@@ -1,4 +1,5 @@
-import { test,saveProductRow,getProducts,saveSuppliersRow,getSuppliers,updatePurchaseItem,getPurchaseItems,updateSaleItem,getSaleItems,removeRow, apiGet, savePurchaseRow, saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund, updateRefundItem} from "./api";
+import { test,saveProductRow,saveSuppliersRow,updatePurchaseItem,updateSaleItem,removeRow, apiGet, savePurchaseRow
+    , saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund, updateRefundItem} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
 export default function DataTable({mode,table_mode="view",TableName="table",
@@ -20,7 +21,6 @@ export default function DataTable({mode,table_mode="view",TableName="table",
     // 1️⃣ API MAPPING BASED ON MODE
     const api = {
     products: {
-        get: getProducts,
         add: addProduct,
         update: saveProductRow,
         remove: removeRow,

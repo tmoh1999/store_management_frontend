@@ -1,6 +1,6 @@
 import { Link ,useNavigate,useLocation} from "react-router-dom";
 import { useEffect ,useState} from "react";
-import { getTransactions, removeRow ,saveTransactionRow} from "../api";
+import {removeRow ,saveTransactionRow} from "../api";
 import Table from "../Table";
 import DataTable from "../DataTable";
 

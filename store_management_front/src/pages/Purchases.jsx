@@ -1,5 +1,5 @@
 import { useEffect ,useState} from "react";
-import {getPurchases,removeRow, savePurchaseRow} from "../api"
+import {removeRow, savePurchaseRow} from "../api"
 import TransactionScreen from "./TransactionScreen"
 import Table from "../Table";
 import StartPurchase from "./StartPurchase";
