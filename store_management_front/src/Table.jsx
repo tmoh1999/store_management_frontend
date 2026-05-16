@@ -168,8 +168,15 @@ const addEmptyRow = () => {
 
         {loading ? (
           <div className="text-center p-6 text-gray-700 font-bold">Loading...</div> 
-        ): data.length === 0 ? (
-          <NoDataFound message="No records found." />
+        ): data.length === 0 && newRows.length === 0 ? (
+          <>
+            <NoDataFound message="No records found." />
+            {addRow && mode=="view" && (
+              <div  className="p-1 border">
+                <button  onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
+              </div>
+            )}               
+          </>
         ) : (
           <>
           {/* Table */}
