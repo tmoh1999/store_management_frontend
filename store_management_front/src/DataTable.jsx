@@ -17,7 +17,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
     const [totalPages,setTotalPages]=useState(1);
     const [search, setSearch] = useState("");
     const [sortColumn, setSortColumn] = useState("__default__");
-    const [sortOrder, setSortOrder] = useState("desc");    
+    const [sortOrder, setSortOrder] = useState("desc");
     // 1️⃣ API MAPPING BASED ON MODE
     const api = {
     products: {
@@ -111,35 +111,6 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         showDates:false,
     },         
     }[mode]; 
-    
-    useEffect(() => {
-    console.log("sortColumn:",sortColumn,"sortOrder:",sortOrder);
-    const op=
-        api.showDates?     
-        {
-            ...getOptions,
-            start_date:dateRange.start_date,
-            end_date:dateRange.end_date,
-            page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search
-        }
-        :
-        {...getOptions,page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search}
-    ;
-        apiGet(api.rootpath,op)
-    .then(result => {
-             
-            console.log(result);
-
-            
-            setRows(prev => ({
-    ...prev,
-    columns: columns,
-    data: result.results
-    }));
-    setTotalPages(result.total_pages);
-        });
-    refreshParent2();    
-    }, [reload,page,sortColumn,sortOrder]);
     const columns= {
     products:[
         { label: "ID", accessor: "id",edit:false },
@@ -219,6 +190,50 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         { label: "Quantity", accessor: "quantity",edit:true },
     ],               
     }[mode];
+  
+    useEffect(() => {
+    console.log("sortColumn:",sortColumn,"sortOrder:",sortOrder);
+    const op=
+        api.showDates?     
+        {
+            ...getOptions,
+            start_date:dateRange.start_date,
+            end_date:dateRange.end_date,
+            page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search
+        }
+        :
+        {...getOptions,page:page,sort_column:sortColumn,sort_direction:sortOrder,search:search}
+    ;
+        apiGet(api.rootpath,op)
+    .then(result => {
+             
+            console.log(result);    
+            setRows(prev => ({
+                ...prev,
+                columns: columns,
+                data: result.results
+            }));
+            setTotalPages(result.total_pages);
+            refreshParent2();  
+        });
+      
+    }, [reload,page,sortColumn,sortOrder]);
+
+
+    useEffect(() => {
+        
+        const timeout = setTimeout(() => {
+            if (search) {
+                console.log("search"+search);
+                page!==1? setPage(1) :setReload(prev=>!prev);
+            }else{
+                setReload(prev=>!prev);
+            }
+        }, 400);
+
+        return () => clearTimeout(timeout);
+    }, [search]);    
+    
     const handleChange= (e)=>{
         const x=e.target;
         setDateRange(prev =>({

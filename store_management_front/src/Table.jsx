@@ -23,13 +23,6 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   useEffect(()=>{
   setTableData(data);
 },[data]);
-  // Search filter
-  const filteredData = tableData.filter((row) =>
-    Object.values(row)
-      .join(" ")
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
 
   // Sort handler
   const handleSort = (col) => {
@@ -171,7 +164,7 @@ const addEmptyRow = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {filteredData.length === 0 ? (
+        {tableData.length === 0 ? (
           <NoDataFound message="No records found." />
         ) : (
           <>
@@ -194,7 +187,7 @@ const addEmptyRow = () => {
             </thead>
 
             <tbody>
-              {filteredData.map((row, i) => (
+              {tableData.map((row, i) => (
                 <tr key={row.id} className="odd:bg-white even:bg-gray-100">
                   {columns.map((col) => (
                     <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
