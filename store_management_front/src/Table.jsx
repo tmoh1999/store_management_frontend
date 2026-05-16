@@ -18,7 +18,7 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   const [showConfirm,setShowConfirm]=useState(false);
   const [confirmed,setConfirmed]=useState(false);
   const [editingRow,setEditingRow]=useState(null);
-  const [deletePath,setDeletePath]=useState("");
+  const [deleteRow,setDeleteRow]=useState(null);
   const [pendingEdits, setPendingEdits] = useState({});
   const [newRows, setNewRows] = useState([]);  
   const [error, setError] = useState("");
@@ -37,19 +37,20 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   };
   
   const handleConfirmDelete = async () => {
-    if (!deletePath) return;
+    if (!deleteRow) return;
       try{    
-        const result = await removeRow(deletePath);
+        const path=rootpath+"/"+deleteRow.id+"/remove"
+        const result = await removeRow(path);
         console.log(result.status);
-        setDeletePath("");
-        setConfirmed(false);
+        setDeleteRow(null);
+        setConfirmed(false);   
         refreshParent();
         setShowConfirm(false);
       }catch(err){
         setError(err.message);
         setShowConfirm(false);
-        setDeletePath("");
-        setConfirmed(false);
+        setDeleteRow(null);
+        setConfirmed(false);    
       }
 };
 const handleChange = (e, row) => {
@@ -60,65 +61,62 @@ const handleChange = (e, row) => {
     }));
 };
 
-const handleClick = async (e,row) => {
-	console.log(row)
-	const path=rootpath+"/"+e.currentTarget.id+"/"+e.currentTarget.dataset.key
-	
-		if (e.currentTarget.dataset.key=="update"){
-			setEditingRow(row.id);
-       }else  if (e.currentTarget.dataset.key=="remove"){
-             
-             	if(removeRow){
-             	   setShowConfirm(true);
-                 setDeletePath(path);
-                 console.log(confirmed);
-              }
-       } else if (e.currentTarget.dataset.key=="view"){
-          let state={}
-          for(let col of profileKeys){
-            state[col]=row[col];
-          }
-          if(profilePath){           
-            navigate(profilePath,{
-              state:state
-            });
-         }
-       } else if (e.currentTarget.dataset.key=="save"){
-       	 
-          setEditingRow(null);
-          const editedRow = { ...row, ...pendingEdits[row.id] };
-          setPendingEdits(prev => {
-              const copy = { ...prev };
-              delete copy[row.id];
-              return copy;
-          });          
-          if(!row.id) {
-            if(addRow){
-              try {
-                const result = await addRow(editedRow);
-                setNewRows(prev => prev.filter(r => r.id !== row.id));
-                refreshParent();
-              } catch (err) {
-                setError(err.message);
-              }
-            }
-          }else if (saveRow){
-            try {
-                const result = await saveRow(editedRow);
-                refreshParent();
-              } catch (err) {
-                setError(err.message);
-              }
-          }
-       } else if(e.currentTarget.dataset.key=="select"){
-        if(setSelectedRow){
-          setSelectedRow(row);
+const handleSelect = (e,row) => {
+  if(setSelectedRow){
+    setSelectedRow(row);
+  }
+}
+
+const handleSave = async (e,row) => {
+    setEditingRow(null);
+    const editedRow = { ...row, ...pendingEdits[row.id] };
+    setPendingEdits(prev => {
+        const copy = { ...prev };
+        delete copy[row.id];
+        return copy;
+    });          
+    if(!row.id) {
+      if(addRow){
+        try {
+          const result = await addRow(editedRow);
+          setNewRows(prev => prev.filter(r => r.id !== row.id));
+          refreshParent();
+        } catch (err) {
+          setError(err.message);
         }
-       }
-    
-	
-    console.log(path);
-  };
+      }
+    }else if (saveRow){
+      try {
+          const result = await saveRow(editedRow);
+          refreshParent();
+        } catch (err) {
+          setError(err.message);
+        }
+    }
+
+}
+
+const handleView = (e,row) => {
+  let state={}
+  for(let col of profileKeys){
+    state[col]=row[col];
+  }
+  if(profilePath){           
+    navigate(profilePath,{
+      state:state
+    });
+  }
+}
+
+const handleRemove = (e,row) => {
+    if(removeRow){
+        setShowConfirm(true);
+        setDeleteRow(row);
+        console.log(confirmed);
+    }
+}
+
+
 const addEmptyRow = () => {
     if (addRow && !editingRow) {
         const emptyRow = { id: `new-${Date.now()}` };
@@ -199,28 +197,28 @@ const addEmptyRow = () => {
                     editingRow === row.id ? 
                     ( 
                         <td  key={`${row.id}-save`} className="p-2 border">
-                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
+                          <button onClick={(e) => handleSave(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
                         </td>     
                     )
                     :
                     (
                       <>
                         <td  key={`${row.id}-view`} className="p-2 border">
-                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
+                          <button onClick={(e) => handleView(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
                         </td>
                         
                         <td  key={`${row.id}-edit`} className="p-2 border">
-                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
+                          <button onClick={(e) => setEditingRow(row.id)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
                         </td>
                         
                         <td key={`${row.id}-remove`} className="p-2 border">
-                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
+                          <button onClick={(e) => handleRemove(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
                         </td>
                       </>
                     )
                   ):(
                         <td  key={`${row.id}-select`} className="p-2 border">
-                          <button onClick={(e) => handleClick(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">{SelectName}</button>
+                          <button onClick={(e) => handleSelect(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">{SelectName}</button>
                         </td>        
                   )
                   }
