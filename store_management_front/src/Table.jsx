@@ -14,15 +14,17 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   sortColumn, setSortColumn,
   sortOrder, setSortOrder
   }) {
-  const [tableData, setTableData] = useState(data);
+  const [pendingEdits, setPendingEdits] = useState({});
   const navigate=useNavigate();
   const [showConfirm,setShowConfirm]=useState(false);
   const [confirmed,setConfirmed]=useState(false);
   const [editingRow,setEditingRow]=useState(null);
   const [deletePath,setDeletePath]=useState("");
-  useEffect(()=>{
-  setTableData(data);
-},[data]);
+  const [pendingEdits, setPendingEdits] = useState({});
+  const [newRows, setNewRows] = useState([]);  
+  const getRowValue = (row, accessor) => {
+      return pendingEdits[row.id]?.[accessor] ?? row[accessor];
+  };
 
   // Sort handler
   const handleSort = (col) => {
@@ -42,6 +44,13 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
     setConfirmed(false);
     refreshParent();
     setShowConfirm(false);
+};
+const handleChange = (e, row) => {
+    const { name, value } = e.target;
+    setPendingEdits(prev => ({
+        ...prev,
+        [row.id]: { ...prev[row.id], [name]: value }
+    }));
 };
 
 const handleClick = async (e,row) => {
@@ -71,12 +80,16 @@ const handleClick = async (e,row) => {
        } else if (e.currentTarget.dataset.key=="save"){
        	 
           setEditingRow(null);
+          const editedRow = { ...row, ...pendingEdits[row.id] };
+          setPendingEdits(prev => {
+              const copy = { ...prev };
+              delete copy[row.id];
+              return copy;
+          });          
           if(!row.id) {
-            console.log("no id in saveRow");
             if(addRow){
               try {
-                const result = await addRow(row);
-                console.log(result);
+                const result = await addRow(editedRow);
                 refreshParent();
               } catch (err) {
                 console.log(err.message);
@@ -84,8 +97,7 @@ const handleClick = async (e,row) => {
             }
           }else if (saveRow){
             try {
-                const result = await saveRow(row);
-                console.log(result);
+                const result = await saveRow(editedRow);
                 refreshParent();
               } catch (err) {
                 console.log(err.message);
@@ -100,16 +112,7 @@ const handleClick = async (e,row) => {
 	
     console.log(path);
   };
-  const handleChange = (e, row) => {
-  const { name, value } = e.target;
 
-  // update tableData immutably
-  setTableData(prev =>
-    prev.map(r =>
-      r.id === row.id ? { ...r, [name]: value } : r
-    )
-  );
-};
 const getPages = () => {
   const range = [];
   const start = Math.max(1, page - 2);
@@ -121,14 +124,12 @@ const getPages = () => {
   return range;
 };
 const addEmptyRow = () => {
-  if (addRow) {
-    const emptyRow = { id: `new-${Date.now()}` };
-    columns.forEach(col => {
-      emptyRow[col.accessor] = "";
-    });
-    setTableData(prev => [...prev,emptyRow]);
-    setEditingRow(emptyRow.id);
-  }
+    if (addRow) {
+        const emptyRow = { id: `new-${Date.now()}` };
+        columns.forEach(col => { emptyRow[col.accessor] = ""; });
+        setNewRows(prev => [...prev, emptyRow]);
+        setEditingRow(emptyRow.id);
+    }
 };
   return (
     <div className=" flex flex-col justify-center items-center w-auto p-3">
@@ -164,7 +165,7 @@ const addEmptyRow = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        {tableData.length === 0 ? (
+        {data.length === 0 ? (
           <NoDataFound message="No records found." />
         ) : (
           <>
@@ -187,10 +188,10 @@ const addEmptyRow = () => {
             </thead>
 
             <tbody>
-              {tableData.map((row, i) => (
+              {[...data, ...newRows].map((row, i) => (
                 <tr key={row.id} className="odd:bg-white even:bg-gray-100">
                   {columns.map((col) => (
-                    <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={row[col.accessor]} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
+                    <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={getRowValue(row, col.accessor)} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
                   ))}
                   {mode=="view" ? (
                     editingRow === row.id ? 
