@@ -136,7 +136,7 @@ const addEmptyRow = () => {
       {showConfirm &&
       <ConfirmMessage message="Confirm Delete?" onConfirm={handleConfirmDelete} onClose={() => {setShowConfirm(false);}}/>
       }
-      <div className="w-fit">
+      <div className="w-fit min-w-full">
         <div className="flex flex-col">
             <div className="flex w-full justify-end mb-2 ml-5">
               <button
