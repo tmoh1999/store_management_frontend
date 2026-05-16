@@ -55,7 +55,6 @@ const handleChange = (e, row) => {
 const handleClick = async (e,row) => {
 	console.log(row)
 	const path=rootpath+"/"+e.currentTarget.id+"/"+e.currentTarget.dataset.key
-	let destpath="/products"
 	
 		if (e.currentTarget.dataset.key=="update"){
 			setEditingRow(row.id);
@@ -112,17 +111,6 @@ const handleClick = async (e,row) => {
 	
     console.log(path);
   };
-
-const getPages = () => {
-  const range = [];
-  const start = Math.max(1, page - 2);
-  const end = Math.min(pages, page + 2);
-
-  for (let i = start; i <= end; i++) {
-    range.push(i);
-  }
-  return range;
-};
 const addEmptyRow = () => {
     if (addRow) {
         const emptyRow = { id: `new-${Date.now()}` };
