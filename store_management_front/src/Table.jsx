@@ -14,7 +14,6 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   sortColumn, setSortColumn,
   sortOrder, setSortOrder
   }) {
-  const [pendingEdits, setPendingEdits] = useState({});
   const navigate=useNavigate();
   const [showConfirm,setShowConfirm]=useState(false);
   const [confirmed,setConfirmed]=useState(false);
@@ -90,6 +89,7 @@ const handleClick = async (e,row) => {
             if(addRow){
               try {
                 const result = await addRow(editedRow);
+                setNewRows(prev => prev.filter(r => r.id !== row.id));
                 refreshParent();
               } catch (err) {
                 console.log(err.message);
