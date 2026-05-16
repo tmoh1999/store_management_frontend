@@ -227,10 +227,6 @@ export function updateSale(sale_id,customer_id) {
   
 }
 
-export function getSales() {
-  return request("/api/sales/list");
-}
-
 export function addSaleItem(formData,sale_id,product_id) {
   return request("/api/sales/items/add",{
   method:"POST",
@@ -246,17 +242,6 @@ export function addSaleItem(formData,sale_id,product_id) {
   });
 }
 
-export function getSaleItems(sale_id,options = {}) {
-  console.log("sale_id"+sale_id)
-  console.log(options)
-  return request("/api/sales/items/list",{
-  method:"POST",
-  body:JSON.stringify({
-           options:options,
-           sale_id:sale_id,
-         }),
-  });
-}
 
 export function updateSaleItem(row) {
 	
@@ -281,9 +266,6 @@ export function confirmSale(sale_id) {
 }
 
 
-export function getTransactions() {
-  return request("/api/transactions/list");
-}
 export function getEnumData(){
   return request("/api/transactions/enumdata");
 }
@@ -320,9 +302,6 @@ export function addPurchase(formData) {
   });
 }
 
-export function getPurchases() {
-  return request("/api/purchases/list");
-}
 export function savePurchaseRow(row) {
   const  path="/api/purchases/"+row.id+"/update";
   return request(path, {
@@ -344,15 +323,6 @@ export function addPurchaseItem(formData,purchase_id,product_id) {
   });
 }
 
-export function getPurchaseItems(purchase_id) {
-  
-  return request("/api/purchases/items/list",{
-  method:"POST",
-  body:JSON.stringify({
-           purchase_id:purchase_id ,
-         }),
-  });
-}
 
 export function updatePurchaseItem(row) {
 	
@@ -383,10 +353,6 @@ export function addSupplier(formData) {
          phone:formData.phone, 
     }),
   });
-}
-
-export function getSuppliers() {
-  return request("/api/suppliers/list");
 }
 
 
