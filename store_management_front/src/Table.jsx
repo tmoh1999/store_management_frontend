@@ -17,7 +17,7 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   const [tableData, setTableData] = useState(data);
   const navigate=useNavigate();
   const [showConfirm,setShowConfirm]=useState(false);
-  const [confimed,setConfirmed]=useState(false);
+  const [confirmed,setConfirmed]=useState(false);
   const [editingRow,setEditingRow]=useState(null);
   const [deletePath,setDeletePath]=useState("");
   useEffect(()=>{
@@ -56,7 +56,7 @@ const handleClick = async (e,row) => {
              	if(removeRow){
              	   setShowConfirm(true);
                  setDeletePath(path);
-                 console.log(confimed);
+                 console.log(confirmed);
               }
        } else if (e.currentTarget.dataset.key=="view"){
           let state={}
