@@ -10,6 +10,7 @@ const [product,setProduct]=useState(null);
 const [openSelectMenu,setOpenSelectMenu]=useState(false);
 const [showScanner, setShowScanner] = useState(false);
 const [total,setTotal]=useState(0);
+const [refreshKey,setRefreshKey]=useState(0);
 const [formData, setFormData] = mode=="sale" ? 
 useState({
     product_id:null,
@@ -30,59 +31,26 @@ useState({
     quantity: 1,
     price:0.0,
   })
-
   ;
-const [reload,setReload]=useState(false);
-const [items,setItems]=useState({
-  columns: [],
-  data: []
-});
-const [page,setPage]=useState(1);
-const [totalPages,setTotalPages]=useState(1);
-const [search, setSearch] = useState("");
-const [sortColumn, setSortColumn] = useState("__default__");
-const [sortOrder, setSortOrder] = useState("desc");    
+   
 // 1️⃣ API MAPPING BASED ON MODE
 const api = {
   sale: {
     addItem: addSaleItem,
-    getItems: getSaleItems,
-    updateItem: updateSaleItem,
-    remove: removeRow,
+    datamod:"sale_items",
+    options:{sale_id:transaction_id},
+    tablename:`Sale Items , Sale_id:${transaction_id}`,
     confirm: confirmSale
   },
   purchase: {
     addItem: addPurchaseItem,
-    getItems: getPurchaseItems,
-    updateItem: updatePurchaseItem,
-    remove: removeRow,
+    datamod:"purchase_items",
+    options:{purchase_id:transaction_id},
+    tablename:`Purchase Items , Purchase_id:${transaction_id}`,
     confirm: confirmPurchase
   }
 }[mode];
-const columns= {
-  sale:  [
-      { label: "ID", accessor: "id",edit:false},
-      { label: "Barcode", accessor: "barcode",edit:false },
-      { label: "Name", accessor: "name",edit:false },
-      { label: "Unit Price", accessor: "price",edit:true },
-      { label: "Discount", accessor: "discount",edit:true },
-      { label: "Discount Type", accessor: "discount_type",edit:true },
-      { label: "Final Price", accessor: "final_price",edit:false },
-      { label: "Quantity", accessor: "quantity",edit:true },
-      { label: "Description", accessor: "description",edit:true },
-    ],
-  purchase:  [
-      { label: "ID", accessor: "id",edit:false},
-      { label: "Barcode", accessor: "barcode",edit:false },
-      { label: "Name", accessor: "name",edit:false },
-      { label: "Purchase Price", accessor: "price",edit:true },
-      { label: "Quantity", accessor: "quantity",edit:true },
-    ],    
-  }[mode];
-const rootPath={
-  sale:"/api/sales/items",
-  purchase:"/api/purchases/items",
-}[mode];
+
 const handleChange = (e) => {
 	console.log(e.target.value);
     const { name, value } = e.target;
@@ -95,10 +63,11 @@ const handleClick = async () => {
    try {
    	console.log(formData);
        const result=await api.addItem(formData,transaction_id,formData.product_id);
-       console.log(result.success);
-       setReload(prev => !prev);
+       console.log("sss"+result.success);
    }catch(err){
        console.log(err);
+   }finally{
+      setRefreshKey(prev=> prev+1);
    }
 };
 
@@ -126,25 +95,8 @@ const ConfirmClick = async () => {
    }
 };
 
-useEffect(() => {
-    const options = mode=="sale"
-    ?
-    {sale_id: transaction_id, page: page,sort_column:sortColumn,sort_direction:sortOrder,search:search}
-    :
-    {purchase_id: transaction_id, page: page,sort_column:sortColumn,sort_direction:sortOrder,search:search};
-    const path= mode=="sale" ? "/api/sales/items" : "/api/purchases/items";
-    apiGet(path,options)
-   .then(result => {
-        console.log(result.total_pages);
-        setTotalPages(result.total_pages);
-        setTotal(result.total);
-        setItems(prev => ({
-  ...prev,
-  columns: columns,
-  data: result.results
-}));
-    });
-}, [reload, page]);
+
+
 const changeProduct=(row)=>{
   console.log("ssss");
   console.log(row);
@@ -196,141 +148,141 @@ const onDetected = async (code)=> {
 };
 return (
 <div>
-{openSelectMenu ? (
-<div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
-  <div className="h-screen overflow-y-auto shadow-lg rounded-lg bg-white p-2">
-    <DataTable mode="products" table_mode="select" setSelectedRow={changeProduct} TableName="Select Product:"/>
-  </div>  
-</div>
-):(
-<>
-<div className="mt-2 flex flex-col items-center justify-center ">
-<div className="w-fit">
-<h1 className="p-1 text-3xl text-center font-bold ">{mode=="purchase" ? "Purchase:": "Sale:"}{transaction_id}    Total:{total}</h1>
-<table className="w-auto shadow-md">
-<thead >
-  <tr className="bg-gray-200">
-                    <th></th>
-                    <th className="p-3 cursor-pointer border">Name</th>
-                    <th className="p-3 cursor-pointer border">Barcode</th>
-                    {mode=="purchase" &&
-                      (
-                        <>
+  {openSelectMenu ? (
+  <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+    <div className="h-screen overflow-y-auto shadow-lg rounded-lg bg-white p-2">
+      <DataTable mode="products" table_mode="select" setSelectedRow={changeProduct} TableName="Select Product:"/>
+    </div>  
+  </div>
+  ):(
+  <>
+  <div className="mt-2 flex flex-col items-center justify-center ">
+    <div className="w-fit">
+      <h1 className="p-1 text-3xl text-center font-bold ">{mode=="purchase" ? "Purchase:": "Sale:"}{transaction_id}    Total:{total}</h1>
+      <table className="w-auto shadow-md">
+      <thead >
+        <tr className="bg-gray-200">
+                          <th></th>
+                          <th className="p-3 cursor-pointer border">Name</th>
+                          <th className="p-3 cursor-pointer border">Barcode</th>
+                          {mode=="purchase" &&
+                            (
+                              <>
 
-                          <th className="p-3 cursor-pointer border">Latest Purchase</th>
-                        
-                        </>
-                      )
-                    }  
-                    <th className="p-3 cursor-pointer border">Price</th>
-                    <th className="p-3 cursor-pointer border">Quantity</th>
-                    {mode=="sale" &&
-                      (
-                        <>
+                                <th className="p-3 cursor-pointer border">Latest Purchase</th>
+                              
+                              </>
+                            )
+                          }  
+                          <th className="p-3 cursor-pointer border">Price</th>
+                          <th className="p-3 cursor-pointer border">Quantity</th>
+                          {mode=="sale" &&
+                            (
+                              <>
 
-                          <th className="p-3 cursor-pointer border">Discount</th>
-                          <th className="p-3 cursor-pointer border">Discount Type</th>                    
-                          <th className="p-3 cursor-pointer border">Description</th>
-                        
-                        </>
-                      )
-                    }  
-                    
+                                <th className="p-3 cursor-pointer border">Discount</th>
+                                <th className="p-3 cursor-pointer border">Discount Type</th>                    
+                                <th className="p-3 cursor-pointer border">Description</th>
+                              
+                              </>
+                            )
+                          }  
+                          
 
-                    
-  </tr>
-</thead>
+                          
+        </tr>
+      </thead>
 
-<tbody>
-     <tr className="bg-gray-100">
-                    <td>            
-                      <button onClick={startScanning} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
-                      Scan
-                      </button>
-                    </td>
-                    <TableCell Editable={false} val={formData.name}/>
-                    <TableCell Editable={false} val={formData.barcode}/>
-                    {
-                      mode=="purchase" && (
-                        <>
-                          <TableCell Editable={false} val={formData.latest_purchase_price}/>
-                        </>
-                      )
-                    }
-                    <TableCell Editable={true} val={formData.price} type="number" name="price" onChanged={handleChange}/>
-                    <TableCell Editable={true} val={formData.quantity} type="number" name="quantity" onChanged={handleChange}/>
-                    {mode=="sale" &&
-                      (
-                        <>
-                        <TableCell Editable={true} val={formData.discount} type="number" name="discount" onChanged={handleChange}/>
-                        <td className="p-1 border">
-                          <select id="type" name="discount_type" 
-                          className="bg-blue-200  w-full text-xl  rounded-lg shadow-lg text-center" 
-                          value={formData.discount_type} onChange={handleChange}>
-                              <option value="percentage">Percentage</option>
-                              <option value="per_item">Per_Item</option>
-                              <option value="fixed">Fixed</option>
-                          </select> 
-                        </td>                       
-                        <TableCell Editable={true} val={formData.description} type="text" name="description" onChanged={handleChange}/>
-                        </>
-                      )
-                    }    
-                    
-                    
-                    
-    </tr>
-</tbody>
-</table>
+      <tbody>
+          <tr className="bg-gray-100">
+                          <td>            
+                            <button onClick={startScanning} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
+                            Scan
+                            </button>
+                          </td>
+                          <TableCell Editable={false} val={formData.name}/>
+                          <TableCell Editable={false} val={formData.barcode}/>
+                          {
+                            mode=="purchase" && (
+                              <>
+                                <TableCell Editable={false} val={formData.latest_purchase_price}/>
+                              </>
+                            )
+                          }
+                          <TableCell Editable={true} val={formData.price} type="number" name="price" onChanged={handleChange}/>
+                          <TableCell Editable={true} val={formData.quantity} type="number" name="quantity" onChanged={handleChange}/>
+                          {mode=="sale" &&
+                            (
+                              <>
+                              <TableCell Editable={true} val={formData.discount} type="number" name="discount" onChanged={handleChange}/>
+                              <td className="p-1 border">
+                                <select id="type" name="discount_type" 
+                                className="bg-blue-200  w-full text-xl  rounded-lg shadow-lg text-center" 
+                                value={formData.discount_type} onChange={handleChange}>
+                                    <option value="percentage">Percentage</option>
+                                    <option value="per_item">Per_Item</option>
+                                    <option value="fixed">Fixed</option>
+                                </select> 
+                              </td>                       
+                              <TableCell Editable={true} val={formData.description} type="text" name="description" onChanged={handleChange}/>
+                              </>
+                            )
+                          }    
+                          
+                          
+                          
+          </tr>
+      </tbody>
+      </table>
 
-<div className=" mt-2 flex justify-between ">
-<button className="mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
-onClick={()=>{setOpenSelectMenu(true);}}
->select product</button>
-<button className="mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-blue-500 hover:bg-blue-600 "
-onClick={handleClick}
->➕ Add Item</button>
-</div>
-</div>
-
-<div className="mt-8">
-<button className="mr-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
-onClick={ConfirmClick}
->💾 Confirm</button>
-
-<button className="ml-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-red-500 hover:bg-red-600 "
-onClick={CancelClick}
->❌ Cancel</button>
-</div>
-<div className="mt-2">
-<Table TableName={tablename} removeRow={api.remove} saveRow={api.updateItem} 
-data={items.data} columns={items.columns}  rootpath={rootPath} 
-page={page} setPage={setPage} pages={totalPages}
-search={search} setSearch={setSearch}
-sortColumn={sortColumn} setSortColumn={setSortColumn}
-sortOrder={sortOrder} setSortOrder={setSortOrder}
-    refreshParent={() =>{
-    	setReload(prev => !prev);
-    }}/>
+      <div className=" mt-2 flex justify-between ">
+        <button className="mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
+        onClick={()=>{setOpenSelectMenu(true);}}
+        >select product</button>
+        <button className="mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-blue-500 hover:bg-blue-600 "
+        onClick={handleClick}
+        >➕ Add Item</button>
+      </div>
     </div>
-</div>
-</>
-)
-}
-  {showScanner && (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div className="bg-white p-4 rounded-lg shadow-lg w-80">
-  <h1>Scanned Code: {formData.barcode}</h1>
-  <BarcodeScanner onDetected={onDetected} />
-      <button 
-          className="mt-3 bg-red-500 text-white p-2 rounded-lg w-full hover:bg-red-600"
-          onClick={() => setShowScanner(false)}
-        >
-          Close
-      </button>
+
+    <div className="mt-8">
+      <button className="mr-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
+      onClick={ConfirmClick}
+      >💾 Confirm</button>
+
+      <button className="ml-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-red-500 hover:bg-red-600 "
+      onClick={CancelClick}
+      >❌ Cancel</button>
+    </div>
+    <div className="mt-2">
+      <DataTable
+          mode={api.datamod}
+          getOptions={api.options}
+          TableName={api.tablename}
+          refreshKey={refreshKey}
+          setTotal={setTotal}
+          Edit={true}
+      />
+        
+    </div>
   </div>
-  </div>
-  )}
+  </>
+  )
+  }
+    {showScanner && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="bg-white p-4 rounded-lg shadow-lg w-80">
+    <h1>Scanned Code: {formData.barcode}</h1>
+    <BarcodeScanner onDetected={onDetected} />
+        <button 
+            className="mt-3 bg-red-500 text-white p-2 rounded-lg w-full hover:bg-red-600"
+            onClick={() => setShowScanner(false)}
+          >
+            Close
+        </button>
+    </div>
+    </div>
+    )}
 </div>
 );
 }

@@ -3,7 +3,7 @@ import { test,saveProductRow,saveSuppliersRow,updatePurchaseItem,updateSaleItem,
 import Table from "./Table";
 import { useState,useEffect } from "react";
 export default function DataTable({mode,table_mode="view",TableName="table",SelectName="Select",Edit=false,
-    setSelectedRow,getOptions,refreshParent2=()=>{}}){
+    setSelectedRow,setTotal=null,getOptions,refreshParent2=()=>{},refreshKey=0}){
     const [reload,setReload]=useState(false);
     const [loading, setLoading] = useState(false);
     const [rows,setRows]=useState({
@@ -194,7 +194,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
   
     useEffect(() => {
         setLoading(true);
-        console.log("sortColumn:",sortColumn,"sortOrder:",sortOrder);
+        console.log(getOptions);
         const op=
             api.showDates?     
             {
@@ -216,13 +216,15 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
                     data: result.results
                 }));
                 setTotalPages(result.total_pages);
-                refreshParent2();  
+                if(setTotal && result?.total){
+                    setTotal(result.total);
+                }
             })
         .finally(() => {
             setLoading(false);
         });
       
-    }, [reload,page,sortColumn,sortOrder]);
+    }, [refreshKey,reload,page,sortColumn,sortOrder]);
 
 
     useEffect(() => {
