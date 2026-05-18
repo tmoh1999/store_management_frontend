@@ -6,61 +6,26 @@ import DataTable from "../DataTable";
 export default function RefundScreen(){
 const navigate=useNavigate();
 const {state}=useLocation();
-const [tabledata,setTableData]=useState({
-    columns:[
-      { label: "ID", accessor: "id",edit:false},
-      { label: "Barcode", accessor: "barcode",edit:false },
-      { label: "Name", accessor: "name",edit:false },
-      { label: "Unit Price", accessor: "price",edit:false },
-      { label: "Quantity", accessor: "quantity",edit:false },
-      { label: "Discount", accessor: "discount",edit:false },
-      { label: "Discount Type", accessor: "discount_type",edit:false },
-      { label: "Final Price", accessor: "final_price",edit:false },      
-      { label: "Description", accessor: "description",edit:false },
-    ],
-    data:[]
-});
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     refund_quantity:0.0,
     refund_amount:0.0,
     refund_id:null,
     sale_item_id:null,
-  });
+    sale_id:null,
+});
 const [openRefundEdit,setOpenRefundEdit]=useState(false);
-const [page,setPage]=useState(1);
-const [totalPages,setTotalPages]=useState(1);
-const [search, setSearch] = useState("");
-const [sortColumn, setSortColumn] = useState("__default__");
-const [sortOrder, setSortOrder] = useState("desc");    
 const [reload,setReload]=useState(false);
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 const [message, setMessage] = useState("");
 
-// 1️⃣ API MAPPING BASED ON MODE
-const api = {            
-
-    add: null,
-    update: null,
-    remove: null,
-    profilePath:"/",
-    rootpath:"/api/sales/items",
-    showDates:false,
-}
 useEffect(()=>{
-    console.log("state:::",state.id);
-        apiGet("/api/sales/sale_items",{"sale_id":state.sale_id})
-        .then(result => {
-            console.log(result);
-            setTableData(prev => ({
-                ...prev,
-                data:result.results,
-            }));
+        console.log("state:::",state);
         setFormData(prev => ({
             ...prev,
             refund_id:state.refund_id,
-        }));            
-        });
+            sale_id:state.sale_id
+        }));      
 },[state]);
 
   const handleSubmit = async (e) => {
@@ -124,7 +89,7 @@ const CancelClick = async () => {
        }
        
    }catch(err){
-       console.log(err);
+       setError(err.message);
    }
 };
 
@@ -139,27 +104,34 @@ const ConfirmClick = async () => {
        }
        
    }catch(err){
-       console.log(err);
+       setError(err.message);
    }
 };
 
 return (
 <div>
     {!openRefundEdit? (
-        <div className=" flex flex-col gap-3">
-
-            <Table TableName="Refund Sale Items" removeRow={api.remove} saveRow={api.update} 
-            mode="select"
-            data={tabledata.data} columns={tabledata.columns}  rootpath={api.rootpath} 
-            page={page} setPage={setPage} pages={totalPages}
-            search={search} setSearch={setSearch}
-            sortColumn={sortColumn} setSortColumn={setSortColumn}
-            sortOrder={sortOrder} setSortOrder={setSortOrder}
-            setSelectedRow={handleSelected}
-            SelectName="Refund"
-                refreshParent={() =>{
-                    setReload(prev => !prev);
-                }}/>
+        
+        <div className=" flex flex-col justify-center items-center gap-3">
+        
+        <div className="w-3/4 mt-10">    
+            <h1 className="text-4xl font-bold underline">Refund Sale Screen</h1>
+            {/* Message Box */}
+            {message && (
+                <div className="bg-green-100 text-green-700 p-2 rounded">{message}</div>
+            )}
+            {/* Error Box */}
+            {error && (
+            <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
+            )}             
+            <DataTable
+                mode="sale_items"
+                table_mode="select"
+                TableName="Refund Sale Items"
+                setSelectedRow={handleSelected}
+                getOptions={{sale_id:formData.sale_id}}
+                SelectName="Refund"
+            />    
             <div className=" flex justify-center mt-8">
                 <button className="mr-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
                 onClick={ConfirmClick}
@@ -182,10 +154,15 @@ return (
                 )
             }    
         </div>
+        </div>
     ):(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
             {/* <div className="overflow-y-auto p-2 bg-white shadow-lg rounded-lg h-2/5"> */}
+
                 <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg  flex flex-col justify-center items-center gap-5">
+                    <div className="flex w-full justify-end">
+                        <button onClick={() => {setOpenRefundEdit(false);setError("");setMessage("");}} className="ml-3 font-bold">✕</button>
+                    </div>
                     {/* Message Box */}
                     {message && (
                         <div className="bg-green-100 text-green-700 p-2 rounded">{message}</div>
