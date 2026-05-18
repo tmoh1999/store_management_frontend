@@ -10,10 +10,18 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
       columns: [],
       data: []
     });
-    const [dateRange,setDateRange]=useState({
-      start_date: new Date().toISOString().slice(0, 10),
-      end_date: new Date().toISOString().slice(0, 10)
-    });    
+    const getLocalDate = () => {
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    };
+
+    const [dateRange, setDateRange] = useState({
+        start_date: getLocalDate(),
+        end_date: getLocalDate()
+    });       
     const [page,setPage]=useState(1);
     const [totalPages,setTotalPages]=useState(1);
     const [search, setSearch] = useState("");
