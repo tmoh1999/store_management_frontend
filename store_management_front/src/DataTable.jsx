@@ -2,7 +2,7 @@ import { test,saveProductRow,saveSuppliersRow,updatePurchaseItem,updateSaleItem,
     , saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund, updateRefundItem} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
-export default function DataTable({mode,table_mode="view",TableName="table",
+export default function DataTable({mode,table_mode="view",TableName="table",SelectName="Select",
     setSelectedRow,getOptions,refreshParent2=()=>{}}){
     const [reload,setReload]=useState(false);
     const [loading, setLoading] = useState(false);
@@ -273,6 +273,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",
         <Table
             mode={table_mode}
             TableName={TableName}
+            SelectName={SelectName}
             data={rows.data}
             columns={rows.columns}
             rootpath={api.rootpath}
