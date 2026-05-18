@@ -19,7 +19,7 @@ export default function Refunds() {
                 Add Refund
             </Link>
         </div>
-          <DataTable mode="refunds" TableName="Refunds"/> 
+          <DataTable mode="refunds" TableName="Refunds" Edit={true}/> 
       </div>
     </div>
   );

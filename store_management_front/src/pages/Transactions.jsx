@@ -20,6 +20,7 @@ export default function Transactions() {
             mode="transactions"
             getOptions={{}}
             TableName={`Transactions`}
+            Edit={true}
         />  
       </div>
     </div>

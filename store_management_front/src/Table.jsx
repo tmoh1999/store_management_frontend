@@ -6,7 +6,7 @@ import { downloadFile } from "./api";
 import Pagination from "./components/Pagination";
 import NoDataFound from "./components/NoDataFound";
 export default function Table({ mode="view",data=[], columns=[] ,profilePath="/",profileKeys=[],
-  SelectName="Select",
+  SelectName="Select",Edit=false,
   rootpath,refreshParent,loading=false,
   setSelectedRow,removeRow,saveRow,addRow,
   TableName,options={},setPage,pages=1,page=1,
@@ -201,7 +201,7 @@ const addEmptyRow = () => {
               {[...data, ...newRows].map((row, i) => (
                 <tr key={row.id} className="odd:bg-white even:bg-gray-100">
                   {columns.map((col) => (
-                    <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit} val={getRowValue(row, col.accessor)} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
+                    <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit && Edit} val={getRowValue(row, col.accessor)} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
                   ))}
                   {mode=="view" ? (
                     editingRow === row.id ? 

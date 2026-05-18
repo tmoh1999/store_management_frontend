@@ -150,6 +150,7 @@ return (
                         refreshParent2={() => {
                             setReload(prev => !prev);
                         }}
+                        Edit={true}
                 />
                 )
             }    

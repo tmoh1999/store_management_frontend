@@ -66,7 +66,7 @@ useEffect(()=>{
       </div>
       
       <DataTable
-        mode="sales" TableName="Sales"
+        mode="sales" TableName="Sales" Edit={true}
       />  
     </>
   ):(

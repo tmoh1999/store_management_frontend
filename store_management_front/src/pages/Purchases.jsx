@@ -46,6 +46,7 @@ useEffect(() => {
             mode="purchases"
             getOptions={{}}
             TableName={`Purchases`}
+            Edit={true}
         />  
       </>
 

@@ -17,7 +17,7 @@ export default function Customers(){
                 </Link>
                 </div>
                 <DataTable
-                    mode="customers" TableName="Customers"
+                    mode="customers" TableName="Customers" Edit={true}
                 />
             </div>
         </div>

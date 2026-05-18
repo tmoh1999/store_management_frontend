@@ -23,7 +23,7 @@ export default function ProductList() {
                 Add Product
             </Link>
         </div>
-          <DataTable mode="products" TableName="Products"/> 
+          <DataTable mode="products" TableName="Products" Edit={true}/> 
       </div>
     </div>
   );

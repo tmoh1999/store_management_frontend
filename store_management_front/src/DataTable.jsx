@@ -2,7 +2,7 @@ import { test,saveProductRow,saveSuppliersRow,updatePurchaseItem,updateSaleItem,
     , saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund, updateRefundItem} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
-export default function DataTable({mode,table_mode="view",TableName="table",SelectName="Select",
+export default function DataTable({mode,table_mode="view",TableName="table",SelectName="Select",Edit=false,
     setSelectedRow,getOptions,refreshParent2=()=>{}}){
     const [reload,setReload]=useState(false);
     const [loading, setLoading] = useState(false);
@@ -156,19 +156,19 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
       { label: "ID", accessor: "id",edit:false},
       { label: "Barcode", accessor: "barcode",edit:false },
       { label: "Name", accessor: "name",edit:false },
-      { label: "Unit Price", accessor: "price",edit:false },
-      { label: "Discount", accessor: "discount",edit:false },
-      { label: "Discount Type", accessor: "discount_type",edit:false },
+      { label: "Unit Price", accessor: "price",edit:true },
+      { label: "Discount", accessor: "discount",edit:true },
+      { label: "Discount Type", accessor: "discount_type",edit:true },
       { label: "Final Price", accessor: "final_price",edit:false },      
-      { label: "Quantity", accessor: "quantity",edit:false },
-      { label: "Description", accessor: "description",edit:false },
+      { label: "Quantity", accessor: "quantity",edit:true },
+      { label: "Description", accessor: "description",edit:true },
     ],
   purchase_items:  [
       { label: "ID", accessor: "id",edit:false},
       { label: "Barcode", accessor: "barcode",edit:false },
       { label: "Name", accessor: "name",edit:false },
-      { label: "Purchase Price", accessor: "price",edit:false },
-      { label: "Quantity", accessor: "quantity",edit:false },
+      { label: "Purchase Price", accessor: "price",edit:true },
+      { label: "Quantity", accessor: "quantity",edit:true },
       { label: "Remain Quantity", accessor: "remain_quantity",edit:false },
     ],  
     customers:  [
@@ -181,7 +181,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
         { label: "ID", accessor: "id",edit:false },
         { label: "Date", accessor: "date",edit:false },
         { label: "Receipt Number", accessor: "receipt_number",edit:false },
-        { label: "Amount", accessor: "amount",edit:true },
+        { label: "Amount", accessor: "amount",edit:false },
         { label: "Status", accessor: "status",edit:false },
         { label: "Reason", accessor: "reason",edit:true },
     ],
@@ -303,6 +303,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
                 setReload(prev => !prev);
             }}
             loading={loading}
+            Edit={Edit}
 
         />
         </>    

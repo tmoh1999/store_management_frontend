@@ -17,7 +17,7 @@ export default function Suppliers(){
                 </Link>
                 </div>
                 <DataTable
-                    mode="suppliers" TableName="Suppliers"
+                    mode="suppliers" TableName="Suppliers" Edit={true}
                 />
             </div>
         </div>
