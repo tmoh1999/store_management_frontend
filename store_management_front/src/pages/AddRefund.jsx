@@ -22,22 +22,27 @@ export default function AddRefund(){
 
     const handleSubmit = async (e) => {
       e.preventDefault(); // Prevent page reload
-
+      setMessage("");
       setError("");
       setLoading(true);
 
       try {
           const result =await addRefund(formData);
-          result.success ? setMessage(result.message): setError(result.message) ;
-          console.log(result.message);
-          if (result.success){
+          if(result?.success) {
+             setMessage(result.message);
+             setFormData({
+                receipt_number:"",
+                reason:""
+            }); 
             navigate("/refundscreen",{
               state:{
                 refund_id:result.id,
                 sale_id:result.sale_id,
               }
-            });
-        }
+            });            
+          }else{
+            setError(result.message);
+          } 
       } catch (err) {
           setError(err.message || "addRefund failed");
       } finally {
