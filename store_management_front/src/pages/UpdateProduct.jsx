@@ -37,7 +37,7 @@ const [message, setMessage] = useState("");
     try {
   const result =await updateProduct(formData,state.path);
   
-  setMessage(result.status);
+  setMessage(result.message);
   console.log(message);
 } catch (err) {
   setError(err.message || "addProduct failed");

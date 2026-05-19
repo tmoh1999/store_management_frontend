@@ -41,7 +41,7 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
       try{    
         const path=rootpath+"/"+deleteRow.id+"/remove"
         const result = await removeRow(path);
-        console.log(result.status);
+        console.log(result.message);
         setDeleteRow(null);
         setConfirmed(false);   
         refreshParent();

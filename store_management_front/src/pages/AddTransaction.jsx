@@ -55,7 +55,7 @@ const handleChange = (e) => {
     try {
       const result =await addTransaction(formData);
 
-      setMessage(result.status);
+      setMessage(result.message);
       console.log(result.message);
     } catch (err) {
       setError(err.message || "addTransaction failed");

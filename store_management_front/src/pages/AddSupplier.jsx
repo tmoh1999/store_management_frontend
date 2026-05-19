@@ -29,7 +29,7 @@ export default function AddSupplier(){
     try {
         const result =await addSupplier(formData);
 
-        setMessage(result.status);
+        setMessage(result.message);
         console.log(message);
     } catch (err) {
         setError(err.message || "addSupplier failed");
