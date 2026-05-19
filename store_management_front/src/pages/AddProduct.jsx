@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import { useEffect ,useState} from "react";
+import {useState} from "react";
 import {addProduct} from "../api";
 import ErrorBoundary from "../ErrorBoundary";
 import BarcodeScanner from "../BarcodeScanner"
@@ -30,13 +29,24 @@ const [message, setMessage] = useState("");
     e.preventDefault(); // Prevent page reload
     
     setError("");
+    setMessage("");
     setLoading(true);
     
     try {
       const result =await addProduct(formData);
-
-      setMessage(result.status);
-      console.log(message);
+      if(result?.success){
+          setMessage(result.message)
+          setFormData(
+            {
+              name: "",
+              barcode:"",
+              price:0.0,
+              min_stock_level:10.0,
+            }          
+          );
+      }else{
+          setError(result.message)
+      }
     } catch (err) {
       setError(err.message || "addProduct failed");
     } finally {
@@ -44,12 +54,9 @@ const [message, setMessage] = useState("");
     }
     // Here you can call an API or do further processing
   }
-  const startScanning = () => {
-    setShowScanner(true);
-  };
   const onDetected =(code)=> {
    console.log(code);
-   setFormData({ ...formData, barcode: code });
+   setFormData(prev => ({ ...prev, barcode: code }));
    setShowScanner(false);
   };
   return (
@@ -74,7 +81,7 @@ const [message, setMessage] = useState("");
         <div className="mb-4">
           <div className="mb-2">
             <label htmlFor="barcode" className="text-sm text-gray-700 font-semibold">Barcode:</label>
-            <button onClick={startScanning} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
+            <button type="button" onClick={() => setShowScanner(true)} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
                     Scan
             </button>
           </div>
@@ -99,6 +106,7 @@ const [message, setMessage] = useState("");
       <h1>Scanned Code: {formData.barcode}</h1>
       <BarcodeScanner onDetected={onDetected} />
          <button 
+              type="button"
               className="mt-3 bg-red-500 text-white p-2 rounded-lg w-full hover:bg-red-600"
               onClick={() => setShowScanner(false)}
             >
