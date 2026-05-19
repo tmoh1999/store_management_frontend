@@ -24,13 +24,17 @@ export default function AddCustomer(){
     e.preventDefault(); // Prevent page reload
 
     setError("");
+    setMessage("");
     setLoading(true);
 
     try {
         const result =await addCustomer(formData);
-
-        setMessage(result.status);
-        console.log(message);
+        if(result?.success){
+          setMessage(result.message); 
+          setFormData({ name: "", email: "", phone: "" });
+        }else{
+          setError(result.message);
+        }
     } catch (err) {
         setError(err.message || "addCustomer failed");
     } finally {
@@ -64,7 +68,7 @@ export default function AddCustomer(){
 
         <div className="mb-4">
           <label htmlFor="phone" className="block text-sm text-gray-700 font-semibold">Phone:</label>
-          <input onChange={handleChange} type="tel" value={formData.phone} name="phone" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
+          <input onChange={handleChange} type="tel" value={formData.phone} id="phone" name="phone" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
         </div>
     
   
