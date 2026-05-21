@@ -7,6 +7,7 @@ export default function CustomerProfile(){
 const {state}=useLocation();
 const [reload,setReload]=useState(false);
 const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
 const [customerData,setCustomerData]=useState({
     "id":null,
     "name":"",
@@ -15,6 +16,7 @@ const [customerData,setCustomerData]=useState({
 });
 useEffect(()=>{
     setError("");
+    setLoading(true);
     apiGet("/api/customers/search",{"customer_id":state.id})
     .then(result => {
         setCustomerData(prev => ({
@@ -26,16 +28,24 @@ useEffect(()=>{
         }));
     }).catch(err => {
         setError(err.message);
+    }).finally(()=>{
+        setLoading(false);
     });
 },[state,reload]);
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
         {/* Error Box */}
-        {error?(
+        {loading?(
+        <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
+            <div className="w-3/4">
+                <NoDataFound message="Loading..."/>
+            </div>
+        </div>        
+        ):error?(
           <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
-          <div className="w-3/4">
-          <NoDataFound message={error}/>
-          </div>
+            <div className="w-3/4">
+                <NoDataFound message={error}/>
+            </div>
           </div>
         ):(
             <>    
