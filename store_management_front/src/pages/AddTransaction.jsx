@@ -1,23 +1,21 @@
-import { Link } from "react-router-dom";
 import { useEffect ,useState} from "react";
-import ErrorBoundary from "../ErrorBoundary";
 import {addTransaction,getEnumData} from "../api";
 import CategoryDropdown from "../components/CategoryDropDown";
+import { getLocalDate } from "../utils";
 export default function AddTransaction() {
 // Step 1: Create state for form fields
   const [formData, setFormData] = useState({
-    type: null,
+    type: "",
     note:"",
     category:"",
     category_id:null,
-    date:new Date().toISOString().slice(0, 10),
+    date:getLocalDate(),
     amount:0.0,
   });
   const [TypeOptions,setTypeOptions]=useState([]);
   const [CategoryOptions,setCategoryOptions]=useState([]);
   const [filteredCategories,setFilteredCategories]=useState([]);
   const [selectedCategory,setSelectedCategory]=useState(null);
-  const [typeChangedFromCategory, setTypeChangedFromCategory] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -48,15 +46,30 @@ const handleChange = (e) => {
   // Step 3: Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
-    
+    setMessage("");
     setError("");
     setLoading(true);
-    
+    if (!formData.category_id) {
+        setError("Please select a category");
+        setLoading(false);
+        return;
+    }
     try {
       const result =await addTransaction(formData);
-
-      setMessage(result.message);
-      console.log(result.message);
+      if(result?.success){
+        setMessage(result.message);
+        setFormData({
+          type: "",
+          note:"",
+          category:"",
+          category_id:null,
+          date:getLocalDate(),
+          amount:0.0,
+        });
+        setSelectedCategory(null);
+      }else{
+        setError(result.message);
+      }
     } catch (err) {
       setError(err.message || "addTransaction failed");
     } finally {
@@ -64,14 +77,9 @@ const handleChange = (e) => {
     }
     // Here you can call an API or do further processing
   }
-  useEffect(()=>{
-    console.log(formData);
-  },[formData]);
 
   useEffect(()=>{
     getEnumData().then((data)=>{
-      console.log(data.transaction_types);
-      console.log(data.transaction_categories);
       setTypeOptions(data.transaction_types);
       setCategoryOptions(data.transaction_categories);
       setFilteredCategories(data.transaction_categories);
