@@ -5,7 +5,6 @@ import DataTable from "../DataTable";
 import NoDataFound from "../components/NoDataFound";
 export default function CustomerProfile(){
 const {state}=useLocation();
-const [reload,setReload]=useState(false);
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 const [customerData,setCustomerData]=useState({
@@ -31,7 +30,7 @@ useEffect(()=>{
     }).finally(()=>{
         setLoading(false);
     });
-},[state,reload]);
+},[state]);
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
         {/* Error Box */}
@@ -64,10 +63,7 @@ return (
                     <DataTable
                         mode="sales"
                         getOptions={{customer_id:customerData.id}}
-                        TableName={`Sales , customer_id:${customerData.id}`}
-                        refreshParent2={() => {
-                            setReload(prev => !prev);
-                        }}                      
+                        TableName={`${customerData.name}'s Sales`}                   
                     />
                     </div>       
                 }
