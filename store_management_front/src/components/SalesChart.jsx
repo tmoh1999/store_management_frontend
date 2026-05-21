@@ -10,6 +10,7 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { formatDate, getMonthRange } from "../utils";
 
 ChartJS.register(
   CategoryScale,
@@ -20,53 +21,34 @@ ChartJS.register(
   Legend
 );
 
-export default function SalesChart() {
+export default function SalesChart({dateRange=null}) {
   const [chartData, setChartData] = useState(null);
-  const [month, setMonth] = useState(
-    new Date().toISOString().slice(0, 7) // YYYY-MM
-  );
-
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await apiGet("/api/sales");
+        const op={
+            start_date:dateRange.start_date,
+            end_date:dateRange.end_date,
+        };
+        const res = await apiGet("/api/sales",op);
 
         const grouped = {};
 
-        res.results.forEach((sale) => {
-          const d = new Date(sale.date);
-
-          const saleMonth =
-            d.getFullYear() +
-            "-" +
-            String(d.getMonth() + 1).padStart(2, "0");
-
-          // ✅ filter by selected month
-          if (saleMonth !== month) return;
-
-          const day = String(d.getDate()).padStart(2, "0");
-
-          grouped[day] = (grouped[day] || 0) + Number(sale.total || 0);
-        });
-
-        // 🔹 fill missing days (important for smooth chart)
-        const daysInMonth = new Date(
-          month.split("-")[0],
-          month.split("-")[1],
-          0
-        ).getDate();
-
         const labels = [];
         const values = [];
-
-        for (let i = 1; i <= daysInMonth; i++) {
-          const d = String(i).padStart(2, "0");
+        res.results.forEach((sale) => {
+          const d = formatDate(new Date(sale.date));
           labels.push(d);
+          grouped[d] = (grouped[d] || 0) + Number(sale.total || 0);
+        });
+        const uniqueLabels = [...new Set(labels)].sort((a, b) => new Date(a) - new Date(b));
+        for(let d of uniqueLabels){
+          console.log("ss0......"+d+"....."+grouped[d]);
           values.push(grouped[d] || 0);
         }
-
+       
         setChartData({
-          labels,
+          uniqueLabels,
           datasets: [
             {
                 label: "Daily Sales",
@@ -89,7 +71,7 @@ export default function SalesChart() {
     }
 
     loadData();
-  }, [month]);
+  }, [dateRange]);
 
   if (!chartData) return <p>Loading chart...</p>;
 
@@ -99,14 +81,6 @@ export default function SalesChart() {
       <div className="flex flex-col w-fit h-80 justify-center items-center rounded-2xl shadow-xl p-8">
         <div className="flex w-full justify-between items-center mb-4 gap-6">
           <h2 className="text-xl font-bold">📈 Sales Overview</h2>
-
-          {/* Month Picker */}
-          <input
-            type="month"
-            value={month}
-            onChange={(e) => setMonth(e.target.value)}
-            className="border p-2 rounded-lg"
-          />
         </div>
         <Line
             data={chartData}
@@ -117,7 +91,7 @@ export default function SalesChart() {
                 },
                 scales: {
                     x: {
-                        
+                        labels: chartData.uniqueLabels,
                         grid: {
                             display: false, // cleaner look
                         },
