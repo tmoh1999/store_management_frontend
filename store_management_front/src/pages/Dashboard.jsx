@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
 import { apiGet } from "../api";
 import SalesChart from "../components/SalesChart";
-import { getDatasetAtEvent } from "react-chartjs-2";
+import { getMonthRange } from "../utils";
 export default function Dashboard() {
-  const location = useLocation();
   const username = localStorage.getItem("username");
   const [stats, setStats] = useState({
     low_stock_products: [],
@@ -13,23 +11,6 @@ export default function Dashboard() {
     total_revenue: 0,
     total_expenses: 0,
   });
-const formatDate = (date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};  
-const getMonthRange = () => {
-  const now = new Date();
-
-  const start = new Date(now.getFullYear(), now.getMonth(), 1);
-  const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-
-  return {
-    start_date: formatDate(start),
-    end_date: formatDate(end),
-  };
-};
 
 const [dateRange, setDateRange] = useState(getMonthRange()); 
   useEffect(() => {
@@ -107,7 +88,7 @@ const [dateRange, setDateRange] = useState(getMonthRange());
         <div className="flex gap-16 justify-between">
         
           {/* Sales Chart */}
-         <SalesChart />
+         <SalesChart dateRange={dateRange}/>
           <div className="flex flex-col w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
               <h2 className="text-xl font-bold"> Top 5 Saled Products </h2>
               <table className="w-full mt-4 ">
