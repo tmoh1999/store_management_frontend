@@ -2,6 +2,7 @@ import { test,saveProductRow,saveSuppliersRow,updatePurchaseItem,updateSaleItem,
     , saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund, updateRefundItem} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
+import { getLocalDate } from "./utils";
 export default function DataTable({mode,table_mode="view",TableName="table",SelectName="Select",Edit=false,
     setSelectedRow,setTotal=null,getOptions,refreshParent2=()=>{},refreshKey=0}){
     const [reload,setReload]=useState(false);
@@ -10,13 +11,6 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
       columns: [],
       data: []
     });
-    const getLocalDate = () => {
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, "0");
-        const day = String(d.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-    };
 
     const [dateRange, setDateRange] = useState({
         start_date: getLocalDate(),
