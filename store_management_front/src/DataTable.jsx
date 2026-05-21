@@ -1,12 +1,14 @@
-import { test,saveProductRow,saveSuppliersRow,updatePurchaseItem,updateSaleItem,removeRow, apiGet, savePurchaseRow
+import {saveProductRow,saveSuppliersRow,updatePurchaseItem,updateSaleItem,removeRow, apiGet, savePurchaseRow
     , saveTransactionRow ,addProduct,addSupplier, addCustomer, saveCustomersRow, addRefund, updateRefund, updateRefundItem} from "./api";
 import Table from "./Table";
 import { useState,useEffect } from "react";
 import { getLocalDate } from "./utils";
+import NoDataFound from "./components/NoDataFound";
 export default function DataTable({mode,table_mode="view",TableName="table",SelectName="Select",Edit=false,
     setSelectedRow,setTotal=null,getOptions,refreshParent2=()=>{},refreshKey=0}){
     const [reload,setReload]=useState(false);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     const [rows,setRows]=useState({
       columns: [],
       data: []
@@ -196,6 +198,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
   
     useEffect(() => {
         setLoading(true);
+        setError("");
         console.log(getOptions);
         const op=
             api.showDates?     
@@ -210,18 +213,24 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
         ;
             apiGet(api.rootpath,op)
         .then(result => {
-                
-                console.log(result);    
-                setRows(prev => ({
-                    ...prev,
-                    columns: columns,
-                    data: result.results
-                }));
-                setTotalPages(result.total_pages);
-                if(setTotal && result?.total){
-                    setTotal(result.total);
+                if(result?.success){
+                    console.log(result);    
+                    setRows(prev => ({
+                        ...prev,
+                        columns: columns,
+                        data: result.results
+                    }));
+                    setTotalPages(result.total_pages);
+                    if(setTotal && result?.total){
+                        setTotal(result.total);
+                    }
+                }else{
+                    setError(result.message);
                 }
             })
+        .catch(err => {
+            setError(err.message);
+        })
         .finally(() => {
             setLoading(false);
         });
@@ -257,59 +266,67 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
  
     return (
         <>
-        {api.showDates &&
-        <div className="flex justify-center mb-3 mt-7">
-            <div>
-                <label htmlFor="start_date" className="text-2xl font-medium mr-3">Start:</label>
-                <input type="date" id="start_date" name="start_date" 
-                className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
-                value={dateRange.start_date} onChange={handleChange}/>
-            </div>
-            <div className="ml-8">
-                 <label htmlFor="end_date" className="text-2xl font-medium mr-3">End:</label>
-                <input type="date" id="end_date" name="end_date"
-                className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium"
-                value={dateRange.end_date} onChange={handleChange}/>
-            </div>
+            {api.showDates &&
+            <div className="flex justify-center mb-3 mt-7">
+                <div>
+                    <label htmlFor="start_date" className="text-2xl font-medium mr-3">Start:</label>
+                    <input type="date" id="start_date" name="start_date" 
+                    className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
+                    value={dateRange.start_date} onChange={handleChange}/>
+                </div>
+                <div className="ml-8">
+                    <label htmlFor="end_date" className="text-2xl font-medium mr-3">End:</label>
+                    <input type="date" id="end_date" name="end_date"
+                    className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium"
+                    value={dateRange.end_date} onChange={handleChange}/>
+                </div>
 
-        </div>
-        }
-        <Table
-            mode={table_mode}
-            TableName={TableName}
-            SelectName={SelectName}
-            data={rows.data}
-            columns={rows.columns}
-            rootpath={api.rootpath}
-            setSelectedRow={setSelectedRow}
-            addRow={api.add}
-            removeRow={api.remove}
-            saveRow={api.update}
-            profilePath={api.profilePath}
-            profileKeys={api.profileKeys}
-            setPage={setPage}
-            page={page}
-            pages={totalPages}
-            search={search} setSearch={setSearch}
-            sortColumn={sortColumn} setSortColumn={setSortColumn}
-            sortOrder={sortOrder} setSortOrder={setSortOrder}
-            options={
-                api.showDates?     
-                {
-                    ...getOptions,
-                    start_date:dateRange.start_date,
-                    end_date:dateRange.end_date
-                }
-                :
-                getOptions
+            </div>
             }
-            refreshParent={() => {
-                setReload(prev => !prev);
-            }}
-            loading={loading}
-            Edit={Edit}
+            {error?(
+                <div className="flex flex-col h-screen justify-center items-center p-6 bg-gray-300">  
+                    <div className="w-3/4">
+                        <NoDataFound message={error}/>
+                    </div>
+                </div>
+            ):(            
+                <Table
+                    mode={table_mode}
+                    TableName={TableName}
+                    SelectName={SelectName}
+                    data={rows.data}
+                    columns={rows.columns}
+                    rootpath={api.rootpath}
+                    setSelectedRow={setSelectedRow}
+                    addRow={api.add}
+                    removeRow={api.remove}
+                    saveRow={api.update}
+                    profilePath={api.profilePath}
+                    profileKeys={api.profileKeys}
+                    setPage={setPage}
+                    page={page}
+                    pages={totalPages}
+                    search={search} setSearch={setSearch}
+                    sortColumn={sortColumn} setSortColumn={setSortColumn}
+                    sortOrder={sortOrder} setSortOrder={setSortOrder}
+                    options={
+                        api.showDates?     
+                        {
+                            ...getOptions,
+                            start_date:dateRange.start_date,
+                            end_date:dateRange.end_date
+                        }
+                        :
+                        getOptions
+                    }
+                    refreshParent={() => {
+                        setReload(prev => !prev);
+                    }}
+                    loading={loading}
+                    Edit={Edit}
 
-        />
-        </>    
+                />
+            )}
+        </>
     );
 }
