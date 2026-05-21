@@ -7,7 +7,7 @@ export default function Customers(){
 
     return(
         <div className=" flex justify-center">
-            <div className=" p-2 w-fit mt-3">
+            <div className=" p-2  w-3/4 mt-3">
                 <div className="flex justify-end">
                 <Link
                     to="/addcustomer"
