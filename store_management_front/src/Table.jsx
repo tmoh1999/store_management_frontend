@@ -16,7 +16,6 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
   }) {
   const navigate=useNavigate();
   const [showConfirm,setShowConfirm]=useState(false);
-  const [confirmed,setConfirmed]=useState(false);
   const [editingRow,setEditingRow]=useState(null);
   const [deleteRow,setDeleteRow]=useState(null);
   const [pendingEdits, setPendingEdits] = useState({});
@@ -43,14 +42,12 @@ export default function Table({ mode="view",data=[], columns=[] ,profilePath="/"
         const result = await removeRow(path);
         console.log(result.message);
         setDeleteRow(null);
-        setConfirmed(false);   
         refreshParent();
         setShowConfirm(false);
       }catch(err){
         setError(err.message);
         setShowConfirm(false);
-        setDeleteRow(null);
-        setConfirmed(false);    
+        setDeleteRow(null);   
       }
 };
 const handleChange = (e, row) => {
@@ -112,7 +109,6 @@ const handleRemove = (e,row) => {
     if(removeRow){
         setShowConfirm(true);
         setDeleteRow(row);
-        console.log(confirmed);
     }
 }
 
