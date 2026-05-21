@@ -22,15 +22,23 @@ export default function AddSupplier(){
 
     const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
-
+    setMessage("");  
     setError("");
     setLoading(true);
 
     try {
         const result =await addSupplier(formData);
-
-        setMessage(result.message);
-        console.log(message);
+        if(result?.success){
+          setMessage(result.message);
+          setFormData({
+            name:"",
+            email:"",
+            phone:""
+          });
+        }else{
+          setError(result.message);
+        }
+        
     } catch (err) {
         setError(err.message || "addSupplier failed");
     } finally {
@@ -64,7 +72,7 @@ export default function AddSupplier(){
 
         <div className="mb-4">
           <label htmlFor="phone" className="block text-sm text-gray-700 font-semibold">Phone:</label>
-          <input onChange={handleChange} type="tel" value={formData.phone} name="phone" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
+          <input onChange={handleChange} type="tel" value={formData.phone} id="phone" name="phone" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
         </div>
     
   
