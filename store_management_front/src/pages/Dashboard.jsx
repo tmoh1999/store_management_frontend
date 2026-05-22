@@ -3,6 +3,8 @@ import { apiGet } from "../api";
 import SalesChart from "../components/SalesChart";
 import { getMonthRange } from "../utils";
 export default function Dashboard() {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const username = localStorage.getItem("username");
   const [stats, setStats] = useState({
     low_stock_products: [],
@@ -23,15 +25,43 @@ const [dateRange, setDateRange] = useState(getMonthRange());
           apiGet("/api/transactions/stats",{start_date:dateRange.start_date,end_date:dateRange.end_date}),
         ]);
 
-        setStats({
-          low_stock_products: purchases.low_stock_products,
-          top_saled_products: sales.top_saled_products,
-          total_purchases: purchases.total_purchases,
-          total_revenue: sales.total_revenue,
-          total_expenses: transactions.total_expenses,
-        });
+        if(!products?.success){
+          setError(products?.message || "API ERROR:products");
+        }
+        if(!purchases?.success){
+          setError(purchases?.message || "API ERROR:purchases");
+        }
+        if(!sales?.success){
+          setError(sales?.message || "API ERROR:sales");
+        }     
+        if(!transactions?.success){
+          setError(transactions?.message || "API ERROR:transactions");
+        }             
+      setStats(prev => ({
+        ...prev,
+
+        low_stock_products: purchases?.success
+          ? purchases.low_stock_products
+          : prev.low_stock_products,
+
+        top_saled_products: sales?.success
+          ? sales.top_saled_products
+          : prev.top_saled_products,
+
+        total_purchases: purchases?.success
+          ? purchases.total_purchases
+          : prev.total_purchases,
+
+        total_revenue: sales?.success
+          ? sales.total_revenue
+          : prev.total_revenue,
+
+        total_expenses: transactions?.success
+          ? transactions.total_expenses
+            : prev.total_expenses,
+      }));
       } catch (err) {
-        console.log(err);
+        setError(err?.message || "API ERROR");
       }
     }
 
@@ -53,6 +83,13 @@ const [dateRange, setDateRange] = useState(getMonthRange());
       <h2 className="text-start font-semibold text-3xl underline px-8 mb-6">
         User: {username}
       </h2>
+      {error && (
+          <div className="bg-red-100 text-red-700 p-2 rounded mb-3">
+              {error}
+              <button onClick={() => setError("")} className="ml-3 font-bold">✕</button>
+          </div>
+      )  
+      }    
       <div className="flex justify-center mb-3 mt-7">
         <div>
             <label htmlFor="start_date" className="text-2xl font-medium mr-3">Start:</label>
