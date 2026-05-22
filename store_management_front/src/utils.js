@@ -12,22 +12,16 @@ export function formatDate(date){
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}-${month}-${day}`;
 };  
-export function getMonthRange(year=-1,mounth=-1){
-  const now = new Date();
-  let start=null;
-  let end=null;
-  
-  if(mounth>=0 && year>=0){
-    start = new Date(year, mounth, 1);
-    end = new Date(year, mounth + 1, 0);
+export function getMonthRange(year=null, month=null) {
+    const now = new Date();
+    const y = year ?? now.getFullYear();
+    const m = month ?? now.getMonth();
 
-  }else{
-    start = new Date(now.getFullYear(), now.getMonth(), 1);
-    end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-  }
+    const start = new Date(y, m, 1);
+    const end = new Date(y, m + 1, 0);
 
-  return {
-    start_date: formatDate(start),
-    end_date: formatDate(end),
-  };
-};
+    return {
+        start_date: formatDate(start),
+        end_date: formatDate(end),
+    };
+}
