@@ -83,7 +83,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
         add:null,
         update: saveTransactionRow,
         remove: removeRow,
-        profilePath:"/transaction/profile",
+        profilePath:null,
         profileKeys:["id"],
         rootpath:"/api/transactions",
         showDates:true,
