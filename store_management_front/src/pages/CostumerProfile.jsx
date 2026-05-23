@@ -18,6 +18,10 @@ useEffect(()=>{
     setLoading(true);
     apiGet("/api/customers/search",{"customer_id":state.id})
     .then(result => {
+        if(!result?.success){
+            setError(result.message);
+            return;
+        }        
         setCustomerData(prev => ({
             ...prev,
             id:result.customer_id,
@@ -33,7 +37,6 @@ useEffect(()=>{
 },[state]);
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
-        {/* Error Box */}
         {loading?(
         <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
             <div className="w-3/4">
@@ -49,7 +52,7 @@ return (
         ):(
             <>    
                 <div className="flex justify-start">
-                    <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
+                    <div className="flex flex-col w-2/5  rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                         <div className="flex justify-start mb-3">
                             <h1 className="font-semibold text-2xl">Description Data:</h1>
                         </div>
