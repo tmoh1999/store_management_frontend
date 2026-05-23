@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import Table from "../Table";
 import DataTable from "../DataTable";
 import { addPurchase } from "../api";
 
 export default function StartPurchase({setPurchaseID,setOpenStartPurchase}){
     const [supplierSelected,setSupplierSelected]=useState(null);
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);     
     const [openSelectMenu,setOpenSelectMenu]=useState(false);
     const [formData,setFormData]=useState({
         supplier_id:null,
@@ -12,22 +13,27 @@ export default function StartPurchase({setPurchaseID,setOpenStartPurchase}){
     });
     const handleSubmit= async (e) => {
         e.preventDefault();
-        console.log(formData);
-        if (formData.supplier_id){
-            try{
-                console.log(formData);
-                const result= await addPurchase(formData);
-                console.log(result);
-                if (result.success){
-                   setPurchaseID(result.id)
-                   setOpenStartPurchase(false)
-                }
-            }catch(error){
-                console.log(error.message)
-            }
-        }else{
-
+        setError("");
+        setLoading(true);
+        if (!formData.supplier_id){
+            setError("Supplier not selected");
+            setLoading(false);
+            return;
         }
+        try{
+            const result= await addPurchase(formData);
+            if (result?.success){
+                setPurchaseID(result.id)
+                setOpenStartPurchase(false)
+            }else{
+                setError(result?.message || "API ERROR");
+            }
+        }catch(error){
+            setError(error?.message || "API ERROR");
+        }finally{
+            setLoading(false);
+        }
+
     };
     const handleChange= (e) => {
         const {name,value}=e.target;
@@ -38,11 +44,10 @@ export default function StartPurchase({setPurchaseID,setOpenStartPurchase}){
     };
     useEffect(()=>{
         if(supplierSelected){
-            console.log(supplierSelected);
             setOpenSelectMenu(false);
             setFormData(prev => ({
                 ...prev,
-                ["supplier_id"]:supplierSelected.id
+                supplier_id:supplierSelected.id
             }));
         }
     },[supplierSelected]);
@@ -64,10 +69,14 @@ export default function StartPurchase({setPurchaseID,setOpenStartPurchase}){
             ):(
             <div className="flex flex-col h-screen justify-center items-center">
                 <form onSubmit={handleSubmit} className="bg-white p-5 gap-4 rounded-xl shadow-lg w-fit">
+                    {/* Error Box */}
+                    {error && (
+                    <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
+                    )}
                     <div className="mb-6">
                         <div className="mb-2">
                             <label htmlFor="supplier" className="text-sm text-gray-700 font-semibold">Supplier:</label>
-                            <button onClick={() => {
+                            <button type="button" onClick={() => {
                                 setOpenSelectMenu(true);
                                 }} 
                                 className="p-1 ml-3 rounded-xl shadow-lg bg-blue-500 hover:bg-blue-600 font-medium text-white">
