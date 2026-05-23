@@ -1,7 +1,4 @@
-import { useEffect, useState } from "react";
 import {Link} from "react-router-dom"
-import Table from "../Table";
-import { removeRow, saveCustomersRow } from "../api";
 import DataTable from "../DataTable";
 export default function Customers(){
 
