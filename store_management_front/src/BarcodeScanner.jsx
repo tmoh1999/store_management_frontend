@@ -1,50 +1,27 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef ,useState } from "react";
 import Quagga from "quagga";
 import ErrorBoundary from "./ErrorBoundary";
-async function isCameraPermissionGranted() {
-  if (!navigator.permissions) {
-    console.warn("Permissions API not supported");
-    return false;
-  }
-
-  try {
-    const result = await navigator.permissions.query({ name: "camera" });
-    return result.state === "granted"; // true if granted, false otherwise
-  } catch (err) {
-    console.error("Cannot check camera permission", err);
-    return false;
-  }
-}
 
 
 export default function BarcodeScanner({ onDetected }) {
   const scannerRef = useRef(null);
+  const [error, setError] = useState("");
 
-
-  	
-
-
-    let isCameraActive = true;
+  
    
-    const startScanner = async () => {
     
-       if (!scannerRef.current) return;
-       
-       
-      try {
-      	// Usage
-isCameraPermissionGranted().then( async (granted) => {
-  if (granted) {
-    console.log("Camera permission: YES");
-  } else {
-    isCameraActive=false;
-    console.log("Camera permission: NO");
-    await navigator.mediaDevices.getUserMedia({ video: true });
-  }
-});
-        
-       
-        if (!isCameraActive || !scannerRef.current) return;
+    
+  useEffect(() => {
+    const startScanner = async () => {
+      
+      if (!scannerRef.current) return;
+
+          
+      try 
+      {
+        await navigator.mediaDevices.getUserMedia({ video: true });
+  
+        if (!scannerRef.current) return;
         
         Quagga.init(
           {
@@ -58,7 +35,7 @@ isCameraPermissionGranted().then( async (granted) => {
           },
           (err) => {
             if (err) {
-              console.error("Quagga init error:", err);
+              setError("Scanner init failed");
               return;
             }
             Quagga.start();
@@ -74,26 +51,25 @@ isCameraPermissionGranted().then( async (granted) => {
         });
         
       } catch (err) {
-        console.error("Camera permission denied:", err);
-        alert("Camera access denied. Please enable permissions.");
+        setError("Camera access denied. Please enable permissions.");
       }
-      
+    
     };
-    
-   // initScanner();
-   //startScanner();
-    
-  useEffect(() => {
-  startScanner();
 
+    startScanner();
+    return () => {
+      Quagga.stop();
+    };    
   },[]);
   return(
-  <div>
-  <ErrorBoundary>
-<div ref={scannerRef} style={{ width: "100%", height: "400px" }} >
-
-      </div>
-  </ErrorBoundary>
-     </div>
-);
+    <div>
+      <ErrorBoundary>
+        {/* Error Box */}
+        {error && (
+        <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
+        )}        
+        <div ref={scannerRef} style={{ width: "100%", height: "400px" }} ></div>
+      </ErrorBoundary>
+    </div>
+  );
 }
