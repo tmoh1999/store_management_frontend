@@ -1,7 +1,4 @@
-import { Link ,useNavigate,useLocation} from "react-router-dom";
-import { useEffect ,useState} from "react";
-import {removeRow ,saveTransactionRow} from "../api";
-import Table from "../Table";
+import { Link} from "react-router-dom";
 import DataTable from "../DataTable";
 
 export default function Transactions() {
