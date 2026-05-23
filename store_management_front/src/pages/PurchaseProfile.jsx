@@ -2,10 +2,12 @@ import { useLocation ,useNavigate} from "react-router-dom";
 import { apiGet} from "../api";
 import { useEffect, useState } from "react";
 import DataTable from "../DataTable";
+import NoDataFound from "../components/NoDataFound";
 
 export default function PurchaseProfile(){
 const {state}=useLocation();
-const [reload,setReload]=useState(false);
+const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
 const [purchaseData,setPurchaseData]=useState({
     "id":null,
     "date":"",
@@ -15,8 +17,14 @@ const [purchaseData,setPurchaseData]=useState({
 });
 const navigate=useNavigate();
 useEffect(()=>{
-    async function loadData(){
-        const result= await apiGet("/api/purchases/search",{"purchase_id":state.id});
+    setError("");
+    setLoading(true);
+    apiGet("/api/purchases/search",{"purchase_id":state.id})
+    .then(result => {
+        if(!result?.success){
+            setError(result.message);
+            return;
+        }
         setPurchaseData(prev => ({
             ...prev,
             id:result.purchase_id,
@@ -25,32 +33,45 @@ useEffect(()=>{
             status:result.status,
             description:result.description
         }));
-    }
-    loadData();
-
-},[state,reload]);
+    }).catch(err => {
+        setError(err.message);
+    }).finally(()=>{
+        setLoading(false);
+    });
+},[state]);
 
 const handleClick=()=>{
-    if (purchaseData.status=="draft"){
-            navigate("/purchases",{
-              state:{
-                id:purchaseData.id,
-              }
-            });
-
-    }
+    navigate("/purchases",{
+        state:{
+        id:purchaseData.id,
+        }
+    });
 }
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
-        <div className="flex justify-center">
-            <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
+        {loading?(
+        <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
+            <div className="w-3/4">
+                <NoDataFound message="Loading..."/>
+            </div>
+        </div>        
+        ):error?(
+            <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
+            <div className="w-3/4">
+                <NoDataFound message={error}/>
+            </div>
+            </div>
+        ):(
+        <>  
+        <div className="flex justify-start">
+            <div className="flex flex-col w-2/5 rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
                     <h1 className="font-semibold text-2xl">Description Data:</h1>
-                    {purchaseData?.status=="draft" && (
+                    {purchaseData?.status==="draft" && (
                         <button className="ml-3 p-1 mb-2 text-xl bg-green-600 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
                             onClick={handleClick}
                             >
-                            Continue Purchase
+                            Continue
                         </button>                    
                         )
                     }
@@ -66,14 +87,12 @@ return (
             <DataTable
                 mode="purchase_items"
                 getOptions={{purchase_id:purchaseData.id}}
-                TableName={`Purchase Items , Purchase_id:${purchaseData.id}`}
-                refreshParent2={() => {
-                    setReload(prev => !prev);
-                }}                
-
+                TableName="Purchase Items"           
             />
             </div>       
         }
+        </>
+        )}
     </div>
 );
 }
