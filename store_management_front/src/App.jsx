@@ -14,10 +14,7 @@ import Sidebar from "./SideBar.jsx"
 import ErrorBoundary from "./ErrorBoundary"
 import ProtectedRoute from "./ProtectedRoute"
 import LogOut from "./LogOut"
-import ConfirmMessage from "./confirmMessage"
-import { useEffect } from "react";
 import AddSupplier from "./pages/AddSupplier.jsx";
-import StartPurchase from "./pages/StartPurchase.jsx";
 import ProductProfile from "./pages/ProductProfile.jsx";
 import SaleProfile from "./pages/SaleProfile.jsx";
 import PurchaseProfile from "./pages/PurchaseProfile.jsx";
@@ -29,21 +26,9 @@ import Refunds from "./pages/Refunds.jsx";
 import AddRefund from "./pages/AddRefund.jsx";
 import RefundScreen from "./pages/RefundScreen.jsx";
 import RefundProfile from "./pages/RefundProfile.jsx";
-// you will create these pages
+
 
 export default function App() {
-	useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      // Dynamically load Eruda
-      const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/eruda";
-      script.onload = () => {
-        window.eruda.init();
-        console.log("Eruda initialized on Android!");
-      };
-      document.body.appendChild(script);
-    }
-  }, []);
   return (
     <div className="flex h-screen">
     <ErrorBoundary>
@@ -64,7 +49,7 @@ export default function App() {
 
       <Route path="/purchases" element={<ProtectedRoute><Purchases /></ProtectedRoute>} />
       <Route path="/purchase/profile" element={<ProtectedRoute><PurchaseProfile /></ProtectedRoute>} />
-      <Route path="/startpurchase" element={<ProtectedRoute><StartPurchase /></ProtectedRoute>} />
+      
 
       <Route path="/sales" element={<ProtectedRoute><Sales /></ProtectedRoute>} />
       <Route path="/sale/profile" element={<ProtectedRoute><SaleProfile /></ProtectedRoute>} />
@@ -86,8 +71,6 @@ export default function App() {
       <Route path="/refundscreen" element={<ProtectedRoute><RefundScreen /></ProtectedRoute>} />
       <Route path="/refund/profile" element={<ProtectedRoute><RefundProfile /></ProtectedRoute>} />
 
-
-      <Route path="/test" element={<ConfirmMessage message="Test Message" />} />
     </Routes>
     </div>
     </ErrorBoundary>
