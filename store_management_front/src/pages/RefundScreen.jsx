@@ -1,5 +1,4 @@
-import {addRefundItem, apiGet,confirmRefund,removeRow} from "../api"
-import Table from "../Table";
+import {addRefundItem,confirmRefund,removeRow} from "../api"
 import { useEffect ,useState} from "react";
 import { useLocation ,useNavigate } from "react-router-dom";
 import DataTable from "../DataTable";
@@ -9,24 +8,15 @@ const {state}=useLocation();
 const [formData, setFormData] = useState({
     refund_quantity:0.0,
     refund_amount:0.0,
-    refund_id:null,
+    refund_id:state.refund_id,
     sale_item_id:null,
-    sale_id:null,
+    sale_id:state.sale_id,
 });
 const [openRefundEdit,setOpenRefundEdit]=useState(false);
-const [reload,setReload]=useState(false);
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 const [message, setMessage] = useState("");
 
-useEffect(()=>{
-        console.log("state:::",state);
-        setFormData(prev => ({
-            ...prev,
-            refund_id:state.refund_id,
-            sale_id:state.sale_id
-        }));      
-},[state]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page reload
@@ -36,13 +26,8 @@ useEffect(()=>{
     
     try {
       const result =await addRefundItem(formData);
-        
-      console.log(result.message);
-
-      result.success? setMessage(result.message) : setError(result.message)
       if(result?.success){
         setMessage(result.message);
-        setError("");
         setOpenRefundEdit(false);  
       }else{
         setError(result.message);
@@ -55,9 +40,7 @@ useEffect(()=>{
     }
     // Here you can call an API or do further processing
   }
-  useEffect(()=>{
-    console.log(formData);
-  },[formData]);
+
 
 const handleSelected= (row) => {
     if (row.id){
@@ -133,11 +116,13 @@ return (
                 SelectName="Refund"
             />    
             <div className=" flex justify-center mt-8">
-                <button className="mr-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
+                <button type="button"
+                className="mr-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-green-500 hover:bg-green-600 "
                 onClick={ConfirmClick}
                 >💾 Confirm</button>
 
-                <button className="ml-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-red-500 hover:bg-red-600 "
+                <button type="button" 
+                className="ml-10 mb-3 p-1 text-xl text-white font-medium shadow-lg rounded-xl bg-red-500 hover:bg-red-600 "
                 onClick={CancelClick}
                 >❌ Cancel</button>
             </div>
@@ -146,10 +131,7 @@ return (
                     <DataTable
                         mode="refund_items"
                         getOptions={{refund_id:formData.refund_id}}
-                        TableName={`Refund Items , Refund_id:${formData.refund_id}`}
-                        refreshParent2={() => {
-                            setReload(prev => !prev);
-                        }}
+                        TableName="Refund Items"
                         Edit={true}
                 />
                 )
@@ -162,7 +144,7 @@ return (
 
                 <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg  flex flex-col justify-center items-center gap-5">
                     <div className="flex w-full justify-end">
-                        <button onClick={() => {setOpenRefundEdit(false);setError("");setMessage("");}} className="ml-3 font-bold">✕</button>
+                        <button type="button" onClick={() => {setOpenRefundEdit(false);setError("");setMessage("");}} className="ml-3 font-bold">✕</button>
                     </div>
                     {/* Message Box */}
                     {message && (
