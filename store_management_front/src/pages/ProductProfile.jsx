@@ -1,11 +1,13 @@
 import { useLocation } from "react-router-dom";
-import { apiGet, searchProduct ,test} from "../api";
+import { apiGet} from "../api";
 import { useEffect, useState } from "react";
 import DataTable from "../DataTable";
+import NoDataFound from "../components/NoDataFound";
 
 export default function ProductProfile(){
 const {state}=useLocation();
-const [reload,setReload]=useState(false);
+const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
 const [productData,setProductData]=useState({
     "id":null,
     "name":"",
@@ -14,8 +16,15 @@ const [productData,setProductData]=useState({
     "min_stock_level":10.0,
 });
 useEffect(()=>{
-    async function loadData(){
-        const result= await apiGet("/api/products/search",{"product_id":state.id});
+
+    setError("");
+    setLoading(true);
+    apiGet("/api/products/search",{"product_id":state.id})
+    .then(result => {
+        if(!result?.success){
+            setError(result.message);
+            return;
+        }
         setProductData(prev => ({
             ...prev,
             id:result.product_id,
@@ -24,14 +33,31 @@ useEffect(()=>{
             quantity:result.product_quantity,
             min_stock_level:result.product_min_stock_level
         }));
-    }
-    loadData();
+    }).catch(err => {
+        setError(err.message);
+    }).finally(()=>{
+        setLoading(false);
+    });
 
-},[state,reload]);
+},[state]);
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
-        <div className="flex justify-center">
-            <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
+        {loading?(
+        <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
+            <div className="w-3/4">
+                <NoDataFound message="Loading..."/>
+            </div>
+        </div>        
+        ):error?(
+            <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
+            <div className="w-3/4">
+                <NoDataFound message={error}/>
+            </div>
+            </div>
+        ):(
+        <>    
+        <div className="flex justify-start">
+            <div className="flex flex-col w-2/5 rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
                     <h1 className="font-semibold text-2xl">Product Data:</h1>
                 </div>
@@ -46,18 +72,17 @@ return (
             <DataTable
                 mode="purchase_items"
                 getOptions={{product_id:productData.id}}
-                TableName={`Purchase History , Product_id:${productData.id}`}
+                TableName={`${productData.name}'s Purchases`}  
             />
             <DataTable
                 mode="sale_items"
                 getOptions={{product_id:productData.id}}
-                TableName={`Sale History , Product_id:${productData.id}`}
-                refreshParent2={() => {
-                    setReload(prev => !prev);
-                }}
+                TableName={`${productData.name}'s Sales`}  
             />
             </div>       
         }
+        </>
+        )}
     </div>
 );
 }
