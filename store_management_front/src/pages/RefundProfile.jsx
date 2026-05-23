@@ -2,9 +2,11 @@ import { useLocation,useNavigate } from "react-router-dom";
 import { apiGet} from "../api";
 import { useEffect, useState } from "react";
 import DataTable from "../DataTable";
+import NoDataFound from "../components/NoDataFound";
 export default function RefundProfile(){
 const {state}=useLocation();
-const [reload,setReload]=useState(false);
+const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
 const [refundData,setRefundData]=useState({
     "id":null,
     "sale_id":null,
@@ -16,10 +18,14 @@ const [refundData,setRefundData]=useState({
 });
 const navigate=useNavigate();
 useEffect(()=>{
-    async function loadData(){
-        console.log(state);
-        const result= await apiGet("/api/refunds/search",{"refund_id":state.id});
-        console.log(result)
+    setError("");
+    setLoading(true);
+    apiGet("/api/refunds/search",{"refund_id":state.id})
+    .then(result => {
+        if(!result?.success){
+            setError(result.message);
+            return;
+        }
         setRefundData(prev => ({
             ...prev,
             id:result.id,
@@ -30,33 +36,46 @@ useEffect(()=>{
             status:result.status,
             receipt_number:result.receipt_number
         }));
-    }
-    loadData();
-
-},[state,reload]);
+    }).catch(err => {
+        setError(err.message);
+    }).finally(()=>{
+        setLoading(false);
+    });
+},[state]);
 
 const handleClick=()=>{
-    if (refundData.status=="draft"){
-            navigate("/refundscreen",{
-              state:{
-                refund_id:refundData.id,
-                sale_id:refundData.sale_id,
-              }
-            });
-
-    }
+    navigate("/refundscreen",{
+        state:{
+        refund_id:refundData.id,
+        sale_id:refundData.sale_id,
+        }
+    });
 }
 return (
     <div className="flex flex-col h-screen overflow-y-auto bg-gray-100">
-        <div className="flex justify-center">
-            <div className="flex flex-col w-fit rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
+        {loading?(
+        <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
+            <div className="w-3/4">
+                <NoDataFound message="Loading..."/>
+            </div>
+        </div>        
+        ):error?(
+            <div className="flex flex-col  h-screen justify-center items-center p-6 bg-gray-400">  
+            <div className="w-3/4">
+                <NoDataFound message={error}/>
+            </div>
+            </div>
+        ):(
+        <>            
+        <div className="flex justify-start">
+            <div className="flex flex-col w-2/5 rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
                     <h1 className="font-semibold text-2xl">Refund Data:</h1>
-                    {refundData?.status=="draft" && (
+                    {refundData?.status==="draft" && (
                         <button className="ml-3 p-1 mb-2 text-xl bg-green-600 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium"
                             onClick={handleClick}
                             >
-                            Continue Refund
+                            Continue
                         </button>                    
                         )
                     }
@@ -73,13 +92,12 @@ return (
             <DataTable
                 mode="refund_items"
                 getOptions={{refund_id:refundData.id}}
-                TableName={`Refund Items , Refund_id:${refundData.id}`}
-                refreshParent2={() => {
-                    setReload(prev => !prev);
-                }}
+                TableName="Refund Items"
             />
             </div>       
         }
+        </>
+        )}        
     </div>
 );
 }
