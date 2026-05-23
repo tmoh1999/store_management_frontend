@@ -1,10 +1,9 @@
-import { useNavigate } from "react-router-dom";
+
 export const API_URL = import.meta.env.VITE_API_URL;
 
 export async function request(url, options = {}) {
   const token = localStorage.getItem("token");
   const req_url=API_URL+url;
-  console.log(req_url);
 
   const headers = {
     ...(options.headers || {}),
@@ -28,25 +27,21 @@ export async function request(url, options = {}) {
       try {
         const json = JSON.parse(text);
         errorMsg = json.error || json.message || text;
-      } catch (e) {
+      } catch (err) {
         // text was not JSON
-        console.log(e);
       }
       
       // Special case: token expired
       if (errorMsg.includes("expired")) {
-      	console.log(errorMsg);
         localStorage.removeItem("token");
         window.location.href = "/login";
       }
 
       throw new Error(errorMsg);
-      //throw new Error(errorMessage || "Request failed");
     }
 
     return await response.json();
   } catch (err) {
-    console.error("API Error:", err);
     throw err;
   }
 }
@@ -96,7 +91,6 @@ export async function downloadFile(mode, filename,options={}) {
     window.URL.revokeObjectURL(urlBlob);
 
   } catch (err) {
-    console.error("Download Error:", err);
     throw err;
   }
 }
@@ -112,7 +106,6 @@ function buildQuery(options) {
   return params.toString();  // ex: "sale_id=2&product_id=5"
 }
 export function apiGet(mode, options = {}) {
-   console.log(mode);
   const query = buildQuery(options);   // convert to URL query string
 
   const url = query
@@ -143,10 +136,7 @@ export function register(formData) {
 export function removeRow(path) {
   return request(path);
 }
-// Productq
-export function getProducts() {
-  return request("/api/products/productlist");
-}
+
 
 
 // Register example
@@ -204,11 +194,7 @@ export function logout() {
   localStorage.removeItem("user");
 }
 
-// Option 2: function with navigate (requires passing navigate)
-export function logoutAndRedirect(navigate) {
-  logout();
-  navigate("/login");
-}
+
 
 
 export function addSale() {
@@ -441,12 +427,4 @@ export function updateRefundItem(formData) {
          quantity:formData.quantity,         
     }),
   });
-}
-
-export function test(options = {}){
-  console.log(options)
-  if (Object.keys(options).includes("product_id")){
-    const k=null;
-    console.log(Object.keys(options).includes("product_id"),k)
-  }
 }

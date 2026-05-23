@@ -38,7 +38,7 @@ useEffect(() => {
       {purchase_id==0 ? (
       <>
         <div className="flex justify-end">
-          <button onClick={handleClick} className="self-start p-3 mb-2 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium" to="/startpurchase">
+          <button onClick={handleClick} className="self-start p-3 mb-2 text-2xl bg-green-500 shadow-lg rounded-xl hover:bg-green-700 text-white  font-medium">
           Start Purchase
           </button> 
         </div> 
