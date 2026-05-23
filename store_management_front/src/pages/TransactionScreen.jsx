@@ -40,14 +40,16 @@ const api = {
     datamod:"sale_items",
     options:{sale_id:transaction_id},
     tablename:`Sale Items , Sale_id:${transaction_id}`,
-    confirm: confirmSale
+    confirm: confirmSale,
+    remove:removeRow
   },
   purchase: {
     addItem: addPurchaseItem,
     datamod:"purchase_items",
     options:{purchase_id:transaction_id},
     tablename:`Purchase Items , Purchase_id:${transaction_id}`,
-    confirm: confirmPurchase
+    confirm: confirmPurchase,
+    remove:removeRow
   }
 }[mode];
 
