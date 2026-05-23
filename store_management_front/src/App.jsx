@@ -24,7 +24,7 @@ import PurchaseProfile from "./pages/PurchaseProfile.jsx";
 import SupplierProfile from "./pages/SupplierProfile.jsx";
 import AddCustomer from "./pages/AddCustomer.jsx";
 import Customers from "./pages/Customers.jsx";
-import CustomerProfile from "./pages/CostumerProfile.jsx";
+import CustomerProfile from "./pages/CustomerProfile.jsx";
 import Refunds from "./pages/Refunds.jsx";
 import AddRefund from "./pages/AddRefund.jsx";
 import RefundScreen from "./pages/RefundScreen.jsx";
