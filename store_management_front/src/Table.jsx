@@ -131,17 +131,17 @@ const addEmptyRow = () => {
             {error && (
                 <div className="bg-red-100 text-red-700 p-2 rounded mb-3">
                     {error}
-                    <button onClick={() => setError("")} className="ml-3 font-bold">✕</button>
+                    <button type="button"  onClick={() => setError("")} className="ml-3 font-bold">✕</button>
                 </div>
             )}
             <div className="flex w-full justify-end mb-2 ml-5">
-              <button
+              <button type="button" 
                       className="p-2 mr-5 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
                       onClick={(e) => downloadFile(`${rootpath}/export/excel`,"report.xlsx",{...options,search:search,sort_column:sortColumn,sort_direction:sortOrder})}
                     >
                     Export Excel
                 </button>
-                <button
+                <button type="button" 
                       className="p-2 mr-2 rounded-xl shadow-lg text-white bg-green-600 text-center text-lg font-medium hover:bg-green-700"
                       onClick={(e) => downloadFile(`${rootpath}/export/pdf`,"report.pdf",{...options,search:search,sort_column:sortColumn,sort_direction:sortOrder})}
                     >
@@ -167,9 +167,9 @@ const addEmptyRow = () => {
         ): data.length === 0 && newRows.length === 0 ? (
           <>
             <NoDataFound message="No records found." />
-            {addRow && mode=="view" && (
+            {addRow && mode==="view" && (
               <div  className="p-1 border">
-                <button  onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
+                <button type="button"   onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
               </div>
             )}               
           </>
@@ -199,32 +199,32 @@ const addEmptyRow = () => {
                   {columns.map((col) => (
                     <TableCell key={`${row.id}-${col.accessor}`}  Editable={editingRow === row.id && col.edit && Edit} val={getRowValue(row, col.accessor)} type="text" name={col.accessor} onChanged={(e) => handleChange(e,row)}/>
                   ))}
-                  {mode=="view" ? (
+                  {mode==="view" ? (
                     editingRow === row.id ? 
                     ( 
                         <td  key={`${row.id}-save`} className="p-2 border">
-                          <button onClick={(e) => handleSave(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
+                          <button type="button"  onClick={(e) => handleSave(e,row)} id={row.id} data-key="save" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">Save</button>
                         </td>     
                     )
                     :
                     (
                       <>
                         <td  key={`${row.id}-view`} className="p-2 border">
-                          <button onClick={(e) => handleView(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
+                          <button type="button"  onClick={(e) => handleView(e,row)} id={row.id} data-key="view" className="p-1 font-semibold rounded-xl shadow-lg  bg-green-400 hover:bg-green-500">View</button>
                         </td>
                         
                         <td  key={`${row.id}-edit`} className="p-2 border">
-                          <button onClick={(e) => setEditingRow(row.id)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
+                          <button type="button"  onClick={(e) => setEditingRow(row.id)} id={row.id} data-key="update" className="p-1 font-semibold rounded-xl shadow-lg  bg-orange-400 hover:bg-orange-500">Edit</button>
                         </td>
                         
                         <td key={`${row.id}-remove`} className="p-2 border">
-                          <button onClick={(e) => handleRemove(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
+                          <button type="button"  onClick={(e) => handleRemove(e,row)} id={row.id} data-key="remove" className="p-1 font-semibold rounded-xl shadow-lg  bg-red-400 hover:bg-red-500">Remove</button>
                         </td>
                       </>
                     )
                   ):(
                         <td  key={`${row.id}-select`} className="p-2 border">
-                          <button onClick={(e) => handleSelect(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">{SelectName}</button>
+                          <button type="button"  onClick={(e) => handleSelect(e,row)} id={row.id} data-key="select" className="p-1 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">{SelectName}</button>
                         </td>        
                   )
                   }
@@ -233,9 +233,9 @@ const addEmptyRow = () => {
               ))}
             </tbody>
           </table>
-          {addRow && mode=="view" && (
+          {addRow && mode==="view" && (
             <div  className="p-1 border">
-              <button  onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
+              <button type="button"  type="button"   onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
             </div>
           )}        
           <Pagination page={page} setPage={setPage} pages={pages}/>
