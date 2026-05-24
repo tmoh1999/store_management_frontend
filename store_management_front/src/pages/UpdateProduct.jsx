@@ -8,9 +8,10 @@ const {state}=useLocation();
 
   // Step 1: Create state for form fields
   const [formData, setFormData] = useState({
-    name: state? state.row.name:"",
-    barcode: state? state.row.barcode:"",
-    price:state? state.row.price:0.0,
+    name: state?.name || "",
+    barcode: state?.barcode || "",
+    price:state?.price || 0,
+    min_stock_level:state?.min_stock_level || 0,
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -31,30 +32,33 @@ const {state}=useLocation();
     e.preventDefault(); // Prevent page reload
     
     setError("");
+    setMessage("");
     setLoading(true);
     
     try {
-      const result =await updateProduct(formData,state.path);      
-      setMessage(result.message);
-      console.log(message);
+      const path=`/api/products/${state?.id}/update`
+      const result =await updateProduct(formData,path);      
+
+      if(result?.success){
+          setMessage(result.message)
+      }else{
+          setError(result.message)
+      }
     } catch (err) {
-      setError(err.message || "addProduct failed");
+      setError(err.message || "updateProduct failed");
     } finally {
       setLoading(false);
     }
     // Here you can call an API or do further processing
   }
-  const startScanning = () => {
-    setShowScanner(true);
-  };
+
   const onDetected =(code)=> {
-   console.log(code);
    setFormData({ ...formData, barcode: code });
    setShowScanner(false);
   };
   return (
     <div className="w-full min-h-screen flex flex-col  justify-center items-center  bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg w-4/5 flex flex-col items-center gap-4">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-xl shadow-lg w-fit flex flex-col items-center gap-4">
         {/* Message Box */}
         {message && (
           <div className="bg-green-100 text-green-700 p-2 rounded">{message}</div>
@@ -64,37 +68,41 @@ const {state}=useLocation();
         {error && (
           <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
         )}
-        <div className=" mb-4">
+        <div className="mb-4">
           <label htmlFor="name" className="block text-sm text-gray-700 font-semibold">Name:</label>
-          <input onChange={handleChange} value={formData.name} id="name" name="name" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
+          <input onChange={handleChange} value={formData.name} id="name" name="name" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" required/>
         </div>
-          
+        
         <div className="mb-4">
           <div className="mb-2">
             <label htmlFor="barcode" className="text-sm text-gray-700 font-semibold">Barcode:</label>
-            <button onClick={startScanning} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
-                  Scan
+            <button type="button" onClick={() => setShowScanner(true)} className="bg-green-600 text-white px-3 rounded-lg hover:bg-green-700 ml-2">
+                    Scan
             </button>
           </div>
-          <input onChange={handleChange} value={formData.barcode} id="barcode" name="barcode" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />  
+          <input onChange={handleChange} value={formData.barcode} id="barcode" name="barcode" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
         </div>
-      
-      
+    
         <div className="mb-4">
           <label htmlFor="price" className="block text-sm text-gray-700 font-semibold">Price:</label>
-          <input onChange={handleChange} type="number" value={formData.price} id="price" name="price" className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+          <input onChange={handleChange} type="number" value={formData.price} id="price" name="price" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="min_stock_level" className="block text-sm text-gray-700 font-semibold">Min Stock Level:</label>
+          <input onChange={handleChange} type="number" value={formData.min_stock_level} id="min_stock_level" name="min_stock_level" className="w-75 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition" />
         </div>
 
-        <button type="submit" disabled={loading} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Updating..." : "Update"}</button>
+        <button type="submit" disabled={loading} className="bg-blue-500 font-semibold text-white p-3 rounded-lg hover:bg-blue-700">{loading ? "Updating..." : "Update"}</button>
       
       </form>
       <ErrorBoundary>
         {showScanner && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-4 rounded-lg shadow-lg w-80">
+          <div className="bg-white p-4 rounded-lg shadow-lg w-2/5">
             <h1>Scanned Code: {formData.barcode}</h1>
             <BarcodeScanner onDetected={onDetected} />
             <button 
+                  type="button"
                   className="mt-3 bg-red-500 text-white p-2 rounded-lg w-full hover:bg-red-600"
                   onClick={() => setShowScanner(false)}
             >
