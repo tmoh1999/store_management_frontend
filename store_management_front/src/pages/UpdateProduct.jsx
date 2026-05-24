@@ -1,4 +1,4 @@
-import { Link ,useLocation } from "react-router-dom";
+import {useLocation } from "react-router-dom";
 import { useEffect ,useState} from "react";
 import {updateProduct} from "../api";
 import ErrorBoundary from "../ErrorBoundary";
@@ -53,7 +53,7 @@ const {state}=useLocation();
   }
 
   const onDetected =(code)=> {
-   setFormData({ ...formData, barcode: code });
+   setFormData(prev => ({ ...prev, barcode: code }));
    setShowScanner(false);
   };
   return (
