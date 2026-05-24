@@ -12,6 +12,7 @@ export default function BarcodeScanner({ onDetected }) {
     
     
   useEffect(() => {
+    let started=false;
     const startScanner = async () => {
       
       if (!scannerRef.current) return;
@@ -39,6 +40,7 @@ export default function BarcodeScanner({ onDetected }) {
               return;
             }
             Quagga.start();
+            started=true;
           }
         );
 
@@ -47,6 +49,7 @@ export default function BarcodeScanner({ onDetected }) {
           if (code && code.length === 13) {
             onDetected?.(code);
             Quagga.stop();
+            started=false;
           }
         });
         
@@ -58,7 +61,7 @@ export default function BarcodeScanner({ onDetected }) {
 
     startScanner();
     return () => {
-      Quagga.stop();
+      if(started) Quagga.stop();
     };    
   },[]);
   return(
@@ -68,7 +71,9 @@ export default function BarcodeScanner({ onDetected }) {
         {error && (
         <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>
         )}        
-        <div ref={scannerRef} style={{ width: "100%", height: "400px" }} ></div>
+        <div ref={scannerRef} 
+         style={{ width: "100%", height: "400px" }}
+         ></div>
       </ErrorBoundary>
     </div>
   );
