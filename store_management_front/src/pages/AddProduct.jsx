@@ -55,7 +55,6 @@ const [message, setMessage] = useState("");
     // Here you can call an API or do further processing
   }
   const onDetected =(code)=> {
-   console.log(code);
    setFormData(prev => ({ ...prev, barcode: code }));
    setShowScanner(false);
   };
