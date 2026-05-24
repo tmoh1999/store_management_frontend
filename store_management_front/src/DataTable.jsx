@@ -199,7 +199,6 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
     useEffect(() => {
         setLoading(true);
         setError("");
-        console.log(getOptions);
         const op=
             api.showDates?     
             {
@@ -213,8 +212,7 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
         ;
             apiGet(api.rootpath,op)
         .then(result => {
-                if(result?.success){
-                    console.log(result);    
+                if(result?.success){ 
                     setRows(prev => ({
                         ...prev,
                         columns: columns,
@@ -242,7 +240,6 @@ export default function DataTable({mode,table_mode="view",TableName="table",Sele
         
         const timeout = setTimeout(() => {
             if (search) {
-                console.log("search"+search);
                 page!==1? setPage(1) :setReload(prev=>!prev);
             }else{
                 setReload(prev=>!prev);
