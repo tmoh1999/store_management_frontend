@@ -1,9 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { useLocation , Link} from "react-router-dom";
 import { apiGet} from "../api";
 import { useEffect, useState } from "react";
 import DataTable from "../DataTable";
 import NoDataFound from "../components/NoDataFound";
-
 export default function ProductProfile(){
 const {state}=useLocation();
 const [error, setError] = useState("");
@@ -13,6 +12,7 @@ const [productData,setProductData]=useState({
     "name":"",
     "barcode":"",
     "quantity":0.0,
+    "price":0.0,
     "min_stock_level":10.0,
 });
 useEffect(()=>{
@@ -31,6 +31,7 @@ useEffect(()=>{
             name:result.product_name,
             barcode:result.product_barcode,
             quantity:result.product_quantity,
+            price:result.product_price,
             min_stock_level:result.product_min_stock_level
         }));
     }).catch(err => {
@@ -60,9 +61,17 @@ return (
             <div className="flex flex-col w-2/5 rounded-lg shadow-lg bg-white p-2 mt-8 ml-8">
                 <div className="flex justify-start mb-3">
                     <h1 className="font-semibold text-2xl">Product Data:</h1>
+                    <Link
+                        to="/updateproduct"
+                        state={productData}
+                        className="ml-5 px-2 py-0.5 rounded-xl shadow-lg text-white bg-blue-600 text-center text-2xl font-medium hover:bg-green-700"
+                        >
+                        Edit
+                    </Link>                    
                 </div>
                 <p className="text-lg"><span className="text-xl underline  mr-4">Name:</span>{productData.name}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Barcode:</span>{productData.barcode}</p>
+                <p className="text-lg"><span className="text-xl underline mr-4">Price:</span>{productData.price}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Quantity:</span>{productData.quantity}</p>
                 <p className="text-lg"><span className="text-xl underline mr-4">Min Stock:</span>{productData.min_stock_level}</p>
             </div>
