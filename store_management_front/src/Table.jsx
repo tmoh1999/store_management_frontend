@@ -235,7 +235,7 @@ const addEmptyRow = () => {
           </table>
           {addRow && mode==="view" && (
             <div  className="p-1 border">
-              <button type="button"  type="button"   onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
+              <button type="button"    onClick={addEmptyRow} className="py-1 px-2 font-semibold rounded-xl shadow-lg  bg-blue-400 hover:bg-blue-500">➕ add line</button>
             </div>
           )}        
           <Pagination page={page} setPage={setPage} pages={pages}/>
