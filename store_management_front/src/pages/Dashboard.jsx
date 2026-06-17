@@ -127,7 +127,7 @@ const [dateRange, setDateRange] = useState(getMonthRange());
           {/* Sales Chart */}
          <SalesChart dateRange={dateRange}/>
           <div className="flex flex-col sm:flex-row gap-5">
-            <div className="flex flex-col bg-white  w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
+            <div className="flex flex-col bg-white  w-full sm:w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
                 <h2 className="text-xl font-bold"> Top 5 Saled Products </h2>
                 <table className="w-full mt-4 ">
                   <thead>
@@ -146,7 +146,7 @@ const [dateRange, setDateRange] = useState(getMonthRange());
                   </tbody>
                 </table>
             </div>
-            <div className="flex flex-col bg-white  w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
+            <div className="flex flex-col bg-white  w-full sm:w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
                 <h2 className="text-xl font-bold"> Low stock Products </h2>
                 <table className="w-full mt-4 ">
                   <thead>

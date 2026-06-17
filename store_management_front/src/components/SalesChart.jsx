@@ -111,7 +111,7 @@ export default function SalesChart({dateRange=getMonthRange()}) {
               <button onClick={() => setError("")} className="ml-3 font-bold">✕</button>
           </div>
         ):(
-        <div className="flex flex-col w-fit h-80 justify-center items-center rounded-2xl bg-white shadow-xl p-8">
+        <div className="flex flex-col w-full sm:w-fit h-80 justify-center items-center rounded-2xl bg-white shadow-xl p-8">
           <div className="flex w-full justify-between items-center mb-4 gap-6">
             <h2 className="text-xl font-bold">📈 Sales Overview</h2>
           </div>
