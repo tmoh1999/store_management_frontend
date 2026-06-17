@@ -75,12 +75,12 @@ const [dateRange, setDateRange] = useState(getMonthRange());
       }));
   };
   return (
-    <div className="p-6">
+    <div className="p-2 sm:p-6  w-full bg-slate-200">
       <h1 className="text-3xl font-bold text-center mb-4">
         Store Dashboard
       </h1>
 
-      <h2 className="text-start font-semibold text-3xl underline px-8 mb-6">
+      <h2 className="text-center sm:text-start px-2 sm:px-8 font-semibold text-xl sm:text-3xl underline  mb-6">
         User: {username}
       </h2>
       {error && (
@@ -90,79 +90,81 @@ const [dateRange, setDateRange] = useState(getMonthRange());
           </div>
       )  
       }    
-      <div className="flex justify-center mb-3 mt-7">
+      <div className="flex flex-col gap-5 sm:gap-3 sm:flex-row  items-center justify-center mb-3 mt-7">
         <div>
-            <label htmlFor="start_date" className="text-2xl font-medium mr-3">Start:</label>
+            <label htmlFor="start_date" className="text-xl sm:text-2xl font-medium mr-3">Start:</label>
             <input type="date" id="start_date" name="start_date" 
             className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
             value={dateRange.start_date} onChange={handleChange}/>
         </div>
-        <div className="ml-8">
-              <label htmlFor="end_date" className="text-2xl font-medium mr-3">End:</label>
+        <div className="ml-0 sm:ml-8">
+              <label htmlFor="end_date" className="text-xl sm:text-2xl font-medium mr-3">End:</label>
             <input type="date" id="end_date" name="end_date"
             className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium"
             value={dateRange.end_date} onChange={handleChange}/>
         </div>
       </div>
       {/* Stats */}
-      <div className="flex justify-center gap-8 mb-8 ">
-        <div className="bg-blue-500 text-white p-4 rounded-xl text-center w-1/6">
+      <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-3 sm:gap-6 mb-2 mt-8 ">
+        <div className="bg-blue-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-3/5 sm:w-1/6">
           <h3 className="text-xl">Total Revenue</h3>
           <p className="text-2xl font-bold">{stats.total_revenue}</p>
         </div>
 
-        <div className="bg-green-500 text-white p-4 rounded-xl text-center w-1/6">
+        <div className="bg-green-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-3/5 sm:w-1/6">
           <h3 className="text-xl">Total Purchases</h3>
           <p className="text-2xl font-bold">{stats.total_purchases}</p>
         </div>
 
-        <div className="bg-yellow-500 text-white p-4 rounded-xl text-center w-1/6">
+        <div className="bg-yellow-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-3/5 sm:w-1/6">
           <h3 className="text-xl">Expenses</h3>
           <p className="text-2xl font-bold">{stats.total_expenses}</p>
         </div>
       </div>
-      <div className="flex justify-center bg-white p-6 rounded-2xl shadow-xl">
-        <div className="flex gap-16 justify-between">
+      <div className="flex justify-center p-6">
+        <div className="flex flex-col  xl:flex-row gap-10 items-center xl:justify-between">
         
           {/* Sales Chart */}
          <SalesChart dateRange={dateRange}/>
-          <div className="flex flex-col w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
-              <h2 className="text-xl font-bold"> Top 5 Saled Products </h2>
-              <table className="w-full mt-4 ">
-                <thead>
-                  <tr className="bg-gray-200">
-                    <th className="text-left px-4 py-2">Product Name</th>
-                    <th className="text-left px-4 py-2">Times Sold</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.top_saled_products.map((t) => (
-                    <tr key={t.id} className="border-b">
-                      <td className="text-left px-4 py-2">{t.name}</td>
-                      <td className="text-center px-4 py-2">{t.times_sold}</td>
+          <div className="flex flex-col sm:flex-row gap-5">
+            <div className="flex flex-col bg-white  w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
+                <h2 className="text-xl font-bold"> Top 5 Saled Products </h2>
+                <table className="w-full mt-4 ">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="text-left px-4 py-2">Product Name</th>
+                      <th className="text-left px-4 py-2">Times Sold</th>
                     </tr>
-                  ))}  
-                </tbody>
-              </table>
-          </div>
-          <div className="flex flex-col w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
-              <h2 className="text-xl font-bold"> Low stock Products </h2>
-              <table className="w-full mt-4 ">
-                <thead>
-                  <tr className="bg-gray-200">
-                    <th className="text-left px-4 py-2">Product Name</th>
-                    <th className="text-left px-4 py-2">Remaining Stock</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.low_stock_products.map((t) => (
-                    <tr key={t.id} className="border-b">
-                      <td className="text-left px-4 py-2">{t.name}</td>
-                      <td className="text-center px-4 py-2">{t.quantity_float}</td>
+                  </thead>
+                  <tbody>
+                    {stats.top_saled_products.map((t) => (
+                      <tr key={t.id} className="border-b">
+                        <td className="text-left px-4 py-2">{t.name}</td>
+                        <td className="text-center px-4 py-2">{t.times_sold}</td>
+                      </tr>
+                    ))}  
+                  </tbody>
+                </table>
+            </div>
+            <div className="flex flex-col bg-white  w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
+                <h2 className="text-xl font-bold"> Low stock Products </h2>
+                <table className="w-full mt-4 ">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="text-left px-4 py-2">Product Name</th>
+                      <th className="text-left px-4 py-2">Remaining Stock</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {stats.low_stock_products.map((t) => (
+                      <tr key={t.id} className="border-b">
+                        <td className="text-left px-4 py-2">{t.name}</td>
+                        <td className="text-center px-4 py-2">{t.quantity_float}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+            </div>
           </div>
         </div> 
       </div>       
