@@ -6,7 +6,7 @@ import DataTable from "../DataTable";
 
 export default function ProductList() {
   return (
-    <div className="flex justify-center p-3">
+    <div className="flex justify-center min-w-fit p-3">
       <div className="w-fit">
       
         <div className="flex justify-center ">
