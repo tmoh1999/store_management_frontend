@@ -75,61 +75,60 @@ const [dateRange, setDateRange] = useState(getMonthRange());
       }));
   };
   return (
-    <div className="p-2 sm:p-6  w-full bg-slate-200">
-      <h1 className="text-3xl font-bold text-center mb-4">
+  <div className="flex flex-col bg-slate-300 items-center p-2 sm:p-6 min-w-[600px]  w-full sm:w-full ">
+      <h1 className="text-3xl w-full  font-bold text-center mb-4">
         Store Dashboard
       </h1>
 
-      <h2 className="text-center sm:text-start px-2 sm:px-8 font-semibold text-xl sm:text-3xl underline  mb-6">
+      <h2 className="  w-full text-start px-2 sm:px-8 font-semibold  text-3xl underline  mb-6">
         User: {username}
       </h2>
       {error && (
-          <div className="bg-red-100 text-red-700 p-2 rounded mb-3">
+          <div className="bg-red-100  p-2 rounded mb-3">
               {error}
               <button onClick={() => setError("")} className="ml-3 font-bold">✕</button>
           </div>
       )  
-      }    
-      <div className="flex flex-col gap-5 sm:gap-3 sm:flex-row  items-center justify-center mb-3 mt-7">
+      }
+
+      <div className="flex flex-col gap-5 w-full sm:w-fit sm:gap-3 sm:flex-row  items-center justify-center mb-3 mt-7">
         <div>
-            <label htmlFor="start_date" className="text-xl sm:text-2xl font-medium mr-3">Start:</label>
+            <label htmlFor="start_date" className="text-2xl font-medium mr-3">Start:</label>
             <input type="date" id="start_date" name="start_date" 
             className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium" 
             value={dateRange.start_date} onChange={handleChange}/>
         </div>
         <div className="ml-0 sm:ml-8">
-              <label htmlFor="end_date" className="text-xl sm:text-2xl font-medium mr-3">End:</label>
+              <label htmlFor="end_date" className="text-2xl font-medium mr-3">End:</label>
             <input type="date" id="end_date" name="end_date"
             className="bg-blue-400 text-xl p-1 rounded-xl shadow-lg text-center font-medium"
             value={dateRange.end_date} onChange={handleChange}/>
         </div>
       </div>
-      {/* Stats */}
-      <div className="flex flex-col sm:flex-row items-center sm:justify-center gap-3 sm:gap-6 mb-2 mt-8 ">
-        <div className="bg-blue-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-3/5 sm:w-1/6">
+      <div className="flex  w-48 sm:w-full flex-col sm:flex-row items-center sm:justify-center gap-3 sm:gap-6 mb-2 mt-8 ">
+        <div className="bg-blue-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-full sm:w-1/6">
           <h3 className="text-xl">Total Revenue</h3>
           <p className="text-2xl font-bold">{stats.total_revenue}</p>
         </div>
 
-        <div className="bg-green-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-3/5 sm:w-1/6">
+        <div className="bg-green-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-full sm:w-1/6">
           <h3 className="text-xl">Total Purchases</h3>
           <p className="text-2xl font-bold">{stats.total_purchases}</p>
         </div>
 
-        <div className="bg-yellow-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-3/5 sm:w-1/6">
+        <div className="bg-yellow-500 text-white p-2 rounded-xl text-center sm:min-w-fit w-full sm:w-1/6">
           <h3 className="text-xl">Expenses</h3>
           <p className="text-2xl font-bold">{stats.total_expenses}</p>
         </div>
       </div>
-      <div className="flex justify-center p-6">
-        <div className="flex flex-col  xl:flex-row gap-10 items-center xl:justify-between">
+      <div className="">
+        <div className="flex flex-col  p-3   w-80 sm:w-full lg:flex-row gap-5 items-center lg:justify-between">
         
-          {/* Sales Chart */}
          <SalesChart dateRange={dateRange}/>
-          <div className="flex flex-col sm:flex-row gap-5">
-            <div className="flex flex-col bg-white  w-full sm:w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
-                <h2 className="text-xl font-bold"> Top 5 Saled Products </h2>
-                <table className="w-full mt-4 ">
+          <div className="flex flex-col justify-center    sm:flex-row gap-5">
+            <div className="flex flex-col bg-white w-full sm:w-64 h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-2 sm:p-4">
+                <h2 className="text-xl font-bold w-full text-center"> Top 5 Saled Products </h2>
+                <table className="mt-4 ">
                   <thead>
                     <tr className="bg-gray-200">
                       <th className="text-left px-4 py-2">Product Name</th>
@@ -146,9 +145,9 @@ const [dateRange, setDateRange] = useState(getMonthRange());
                   </tbody>
                 </table>
             </div>
-            <div className="flex flex-col bg-white  w-full sm:w-fit h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-8">
+            <div className="flex flex-col bg-white w-full sm:w-64 h-80 overflow-y-auto justify-center items-center rounded-2xl shadow-xl p-2 sm:p-4">
                 <h2 className="text-xl font-bold"> Low stock Products </h2>
-                <table className="w-full mt-4 ">
+                <table className="mt-4 ">
                   <thead>
                     <tr className="bg-gray-200">
                       <th className="text-left px-4 py-2">Product Name</th>
@@ -167,7 +166,7 @@ const [dateRange, setDateRange] = useState(getMonthRange());
             </div>
           </div>
         </div> 
-      </div>       
-    </div>
+      </div>      
+  </div>
   );
 }
