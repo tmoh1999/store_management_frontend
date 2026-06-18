@@ -5,8 +5,8 @@ import DataTable from "../DataTable";
 
 export default function Refunds() {
   return (
-    <div className="flex justify-center p-3">
-      <div className="w-fit">
+    <div className="flex justify-center min-w-fit p-3">
+      <div className="sm:w-3/4 min-w-[700px]">
          
         <div className="flex justify-end mb-3">
           <Link

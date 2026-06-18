@@ -3,8 +3,8 @@ import DataTable from "../DataTable";
 
 export default function Transactions() {
   return (
-    <div className="flex justify-center">
-      <div className="flex flex-col w-fit p-2 mt-3">
+    <div className="flex justify-center min-w-fit">
+      <div className="flex flex-col sm:w-3/4 min-w-[700px]  p-2 mt-3">
         <div className="flex justify-end">
           <Link
                   to="/addtransaction"

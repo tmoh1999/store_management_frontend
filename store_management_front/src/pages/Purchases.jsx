@@ -27,13 +27,13 @@ useEffect(() => {
 },[purchase_id]);
  
   return (
-<div className="flex justify-center">
+<div className="flex justify-center min-w-fit">
 
 
   {openStartPurchase ? (
     <StartPurchase setPurchaseID={setPurchaseId} setOpenStartPurchase={setOpenStartPurchase}/>
   ):(
-    <div className=" p-2 w-fit mt-3">
+    <div className=" p-2 sm:w-3/4 min-w-[700px] mt-3">
       {purchase_id===0 ? (
       <>
         <div className="flex justify-end">

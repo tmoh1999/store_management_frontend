@@ -59,8 +59,8 @@ useEffect(()=>{
 } 
 ,[customerSelected]);
   return (
-<div className="flex justify-center p-3">  
-  <div className="flex flex-col p-2 w-fit ">
+<div className="flex justify-center min-w-fit p-3">  
+  <div className="flex flex-col p-2 sm:w-3/4 min-w-[700px] ">
   {/* Error Box */}
   {error && (
   <div className="bg-red-100 text-red-700 p-2 rounded">{error}</div>

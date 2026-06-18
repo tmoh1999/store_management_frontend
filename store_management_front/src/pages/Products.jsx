@@ -6,8 +6,8 @@ import DataTable from "../DataTable";
 
 export default function ProductList() {
   return (
-    <div className="flex justify-center min-w-fit p-3">
-      <div className="w-fit">
+    <div className="flex justify-center min-w-fit  p-3">
+      <div className="sm:w-3/4 min-w-[700px]">
       
         <div className="flex justify-center ">
           <UploadFile apiPath="/api/products/import" fileType=".xlsx"/>

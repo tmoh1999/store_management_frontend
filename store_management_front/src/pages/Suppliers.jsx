@@ -3,8 +3,8 @@ import DataTable from "../DataTable";
 export default function Suppliers(){
 
     return(
-        <div className=" flex justify-center">
-            <div className=" p-2 w-fit mt-3">
+        <div className=" flex justify-center min-w-fit">
+            <div className=" p-2 sm:w-3/4 min-w-[500px] mt-3">
                 <div className="flex justify-end">
                 <Link
                     to="/addsupplier"
