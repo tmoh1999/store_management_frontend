@@ -6,7 +6,7 @@ export default function Sidebar() {
   const [open, setOpen] = useState(true);
   return (
     
-    <div className={`h-screen bg-gray-900 text-white p-4 transition-all duration-300
+    <div className={`h-fit bg-gray-900 text-white p-4 transition-all duration-300
       ${open ? "w-64 fixed left-0 top-0 z-50" : "w-20 relative"}`}>
       
       {/* Top */}
