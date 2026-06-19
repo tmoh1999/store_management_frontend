@@ -30,10 +30,11 @@ import RefundProfile from "./pages/RefundProfile.jsx";
 
 export default function App() {
   return (
-    <div className="flex h-fit overflow-y-auto  ">
+    <div className="flex h-screen   ">
     <ErrorBoundary>
     <Sidebar />
-    <div className="ml-2 w-full">
+    <div className="overflow-y-auto w-full">
+    <div className="ml-2  h-fit ">
     <Routes>
       <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>}/>
       <Route path="/login" element={<Login />} />
@@ -72,6 +73,7 @@ export default function App() {
       <Route path="/refund/profile" element={<ProtectedRoute><RefundProfile /></ProtectedRoute>} />
 
     </Routes>
+    </div>
     </div>
     </ErrorBoundary>
     </div>

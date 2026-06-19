@@ -6,7 +6,7 @@ export default function Sidebar() {
   const [open, setOpen] = useState(true);
   return (
     
-    <div className={`h-fit bg-gray-900 text-white p-4 transition-all duration-300
+    <div className={`h-screen flex flex-col bg-gray-900 text-white p-4 transition-all duration-300
       ${open ? "w-64 fixed left-0 top-0 z-50" : "w-20 relative"}`}>
       
       {/* Top */}
@@ -22,7 +22,7 @@ export default function Sidebar() {
       </div>
 
       {/* Links */}
-      <div className="flex flex-col  gap-3">
+      <div className="flex-1 overflow-y-auto no-scrollbar   gap-3">
        <NavLink
           to="/dashboard"
           className={({ isActive }) =>
