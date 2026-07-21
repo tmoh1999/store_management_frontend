@@ -41,7 +41,7 @@ export default function BarcodeScanner({ onDetected }) {
                   setTimeout(() => initQuagga(retries - 1), 500);
                   return;
                 }                
-                const parts = [err?.name, err?.message].filter(Boolean);
+                const parts = [err?.name, err?.message,retries.toString()].filter(Boolean);
                 setError(parts.length ? parts.join(": ") : "Error initializing camera");
                 console.error("Quagga init error:", err);
                 return;
