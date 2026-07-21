@@ -36,8 +36,9 @@ export default function BarcodeScanner({ onDetected }) {
             },
             (err) => {
               if (err) {
+                setError("Camera busy, retrying..."+ retries);
                 if (err.name === "NotReadableError" && retries > 0) {
-                  setError("Camera busy, retrying...", retries);
+                  setError("Camera busy, retrying..."+ retries);
                   setTimeout(() => initQuagga(retries - 1), 3000);
                   return;
                 }                
