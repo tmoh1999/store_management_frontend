@@ -69,7 +69,6 @@ export default function BarcodeScanner({ onDetected }) {
           started = true;
 
           Quagga.onDetected((data) => {
-            setError(data?.codeResult?.code ? "Barcode detected: " + data.codeResult.code : "No barcode detected");
             const code = data?.codeResult?.code;
             if (code && code.length === 13) {
               onDetected?.(code);
