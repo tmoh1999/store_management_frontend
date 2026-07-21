@@ -36,21 +36,14 @@ export default function BarcodeScanner({ onDetected }) {
           },
           (err) => {
             if (err) {
-              console.error("Quagga init error:", err.name, err.message, err);
-
-              switch (err.name) {
-                case "NotAllowedError":
-                  setError("Camera permission denied");
-                  break;
-                case "NotFoundError":
-                  setError("No camera found on this device");
-                  break;
-                case "OverconstrainedError":
-                  setError("Camera doesn't support requested settings");
-                  break;
-                default:
-                  setError(err.message || "Error initializing camera");
-              }
+              const name = err?.name;
+              const message = err?.message;
+              setError(
+                name || message
+                  ? `${name ?? ""}${name && message ? ": " : ""}${message ?? ""}`
+                  : "Error initializing camera"
+              );
+              console.error("Quagga init error:", err);
               return;
             }
             Quagga.start();
