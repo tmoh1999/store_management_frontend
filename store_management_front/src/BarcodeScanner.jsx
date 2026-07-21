@@ -23,7 +23,7 @@ export default function BarcodeScanner({ onDetected }) {
         await navigator.mediaDevices.getUserMedia({ video: true });
   
         if (!scannerRef.current) return;
-        const initQuagga = (retries = 2) => { 
+        const initQuagga = (retries = 3) => { 
           Quagga.init(
             {
               inputStream: {
@@ -36,10 +36,9 @@ export default function BarcodeScanner({ onDetected }) {
             },
             (err) => {
               if (err) {
-                setError("Camera busy, retrying..."+ retries);
                 if (err.name === "NotReadableError" && retries > 0) {
                   setError("Camera busy, retrying..."+ retries);
-                  setTimeout(() => initQuagga(retries - 1), 3000);
+                  setTimeout(() => initQuagga(retries - 1), 1000);
                   return;
                 }                
                 const parts = [err?.name, err?.message].filter(Boolean);
