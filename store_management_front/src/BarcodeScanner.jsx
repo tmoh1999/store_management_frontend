@@ -38,7 +38,7 @@ export default function BarcodeScanner({ onDetected }) {
               if (err) {
                 if (err.name === "NotReadableError" && retries > 0) {
                   console.warn("Camera busy, retrying...", retries);
-                  setTimeout(() => initQuagga(retries - 1), 500);
+                  setTimeout(() => initQuagga(retries - 1), 3000);
                   return;
                 }                
                 const parts = [err?.name, err?.message,retries.toString()].filter(Boolean);
