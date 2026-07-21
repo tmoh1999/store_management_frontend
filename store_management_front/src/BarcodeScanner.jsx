@@ -23,28 +23,34 @@ export default function BarcodeScanner({ onDetected }) {
         await navigator.mediaDevices.getUserMedia({ video: true });
   
         if (!scannerRef.current) return;
-        
-        Quagga.init(
-          {
-            inputStream: {
-              type: "LiveStream",
-              target: scannerRef.current,
-              constraints: { facingMode: "environment" },
+        const initQuagga = (retries = 2) => { 
+          Quagga.init(
+            {
+              inputStream: {
+                type: "LiveStream",
+                target: scannerRef.current,
+                constraints: { facingMode: "environment" },
+              },
+              decoder: { readers: ["ean_reader", "code_128_reader"] },
+              locate: true,
             },
-            decoder: { readers: ["ean_reader", "code_128_reader"] },
-            locate: true,
-          },
-          (err) => {
-            if (err) {
-              const parts = [err?.name, err?.message].filter(Boolean);
-              setError(parts.length ? parts.join(": ") : "Error initializing camera");
-              console.error("Quagga init error:", err);
-              return;
+            (err) => {
+              if (err) {
+                if (err.name === "NotReadableError" && retries > 0) {
+                  console.warn("Camera busy, retrying...", retries);
+                  setTimeout(() => initQuagga(retries - 1), 500);
+                  return;
+                }                
+                const parts = [err?.name, err?.message].filter(Boolean);
+                setError(parts.length ? parts.join(": ") : "Error initializing camera");
+                console.error("Quagga init error:", err);
+                return;
+              }
+              Quagga.start();
+              started=true;
             }
-            Quagga.start();
-            started=true;
-          }
-        );
+          );
+        };
 
         Quagga.onDetected((data) => {
           const code = data?.codeResult?.code;
