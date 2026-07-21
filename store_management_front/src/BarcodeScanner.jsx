@@ -29,7 +29,11 @@ export default function BarcodeScanner({ onDetected }) {
               inputStream: {
                 type: "LiveStream",
                 target: scannerRef.current,
-                constraints: { facingMode: "environment" },
+                constraints: {
+                  facingMode: { ideal: "environment" },
+                  width: { ideal: 640 },
+                  height: { ideal: 480 },
+                },
               },
               decoder: { readers: ["ean_reader", "code_128_reader"] },
               locate: true,
