@@ -51,6 +51,7 @@ export default function BarcodeScanner({ onDetected }) {
             }
           );
         };
+        initQuagga();
 
         Quagga.onDetected((data) => {
           const code = data?.codeResult?.code;
